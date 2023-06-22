@@ -1,0 +1,18 @@
+{
+	"format_version": "1.8.0",
+	"animations": {
+		"mechanical_drill.rotation": {
+			"loop": true,
+			"animation_length": 1,
+			"bones": {
+				"rotator": {
+					"rotation": {
+						"0.0": [0, 0, 0],
+						"1.0": [0, 360, 0]
+					}
+				}
+			}
+		}
+	},
+	"geckolib_format_version": 2
+}

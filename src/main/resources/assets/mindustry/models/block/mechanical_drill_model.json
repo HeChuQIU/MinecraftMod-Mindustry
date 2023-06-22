@@ -1,0 +1,57 @@
+{
+	"texture_size": [64, 32],
+	"textures": {
+		"1": "mindustry:block/mechanical_drill"
+	},
+	"elements": [
+		{
+			"name": "block",
+			"from": [0, 0, 0],
+			"to": [16, 16, 16],
+			"faces": {
+				"north": {"uv": [4, 8, 8, 16], "texture": "#1"},
+				"east": {"uv": [0, 8, 4, 16], "texture": "#1"},
+				"south": {"uv": [12, 8, 16, 16], "texture": "#1"},
+				"west": {"uv": [8, 8, 12, 16], "texture": "#1"},
+				"up": {"uv": [8, 8, 4, 0], "texture": "#1"},
+				"down": {"uv": [12, 0, 8, 8], "texture": "#1"}
+			}
+		},
+		{
+			"name": "top",
+			"from": [0, 16, 0],
+			"to": [16, 16, 16],
+			"faces": {
+				"north": {"uv": [0, 24, 4, 24], "texture": "#1"},
+				"east": {"uv": [-4, 24, 0, 24], "texture": "#1"},
+				"south": {"uv": [8, 24, 12, 24], "texture": "#1"},
+				"west": {"uv": [4, 24, 8, 24], "texture": "#1"},
+				"up": {"uv": [4, 8, 0, 0], "texture": "#1"},
+				"down": {"uv": [4, 0, 0, 8], "texture": "#1"}
+			}
+		},
+		{
+			"name": "rotator",
+			"from": [0, 16, 0],
+			"to": [16, 16, 16],
+			"faces": {
+				"north": {"uv": [0, 32, 4, 32], "texture": "#1"},
+				"east": {"uv": [-4, 32, 0, 32], "texture": "#1"},
+				"south": {"uv": [8, 32, 12, 32], "texture": "#1"},
+				"west": {"uv": [4, 32, 8, 32], "texture": "#1"},
+				"up": {"uv": [16, 8, 12, 0], "texture": "#1"},
+				"down": {"uv": [16, 0, 12, 8], "texture": "#1"}
+			}
+		}
+	],
+	"groups": [
+		0,
+		1,
+		{
+			"name": "rotator",
+			"origin": [0, 16, 0],
+			"color": 0,
+			"children": [2]
+		}
+	]
+}
