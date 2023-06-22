@@ -1,5 +1,5 @@
 {
   "variants": {
-    "": { "model": "mindustry:block/mechanical_drill_model" }
+    "": { "model": "mindustry:block/mechanical_drill" }
   }
 }
