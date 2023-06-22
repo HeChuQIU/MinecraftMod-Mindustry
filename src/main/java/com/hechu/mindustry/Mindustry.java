@@ -1,25 +1,24 @@
 package com.hechu.mindustry;
 
+import com.hechu.mindustry.block.MechanicalDrill;
+import com.hechu.mindustry.block.MechanicalDrillBlockEntity;
+import com.hechu.mindustry.block.MechanicalDrillBlockEntityRenderer;
 import com.mojang.logging.LogUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.item.BlockItem;
-import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.state.BlockBehaviour;
-import net.minecraft.world.level.material.Material;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.server.ServerStartingEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.InterModComms;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
-import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
-import net.minecraftforge.fml.event.lifecycle.InterModProcessEvent;
-import net.minecraftforge.event.server.ServerStartingEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -33,16 +32,21 @@ public class Mindustry {
     // Define mod id in a common place for everything to reference
     public static final String MODID = "mindustry";
     // Directly reference a slf4j logger
-    private static final Logger LOGGER = LogUtils.getLogger();
+    public static final Logger LOGGER = LogUtils.getLogger();
     // Create a Deferred Register to hold Blocks which will all be registered under the "mindustry" namespace
     public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, MODID);
     // Create a Deferred Register to hold Items which will all be registered under the "mindustry" namespace
     public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, MODID);
 
     // Creates a new Block with the id "mindustry:example_block", combining the namespace and path
-    public static final RegistryObject<Block> EXAMPLE_BLOCK = BLOCKS.register("example_block", () -> new Block(BlockBehaviour.Properties.of(Material.STONE)));
+    public static final RegistryObject<Block> MECHANICAL_DRILL = BLOCKS.register(MechanicalDrill.NAME, MechanicalDrill::new);
     // Creates a new BlockItem with the id "mindustry:example_block", combining the namespace and path
-    public static final RegistryObject<Item> EXAMPLE_BLOCK_ITEM = ITEMS.register("example_block", () -> new BlockItem(EXAMPLE_BLOCK.get(), new Item.Properties().tab(CreativeModeTab.TAB_BUILDING_BLOCKS)));
+
+    public static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITIES = DeferredRegister.create(ForgeRegistries.BLOCK_ENTITY_TYPES,MODID);
+    public static final RegistryObject<BlockEntityType<MechanicalDrillBlockEntity>> MECHANICAL_DRILL_BLOCK_ENTITY = BLOCK_ENTITIES.register(MechanicalDrillBlockEntity.NAME, () -> BlockEntityType.Builder.of(MechanicalDrillBlockEntity::new, MECHANICAL_DRILL.get()).build(null));
+
+    public static final RegistryObject<Item> MECHANICAL_DRILL_ITEM = ITEMS.register(MechanicalDrill.NAME,
+            () -> new BlockItem(MECHANICAL_DRILL.get(), new Item.Properties().tab(ModGroup.MINDUSTRY)));
 
     public Mindustry() {
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
@@ -54,6 +58,8 @@ public class Mindustry {
         BLOCKS.register(modEventBus);
         // Register the Deferred Register to the mod event bus so items get registered
         ITEMS.register(modEventBus);
+
+        BLOCK_ENTITIES.register(modEventBus);
 
         // Register ourselves for server and other game events we are interested in
         MinecraftForge.EVENT_BUS.register(this);
@@ -77,11 +83,16 @@ public class Mindustry {
     public static class ClientModEvents {
 
         @SubscribeEvent
-        public static void onClientSetup(FMLClientSetupEvent event)
-        {
+        public static void onClientSetup(FMLClientSetupEvent event) {
             // Some client setup code
             LOGGER.info("HELLO FROM CLIENT SETUP");
             LOGGER.info("MINECRAFT NAME >> {}", Minecraft.getInstance().getUser().getName());
+        }
+
+        @SubscribeEvent
+        public static void onRegisterRenderers(EntityRenderersEvent.RegisterRenderers event) {
+            LOGGER.info("HELLO from register renderers");
+            event.registerBlockEntityRenderer(Mindustry.MECHANICAL_DRILL_BLOCK_ENTITY.get(), MechanicalDrillBlockEntityRenderer::new);
         }
     }
 }
