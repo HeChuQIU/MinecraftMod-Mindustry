@@ -5,16 +5,17 @@ import com.hechu.mindustry.block.MechanicalDrillBlockEntity;
 import com.hechu.mindustry.block.MechanicalDrillBlockEntityRenderer;
 import com.mojang.logging.LogUtils;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.ItemBlockRenderTypes;
-import net.minecraft.client.renderer.RenderType;
-import net.minecraft.world.item.BlockItem;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.CreativeModeTabEvent;
 import net.minecraftforge.event.server.ServerStartingEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -26,6 +27,7 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import org.slf4j.Logger;
+import software.bernie.geckolib.GeckoLib;
 
 // The value here should match an entry in the META-INF/mods.toml file
 @Mod(Mindustry.MODID)
@@ -44,14 +46,16 @@ public class Mindustry {
     public static final RegistryObject<Block> MECHANICAL_DRILL = BLOCKS.register(MechanicalDrill.NAME, MechanicalDrill::new);
     // Creates a new BlockItem with the id "mindustry:example_block", combining the namespace and path
 
-    public static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITIES = DeferredRegister.create(ForgeRegistries.BLOCK_ENTITY_TYPES,MODID);
+    public static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITIES = DeferredRegister.create(ForgeRegistries.BLOCK_ENTITY_TYPES, MODID);
     public static final RegistryObject<BlockEntityType<MechanicalDrillBlockEntity>> MECHANICAL_DRILL_BLOCK_ENTITY = BLOCK_ENTITIES.register(MechanicalDrillBlockEntity.NAME, () -> BlockEntityType.Builder.of(MechanicalDrillBlockEntity::new, MECHANICAL_DRILL.get()).build(null));
 
     public static final RegistryObject<Item> MECHANICAL_DRILL_ITEM = ITEMS.register(MechanicalDrill.NAME,
-            () -> new BlockItem(MECHANICAL_DRILL.get(), new Item.Properties().tab(ModGroup.MINDUSTRY)));
+            () -> new com.hechu.mindustry.item.MechanicalDrill(MECHANICAL_DRILL.get(), new Item.Properties()));
 
     public Mindustry() {
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
+
+        GeckoLib.initialize();
 
         // Register the commonSetup method for modloading
         modEventBus.addListener(this::commonSetup);
@@ -91,10 +95,27 @@ public class Mindustry {
             LOGGER.info("MINECRAFT NAME >> {}", Minecraft.getInstance().getUser().getName());
         }
 
+        // Registered on the MOD event bus
+// Assume we have RegistryObject<Item> and RegistryObject<Block> called ITEM and BLOCK
+        @SubscribeEvent
+        public void buildContents(CreativeModeTabEvent.Register event) {
+            event.registerCreativeModeTab(new ResourceLocation(MODID, "example"), builder ->
+                    // Set name of tab to display
+                    builder.title(Component.translatable("item_group." + MODID + ".example"))
+                            // Set icon of creative tab
+                            .icon(() -> new ItemStack(MECHANICAL_DRILL_ITEM.get()))
+                            // Add default items to tab
+                            .displayItems((enabledFlags, populator) -> {
+                                populator.accept(MECHANICAL_DRILL_ITEM.get());
+                                populator.accept(MECHANICAL_DRILL.get());
+                            })
+            );
+        }
+
         @SubscribeEvent
         public static void onRegisterRenderers(EntityRenderersEvent.RegisterRenderers event) {
             LOGGER.info("HELLO from register renderers");
-            event.registerBlockEntityRenderer(Mindustry.MECHANICAL_DRILL_BLOCK_ENTITY.get(), MechanicalDrillBlockEntityRenderer::new);
+            event.registerBlockEntityRenderer(Mindustry.MECHANICAL_DRILL_BLOCK_ENTITY.get(), context -> new MechanicalDrillBlockEntityRenderer());
         }
     }
 }
