@@ -14,7 +14,7 @@ import software.bernie.geckolib.core.animation.RawAnimation;
 import java.util.function.Consumer;
 
 public class MechanicalDrill extends BlockItem implements GeoItem {
-    private AnimatableInstanceCache cache = new SingletonAnimatableInstanceCache(this);
+    private final AnimatableInstanceCache cache = new SingletonAnimatableInstanceCache(this);
 
     private static final RawAnimation ROTATION_ANIMS = RawAnimation.begin().thenLoop("mechanical_drill.rotation");
 

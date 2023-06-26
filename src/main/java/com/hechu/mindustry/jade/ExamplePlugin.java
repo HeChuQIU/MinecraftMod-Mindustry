@@ -4,9 +4,6 @@ import com.hechu.mindustry.Mindustry;
 import com.hechu.mindustry.block.MechanicalDrill;
 import com.hechu.mindustry.block.MechanicalDrillBlockEntity;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.level.block.AbstractFurnaceBlock;
-import net.minecraft.world.level.block.entity.AbstractFurnaceBlockEntity;
-import net.minecraft.world.level.block.entity.BlockEntity;
 import snownee.jade.api.*;
 
 @WailaPlugin

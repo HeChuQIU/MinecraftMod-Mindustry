@@ -23,17 +23,12 @@ import static com.hechu.mindustry.Mindustry.MECHANICAL_DRILL_BLOCK_ENTITY;
 public class MechanicalDrillBlockEntity extends BlockEntity implements GeoBlockEntity {
     public static final String NAME = "mechanical_drill";
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
-
-    // We statically instantiate our RawAnimations for efficiency, consistency, and error-proofing
     private static final RawAnimation ROTATION_ANIMS = RawAnimation.begin().thenLoop("mechanical_drill.rotation");
 
     public MechanicalDrillBlockEntity(BlockPos pos, BlockState state) {
         super(MECHANICAL_DRILL_BLOCK_ENTITY.get(), pos, state);
     }
 
-    // Let's set our animations up
-    // For this one, we want it to play the "Fertilizer" animation set if it's raining,
-    // or switch to a botarium if it's not.
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllerRegistrar) {
         controllerRegistrar.add(new AnimationController<>(this, state -> state.setAndContinue(ROTATION_ANIMS)));
@@ -75,12 +70,6 @@ public class MechanicalDrillBlockEntity extends BlockEntity implements GeoBlockE
         }
         if (isMining) {
             progress += 0.4 / 20;
-            /*PlayerList playerList = level.getServer() == null ? null : level.getServer().getPlayerList();
-            if (playerList != null && playerList.getPlayerCount() > 0) {
-                for (ServerPlayer player : playerList.getPlayers()) {
-                    level.destroyBlockProgress(player.getId(), miningBlockPos, (int) Math.ceil(counter * 10));
-                }
-            }*/
             if (progress >= 1) {
                 for (ItemStack drop : Block.getDrops(miningBlockState, (ServerLevel) level, miningBlockPos, null)) {
                     Block.popResource(level, getBlockPos().above(), drop);
@@ -91,15 +80,6 @@ public class MechanicalDrillBlockEntity extends BlockEntity implements GeoBlockE
         } else {
             progress = 0;
         }
-        /*if (counter++ % 100 == 0) {
-            BlockState belowBlockState = level.getBlockState(getBlockPos().below());
-            if (belowBlockState.getTags().anyMatch(tag -> tag.equals(BlockTags.COPPER_ORES))) {
-                level.removeBlock(getBlockPos().below(), true);
-                for (ItemStack drop : Block.getDrops(belowBlockState, (ServerLevel) level, getBlockPos().below(), null)) {
-                    Block.popResource(level, getBlockPos().below(), drop);
-                }
-            }
-        }*/
     }
 
     public float getProgress() {
