@@ -1,0 +1,7 @@
+{
+  "itemGroup.mindustry.mindustry": "Mindustry",
+  "block.mindustry.mechanical_drill": "机械钻头",
+  "item.mindustry.mechanical_drill": "机械钻头",
+  "config.jade.plugin_mindustry.mechanical_drill": "test",
+  "mindustry.drill_progress": "%d %%已挖掘"
+}

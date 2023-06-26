@@ -59,6 +59,7 @@ public class Mindustry {
 
         // Register the commonSetup method for modloading
         modEventBus.addListener(this::commonSetup);
+        modEventBus.addListener(this::registerTabs);
 
         // Register the Deferred Register to the mod event bus so blocks get registered
         BLOCKS.register(modEventBus);
@@ -77,6 +78,16 @@ public class Mindustry {
         LOGGER.info("DIRT BLOCK >> {}", ForgeRegistries.BLOCKS.getKey(Blocks.DIRT));
     }
 
+    private void registerTabs(final CreativeModeTabEvent.Register event) {
+        event.registerCreativeModeTab(new ResourceLocation(MODID,"mindustry"), builder -> builder
+                .title(Component.translatable("itemGroup." + MODID + ".mindustry"))
+                .icon(() -> new ItemStack(MECHANICAL_DRILL_ITEM.get()))
+                .displayItems((featureFlags, output) -> {
+                    output.accept(MECHANICAL_DRILL_ITEM.get());
+                })
+        );
+    }
+
     // You can use SubscribeEvent and let the Event Bus discover methods to call
     @SubscribeEvent
     public void onServerStarting(ServerStartingEvent event) {
@@ -93,23 +104,6 @@ public class Mindustry {
             // Some client setup code
             LOGGER.info("HELLO FROM CLIENT SETUP");
             LOGGER.info("MINECRAFT NAME >> {}", Minecraft.getInstance().getUser().getName());
-        }
-
-        // Registered on the MOD event bus
-// Assume we have RegistryObject<Item> and RegistryObject<Block> called ITEM and BLOCK
-        @SubscribeEvent
-        public void buildContents(CreativeModeTabEvent.Register event) {
-            event.registerCreativeModeTab(new ResourceLocation(MODID, "example"), builder ->
-                    // Set name of tab to display
-                    builder.title(Component.translatable("item_group." + MODID + ".example"))
-                            // Set icon of creative tab
-                            .icon(() -> new ItemStack(MECHANICAL_DRILL_ITEM.get()))
-                            // Add default items to tab
-                            .displayItems((enabledFlags, populator) -> {
-                                populator.accept(MECHANICAL_DRILL_ITEM.get());
-                                populator.accept(MECHANICAL_DRILL.get());
-                            })
-            );
         }
 
         @SubscribeEvent
