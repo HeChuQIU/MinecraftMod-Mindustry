@@ -1,7 +1,7 @@
 package com.hechu.mindustry.block.model;
 
 import com.hechu.mindustry.Mindustry;
-import com.hechu.mindustry.block.MechanicalDrill;
+import com.hechu.mindustry.block.MechanicalDrillBlock;
 import com.hechu.mindustry.block.PneumaticDrillBlockEntity;
 import net.minecraft.resources.ResourceLocation;
 import software.bernie.geckolib.model.DefaultedBlockGeoModel;
@@ -12,7 +12,7 @@ public class PneumaticDrillModel extends DefaultedBlockGeoModel<PneumaticDrillBl
     private static final ResourceLocation animationResource = new ResourceLocation(Mindustry.MODID, "animations/2x2drill_template.animation.json");
 
     public PneumaticDrillModel() {
-        super(new ResourceLocation(Mindustry.MODID, MechanicalDrill.NAME));
+        super(new ResourceLocation(Mindustry.MODID, MechanicalDrillBlock.NAME));
     }
 
     @Override

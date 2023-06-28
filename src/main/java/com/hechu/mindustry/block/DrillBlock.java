@@ -11,8 +11,8 @@ import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public abstract class Drill extends BaseEntityBlock {
-    protected Drill(Properties properties) {
+public abstract class DrillBlock extends BaseEntityBlock {
+    protected DrillBlock(Properties properties) {
         super(properties);
     }
 
