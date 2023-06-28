@@ -9,7 +9,7 @@ import software.bernie.geckolib.core.animation.AnimationController;
 import software.bernie.geckolib.core.animation.RawAnimation;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
-import java.util.Collections;
+import java.util.Arrays;
 
 import static com.hechu.mindustry.block.BlockEntityRegister.PNEUMATIC_DRILL_BLOCK_ENTITY;
 
@@ -17,7 +17,8 @@ public class PneumaticDrillBlockEntity extends DrillBlockEntity {
     public static final String NAME = "pneumatic_drill";
 
     public PneumaticDrillBlockEntity(BlockPos pos, BlockState state) {
-        super(PNEUMATIC_DRILL_BLOCK_ENTITY.get(),pos, state, Collections.singletonList(pos.below()),
+        super(PNEUMATIC_DRILL_BLOCK_ENTITY.get(),pos, state,
+                Arrays.stream(new BlockPos[]{pos.below(),pos.below().east(),pos.below().south(),pos.below().east().south()}).toList(),
                 state1 -> state1.is(BlockTags.SAND) ||
                         state1.is(BlockTags.COAL_ORES) ||
                         state1.is(BlockTags.COPPER_ORES), 1.0f);
