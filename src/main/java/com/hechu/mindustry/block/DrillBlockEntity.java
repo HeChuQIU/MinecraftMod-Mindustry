@@ -23,6 +23,7 @@ public abstract class DrillBlockEntity extends BlockEntity implements GeoBlockEn
     protected List<BlockPos> miningBlocksPos = Collections.emptyList();
     protected Predicate<BlockState> isMinable = state -> false;
     protected float baseMiningSpeed = 0;
+    protected BlockState miningBlockState = null;
 
     public DrillBlockEntity(BlockEntityType<?> blockEntityType, BlockPos pos, BlockState state) {
         super(blockEntityType, pos, state);
@@ -71,7 +72,6 @@ public abstract class DrillBlockEntity extends BlockEntity implements GeoBlockEn
                         (oldValue, newValue) -> oldValue, LinkedHashMap::new));
 
         boolean isMining = !minableBlockCount.isEmpty();
-        BlockState miningBlockState = null;
         int miningBlockCount = 0;
         for (Map.Entry<BlockState, Integer> kv : minableBlockCount.entrySet()) {
             miningBlockState = kv.getKey();
@@ -91,8 +91,7 @@ public abstract class DrillBlockEntity extends BlockEntity implements GeoBlockEn
                         }
                     progress = 0;
                 }
-            }
-            else {
+            } else {
                 progress = 0;
             }
             /*else {
@@ -118,5 +117,9 @@ public abstract class DrillBlockEntity extends BlockEntity implements GeoBlockEn
 
     public float getProgress() {
         return progress;
+    }
+
+    public BlockState getMiningBlockState() {
+        return miningBlockState;
     }
 }
