@@ -1,27 +1,22 @@
 package com.hechu.mindustry.item.model;
 
-import com.hechu.mindustry.Mindustry;
 import com.hechu.mindustry.item.MechanicalDrill;
-import net.minecraft.resources.ResourceLocation;
-import software.bernie.geckolib.model.GeoModel;
 
-public class MechanicalDrillModel extends GeoModel<MechanicalDrill> {
-    private static final ResourceLocation modelResource = new ResourceLocation(Mindustry.MODID, "geo/mechanical_drill.geo.json");
-    private static final ResourceLocation textureResource = new ResourceLocation(Mindustry.MODID, "textures/block/mechanical_drill.png");
-    private static final ResourceLocation animationResource = new ResourceLocation(Mindustry.MODID, "animations/mechanical_drill.animation.json");
+public class MechanicalDrillModel extends DrillModel<MechanicalDrill> {
+
 
     @Override
-    public ResourceLocation getModelResource(MechanicalDrill object) {
-        return modelResource;
+    public String getModelPath() {
+        return "geo/mechanical_drill.geo.json";
     }
 
     @Override
-    public ResourceLocation getTextureResource(MechanicalDrill object) {
-        return textureResource;
+    public String getTexturePath() {
+        return "textures/block/mechanical_drill.png";
     }
 
     @Override
-    public ResourceLocation getAnimationResource(MechanicalDrill animatable) {
-        return animationResource;
+    public String getAnimationPath() {
+        return "animations/mechanical_drill.animation.json";
     }
 }
