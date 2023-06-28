@@ -21,7 +21,7 @@ public class PneumaticDrillBlockEntity extends DrillBlockEntity {
                 Arrays.stream(new BlockPos[]{pos.below(),pos.below().east(),pos.below().south(),pos.below().east().south()}).toList(),
                 state1 -> state1.is(BlockTags.SAND) ||
                         state1.is(BlockTags.COAL_ORES) ||
-                        state1.is(BlockTags.COPPER_ORES), 1.0f);
+                        state1.is(BlockTags.COPPER_ORES), 0.6f);
     }
 
     @Override

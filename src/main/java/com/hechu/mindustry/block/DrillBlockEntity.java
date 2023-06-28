@@ -24,6 +24,7 @@ public abstract class DrillBlockEntity extends BlockEntity implements GeoBlockEn
     protected Predicate<BlockState> isMinable = state -> false;
     protected float baseMiningSpeed = 0;
     protected BlockState miningBlockState = null;
+    protected float miningSpeed;
 
     public DrillBlockEntity(BlockEntityType<?> blockEntityType, BlockPos pos, BlockState state) {
         super(blockEntityType, pos, state);
@@ -78,10 +79,11 @@ public abstract class DrillBlockEntity extends BlockEntity implements GeoBlockEn
             miningBlockCount = kv.getValue();
             break;
         }
+        miningSpeed = baseMiningSpeed / miningBlocksPos.size() * miningBlockCount;
         if (level.isClientSide) {
 //            LocalPlayer localPlayer = Minecraft.getInstance().player;
             if (isMining) {
-                progress += baseMiningSpeed * miningBlockCount / 20;
+                progress += miningSpeed / 20;
                 /*if (localPlayer != null)
                     level.destroyBlockProgress(localPlayer.getId(), miningBlockPos, (int) (progress * 10));*/
                 if (progress >= 1) {
@@ -102,7 +104,7 @@ public abstract class DrillBlockEntity extends BlockEntity implements GeoBlockEn
         }
         // 服务器端
         if (isMining) {
-            progress += baseMiningSpeed * miningBlockCount / 20;
+            progress += miningSpeed / 20;
             if (progress >= 1) {
                 for (ItemStack drop : Block.getDrops(miningBlockState, (ServerLevel) level, miningBlocksPos.get(0), null)) {
                     Block.popResource(level, getBlockPos().above(), drop);
@@ -121,5 +123,9 @@ public abstract class DrillBlockEntity extends BlockEntity implements GeoBlockEn
 
     public BlockState getMiningBlockState() {
         return miningBlockState;
+    }
+
+    public float getMiningSpeed() {
+        return miningSpeed;
     }
 }
