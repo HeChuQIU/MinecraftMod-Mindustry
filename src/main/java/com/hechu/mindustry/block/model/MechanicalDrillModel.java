@@ -1,4 +1,4 @@
-package com.hechu.mindustry.model;
+package com.hechu.mindustry.block.model;
 
 import com.hechu.mindustry.Mindustry;
 import com.hechu.mindustry.block.MechanicalDrill;

@@ -1,5 +1,6 @@
 package com.hechu.mindustry.jade;
 
+import com.hechu.mindustry.block.DrillBlockEntity;
 import com.hechu.mindustry.block.MechanicalDrillBlockEntity;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -10,7 +11,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import snownee.jade.api.*;
 import snownee.jade.api.config.IPluginConfig;
 
-public enum ExampleComponentProvider implements IBlockComponentProvider, IServerDataProvider<BlockEntity> {
+public enum DrillComponentProvider implements IBlockComponentProvider, IServerDataProvider<BlockEntity> {
     INSTANCE;
 
     @Override
@@ -22,13 +23,13 @@ public enum ExampleComponentProvider implements IBlockComponentProvider, IServer
 
     @Override
     public ResourceLocation getUid() {
-        return ExamplePlugin.Drill;
+        return MindustryPlugin.Drill;
     }
 
     @Override
     public void appendServerData(CompoundTag compoundTag, ServerPlayer serverPlayer, Level level, BlockEntity blockEntity, boolean b) {
-        if (blockEntity instanceof MechanicalDrillBlockEntity) {
-            compoundTag.putInt("progress", (int) (((MechanicalDrillBlockEntity) blockEntity).getProgress() * 100));
+        if (blockEntity instanceof DrillBlockEntity) {
+            compoundTag.putInt("progress", (int) (((DrillBlockEntity) blockEntity).getProgress() * 100));
         }
     }
 }

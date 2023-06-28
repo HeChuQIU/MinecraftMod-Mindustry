@@ -1,28 +1,23 @@
 {
 	"format_version": "1.8.0",
 	"animations": {
-		"mechanical_drill.rotate": {
+		"2x2drill_template.rotate": {
 			"loop": true,
 			"animation_length": 4,
 			"bones": {
-				"rotator": {
+				"rotation": {
 					"rotation": {
 						"0.0": {
 							"vector": [0, 0, 0]
 						},
 						"4.0": {
-							"vector": [0, "- 360", 0]
+							"vector": [0, -360, 0]
 						}
 					}
 				},
-				"cube": {
+				"2x2drill_template": {
 					"position": {
-						"vector": [0, -0.16, 0]
-					}
-				},
-				"mechanical_drill": {
-					"position": {
-						"vector": [0, -0.16, 0]
+						"vector": [0, "- 0.125", 0]
 					}
 				}
 			}

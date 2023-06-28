@@ -16,15 +16,13 @@ import software.bernie.geckolib.core.animation.AnimationController;
 import software.bernie.geckolib.core.animation.RawAnimation;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
-import static com.hechu.mindustry.block.BlockEntityRegister.MECHANICAL_DRILL_BLOCK_ENTITY;
+import static com.hechu.mindustry.block.BlockEntityRegister.PNEUMATIC_DRILL_BLOCK_ENTITY;
 
-public class MechanicalDrillBlockEntity extends DrillBlockEntity {
-    public static final String NAME = "mechanical_drill";
-    private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
-    private static final RawAnimation ROTATION_ANIMS = RawAnimation.begin().thenLoop("mechanical_drill.rotate");
+public class PneumaticDrillBlockEntity extends DrillBlockEntity {
+    public static final String NAME = "pneumatic_drill";
 
-    public MechanicalDrillBlockEntity(BlockPos pos, BlockState state) {
-        super(MECHANICAL_DRILL_BLOCK_ENTITY.get(), pos, state);
+    public PneumaticDrillBlockEntity(BlockPos pos, BlockState state) {
+        super(PNEUMATIC_DRILL_BLOCK_ENTITY.get(),pos, state);
     }
 
     @Override
@@ -32,12 +30,15 @@ public class MechanicalDrillBlockEntity extends DrillBlockEntity {
         controllerRegistrar.add(new AnimationController<>(this, state -> state.setAndContinue(ROTATION_ANIMS)));
     }
 
+    private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
+    private static final RawAnimation ROTATION_ANIMS = RawAnimation.begin().thenLoop("2x2drill_template.rotate");
+
     @Override
     public AnimatableInstanceCache getAnimatableInstanceCache() {
-        return this.cache;
+        return cache;
     }
 
-    public float progress = 0;
+    private float progress;
 
     @Override
     public void tick() {

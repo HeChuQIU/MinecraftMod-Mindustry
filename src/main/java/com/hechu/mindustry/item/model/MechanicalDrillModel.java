@@ -1,6 +1,7 @@
-package com.hechu.mindustry.item;
+package com.hechu.mindustry.item.model;
 
 import com.hechu.mindustry.Mindustry;
+import com.hechu.mindustry.item.MechanicalDrill;
 import net.minecraft.resources.ResourceLocation;
 import software.bernie.geckolib.model.GeoModel;
 
