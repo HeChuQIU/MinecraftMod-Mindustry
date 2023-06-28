@@ -9,6 +9,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.Vec2;
 import snownee.jade.api.BlockAccessor;
 import snownee.jade.api.IBlockComponentProvider;
 import snownee.jade.api.IServerDataProvider;
@@ -27,9 +28,10 @@ public enum DrillComponentProvider implements IBlockComponentProvider, IServerDa
             if (miningBlockState == null)
                 return;
             IElementHelper elements = tooltip.getElementHelper();
-            IElement icon = elements.item(new ItemStack(miningBlockState.getBlock().asItem()), 0.5f);
+            IElement icon = elements.item(new ItemStack(miningBlockState.getBlock().asItem()), 0.8f).size(new Vec2(16, 16)).translate(new Vec2(0, -2));
             tooltip.add(icon);
-            tooltip.append(Component.translatable("mindustry.drill_progress", (int)(((DrillBlockEntity) accessor.getBlockEntity()).getProgress() * 100)));
+            tooltip.append(Component.translatable("mindustry.drill_progress", (int) (((DrillBlockEntity) accessor.getBlockEntity()).getProgress() * 100)));
+            tooltip.add(Component.translatable("mindustry.drill_speed", String.format("%.2f", ((DrillBlockEntity) accessor.getBlockEntity()).getMiningSpeed())));
         }
     }
 
@@ -41,7 +43,8 @@ public enum DrillComponentProvider implements IBlockComponentProvider, IServerDa
     @Override
     public void appendServerData(CompoundTag compoundTag, ServerPlayer serverPlayer, Level level, BlockEntity blockEntity, boolean b) {
         if (blockEntity instanceof DrillBlockEntity) {
-            compoundTag.putInt("progress", (int) (((DrillBlockEntity) blockEntity).getProgress()));
+            compoundTag.putFloat("progress", ((DrillBlockEntity) blockEntity).getProgress());
+            compoundTag.putFloat("miningSpeed", ((DrillBlockEntity) blockEntity).getMiningSpeed());
         }
     }
 }

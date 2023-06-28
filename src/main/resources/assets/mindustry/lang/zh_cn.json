@@ -5,5 +5,6 @@
   "block.mindustry.pneumatic_drill": "气动钻头",
   "item.mindustry.pneumatic_drill": "气动钻头",
   "config.jade.plugin_mindustry.drill": "不知道干嘛的",
-  "mindustry.drill_progress": "%d %%已挖掘"
+  "mindustry.drill_progress": "%d%%已挖掘",
+  "mindustry.drill_speed":"挖掘速度:%d/秒"
 }
