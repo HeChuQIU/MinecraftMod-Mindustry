@@ -1,32 +1,26 @@
 package com.hechu.mindustry.block.model;
 
-import com.hechu.mindustry.Mindustry;
 import com.hechu.mindustry.block.MechanicalDrillBlock;
 import com.hechu.mindustry.block.MechanicalDrillBlockEntity;
-import net.minecraft.resources.ResourceLocation;
-import software.bernie.geckolib.model.DefaultedBlockGeoModel;
 
-public class MechanicalDrillModel extends DefaultedBlockGeoModel<MechanicalDrillBlockEntity> {
-    private static final ResourceLocation modelResource = new ResourceLocation(Mindustry.MODID, "geo/mechanical_drill.geo.json");
-    private static final ResourceLocation textureResource = new ResourceLocation(Mindustry.MODID, "textures/block/mechanical_drill.png");
-    private static final ResourceLocation animationResource = new ResourceLocation(Mindustry.MODID, "animations/mechanical_drill.animation.json");
+public class MechanicalDrillModel extends DrillModel<MechanicalDrillBlockEntity> {
 
     public MechanicalDrillModel() {
-        super(new ResourceLocation(Mindustry.MODID, MechanicalDrillBlock.NAME));
+        super(MechanicalDrillBlock.NAME);
     }
 
     @Override
-    public ResourceLocation getModelResource(MechanicalDrillBlockEntity object) {
-        return modelResource;
+    public String getModelPath() {
+        return "geo/2x2drill_template.geo.json";
     }
 
     @Override
-    public ResourceLocation getTextureResource(MechanicalDrillBlockEntity object) {
-        return textureResource;
+    public String getTexturePath() {
+        return "textures/block/mechanical_drill.png";
     }
 
     @Override
-    public ResourceLocation getAnimationResource(MechanicalDrillBlockEntity animatable) {
-        return animationResource;
+    public String getAnimationPath() {
+        return "animations/2x2drill_template.animation.json";
     }
 }

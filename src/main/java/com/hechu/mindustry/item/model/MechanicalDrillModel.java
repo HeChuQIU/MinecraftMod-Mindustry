@@ -7,7 +7,7 @@ public class MechanicalDrillModel extends DrillModel<MechanicalDrill> {
 
     @Override
     public String getModelPath() {
-        return "geo/mechanical_drill.geo.json";
+        return "geo/2x2drill_template.geo.json";
     }
 
     @Override
@@ -17,6 +17,6 @@ public class MechanicalDrillModel extends DrillModel<MechanicalDrill> {
 
     @Override
     public String getAnimationPath() {
-        return "animations/mechanical_drill.animation.json";
+        return "animations/2x2drill_template.animation.json";
     }
 }

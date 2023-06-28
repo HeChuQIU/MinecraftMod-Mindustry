@@ -1,12 +1,12 @@
 {
   "parent": "builtin/entity",
+  "texture_size": [
+    128,
+    128
+  ],
   "textures": {
     "particle": "minecraft:block/stone"
   },
-  "texture_size": [
-    64,
-    64
-  ],
   "display": {
     "thirdperson_righthand": {
       "rotation": [
@@ -15,9 +15,9 @@
         0
       ],
       "translation": [
-        0,
-        2.5,
-        -4
+        -4,
+        4.25,
+        -6.5
       ],
       "scale": [
         0.375,
@@ -33,8 +33,8 @@
       ],
       "translation": [
         0,
-        2.5,
-        -4
+        6.5,
+        -8
       ],
       "scale": [
         0.375,
@@ -66,8 +66,8 @@
         0
       ],
       "translation": [
-        0,
-        -4,
+        8,
+        -6.5,
         0
       ],
       "scale": [
@@ -78,9 +78,9 @@
     },
     "ground": {
       "translation": [
-        0,
+        -2,
         -1,
-        0
+        -2
       ],
       "scale": [
         0.25,
@@ -95,33 +95,28 @@
         0
       ],
       "translation": [
-        0,
+        4,
         -4,
         0
       ],
       "scale": [
-        0.625,
-        0.625,
-        0.625
+        0.3125,
+        0.3125,
+        0.3125
       ]
     },
     "head": {
-      "rotation": [
-        0,
-        180,
-        0
-      ],
       "translation": [
+        -8,
         0,
-        11,
-        7
+        -8
       ]
     },
     "fixed": {
       "translation": [
-        0,
         -4,
-        0
+        -4,
+        -4
       ],
       "scale": [
         0.5,
