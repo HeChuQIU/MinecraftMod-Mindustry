@@ -1,14 +1,7 @@
 package com.hechu.mindustry.block;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.BlockPos;
-import net.minecraft.server.level.ServerLevel;
-import net.minecraft.sounds.SoundEvents;
-import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.BlockTags;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.core.animation.AnimatableManager;
@@ -16,13 +9,18 @@ import software.bernie.geckolib.core.animation.AnimationController;
 import software.bernie.geckolib.core.animation.RawAnimation;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
+import java.util.Collections;
+
 import static com.hechu.mindustry.block.BlockEntityRegister.PNEUMATIC_DRILL_BLOCK_ENTITY;
 
 public class PneumaticDrillBlockEntity extends DrillBlockEntity {
     public static final String NAME = "pneumatic_drill";
 
     public PneumaticDrillBlockEntity(BlockPos pos, BlockState state) {
-        super(PNEUMATIC_DRILL_BLOCK_ENTITY.get(),pos, state);
+        super(PNEUMATIC_DRILL_BLOCK_ENTITY.get(),pos, state, Collections.singletonList(pos.below()),
+                state1 -> state1.is(BlockTags.SAND) ||
+                        state1.is(BlockTags.COAL_ORES) ||
+                        state1.is(BlockTags.COPPER_ORES), 1.0f);
     }
 
     @Override
@@ -38,9 +36,7 @@ public class PneumaticDrillBlockEntity extends DrillBlockEntity {
         return cache;
     }
 
-    private float progress;
-
-    @Override
+/*    @Override
     public void tick() {
         if (level == null)
             return;
@@ -78,10 +74,5 @@ public class PneumaticDrillBlockEntity extends DrillBlockEntity {
         } else {
             progress = 0;
         }
-    }
-
-    @Override
-    public float getProgress() {
-        return progress;
-    }
+    }*/
 }

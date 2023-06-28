@@ -1,6 +1,7 @@
 package com.hechu.mindustry.block;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.Block;
@@ -68,7 +69,7 @@ public abstract class DrillBlock<TBlockEntity extends DrillBlockEntity> extends 
 
     @Nullable
     @Override
-    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type){
+    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(@NotNull Level level, BlockState state, @NotNull BlockEntityType<T> type){
         if(state.getValue(PART) != DrillPart.MASTER){
             return null;
         }
@@ -77,5 +78,25 @@ public abstract class DrillBlock<TBlockEntity extends DrillBlockEntity> extends 
                 drillBlockEntity.tick();
             }
         };
+    }
+
+    public enum DrillPart implements StringRepresentable {
+        MASTER("master"),
+        SLAVE("slave");
+
+        private final String name;
+
+        DrillPart(String s) {
+            this.name = s;
+        }
+
+        public String toString() {
+            return this.name;
+        }
+
+        @Override
+        public @NotNull String getSerializedName() {
+            return this.name;
+        }
     }
 }
