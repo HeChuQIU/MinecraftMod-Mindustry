@@ -23,7 +23,7 @@ atlassian-ide-plugin.xml
 *.ctxt
 
 # Package Files #
-*.jar
+#*.jar
 *.war
 *.nar
 *.ear
@@ -102,7 +102,7 @@ $RECYCLE.BIN/
 
 .gradle
 build/
-
+.vscode/
 # Ignore Gradle GUI config
 gradle-app.setting
 
@@ -115,4 +115,4 @@ gradle-app.setting
 run/
 
 # Avoid ignoring Gradle wrapper jar file (.jar files are usually ignored)
-!gradle-wrapper.jar
+#!gradle-wrapper.jar
