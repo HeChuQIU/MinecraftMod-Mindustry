@@ -1,4 +1,4 @@
-[![build](https://github.com/Yuqi154/MinecraftMod-Mindustry/actions/workflows/gradle.yml/badge.svg)](https://github.com/Yuqi154/MinecraftMod-Mindustry/actions/workflows/gradle.yml)
+[![build](https://github.com/HeChuQIU/MinecraftMod-Mindustry/actions/workflows/gradle.yml/badge.svg)](https://github.com/HeChuQIU/MinecraftMod-Mindustry/actions/workflows/gradle.yml)
 # MinecraftMod-Mindustry
 # 本模组还处于不稳定的开发阶段，*请勿*在没有备份存档的情况下使用
 这是一个运行于 Minecraft Java Edition 1.19.4 上的 Forge 模组。模组依赖：
