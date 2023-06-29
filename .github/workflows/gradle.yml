@@ -28,8 +28,16 @@ jobs:
       with:
         java-version: '17'
         distribution: 'temurin'
+        cache: gradle
+
     - name: Setup Gradle
       uses: gradle/gradle-build-action@v2
     
     - name: Execute Gradle build
       run: ./gradlew build
+
+    - name: Upload JAR file
+      uses: actions/upload-artifact@v2
+      with:
+        name: MC-Mindustry
+        path: build/libs/*.jar
