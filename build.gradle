@@ -12,8 +12,8 @@ plugins {
     id 'org.spongepowered.mixin' version '0.7.+'
 }
 
-group = mod_version
-version = mod_group_id
+group = mod_group_id
+version = mod_version
 
 base {
     archivesName = mod_id
