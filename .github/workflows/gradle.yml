@@ -40,7 +40,7 @@ jobs:
       id: loadProperties
       run: |
         export MOD_VERSION=$(grep -oP 'mod_version=\K.*' gradle.properties)
-        echo "::set-output name=mod_version::$MOD_VERSION"
+        mv build/libs/mindustry-com.hechu.jar build/libs/MCmindustry-$MOD_VERSION.jar
 
     - name: Upload JAR file
       uses: actions/upload-artifact@v2
