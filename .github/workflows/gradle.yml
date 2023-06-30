@@ -22,28 +22,22 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v3
-      - name: Set up JDK 17
-        uses: actions/setup-java@v3
-        with:
-          java-version: '17'
-          distribution: 'temurin'
-          cache: gradle
+    - uses: actions/checkout@v3
+    - name: Set up JDK 17
+      uses: actions/setup-java@v3
+      with:
+        java-version: '17'
+        distribution: 'temurin'
+        cache: gradle
 
-      - name: Setup Gradle
-        uses: gradle/gradle-build-action@v2
+    - name: Setup Gradle
+      uses: gradle/gradle-build-action@v2
+    
+    - name: Execute Gradle build
+      run: ./gradlew build
 
-      - name: Execute Gradle build
-        run: ./gradlew build
-
-      - name: Load properties from gradle.properties
-        id: loadProperties
-        run: |
-          export MOD_VERSION=$(grep -oP 'mod_version=\K.*' gradle.properties)
-          echo "::set-output name=mod_version::$MOD_VERSION"
-
-      - name: Upload JAR file
-        uses: actions/upload-artifact@v2
-        with:
-          name: MC-Mindustry
-          path: build/libs/$({{ steps.loadProperties.outputs.mod_version }}).jar
+    - name: Upload JAR file
+      uses: actions/upload-artifact@v2
+      with:
+        name: MC-Mindustry
+        path: build/libs/*.jar
