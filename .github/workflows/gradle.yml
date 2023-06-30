@@ -36,6 +36,12 @@ jobs:
     - name: Execute Gradle build
       run: ./gradlew build
 
+    - name: Load properties from gradle.properties
+      id: loadProperties
+      run: |
+        export MOD_VERSION=$(grep -oP 'mod_version=\K.*' gradle.properties)
+        echo "::set-output name=mod_version::$MOD_VERSION"
+
     - name: Upload JAR file
       uses: actions/upload-artifact@v2
       with:
