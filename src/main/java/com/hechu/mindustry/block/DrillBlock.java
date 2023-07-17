@@ -1,7 +1,9 @@
 package com.hechu.mindustry.block;
 
+import com.google.common.collect.ImmutableMap;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.StringRepresentable;
+import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.Block;
@@ -12,11 +14,14 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.lang.reflect.Constructor;
 import java.util.List;
+import java.util.function.Function;
 
 public abstract class DrillBlock<TBlockEntity extends DrillBlockEntity> extends BaseEntityBlock {
     protected Class<TBlockEntity> blockEntityClass;
@@ -36,6 +41,11 @@ public abstract class DrillBlock<TBlockEntity extends DrillBlockEntity> extends 
         this.stateDefinition.any().setValue(PART, part);
         this.masterPos = masterPos;
         this.slavesPos = slavesPos;
+    }
+
+    @Override
+    public @NotNull VoxelShape getShape(@NotNull BlockState state, @NotNull BlockGetter getter, @NotNull BlockPos pos, @NotNull CollisionContext context) {
+        return Block.box(0d,0d,0d,32d,32d,32d);
     }
 
     @Override
