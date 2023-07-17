@@ -11,7 +11,6 @@ import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.entity.monster.RangedAttackMob;
 import net.minecraft.world.entity.projectile.Arrow;
-import net.minecraft.world.entity.projectile.Snowball;
 import net.minecraft.world.level.Level;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
@@ -29,30 +28,28 @@ public class Duo extends Mob implements RangedAttackMob, GeoEntity {
 
     public static AttributeSupplier.Builder createAttributes() {
         return Mob.createMobAttributes().add(Attributes.MAX_HEALTH, 20.0D).add(Attributes.MOVEMENT_SPEED, 0.0D)
-                .add(Attributes.KNOCKBACK_RESISTANCE, 1.0D).add(Attributes.ATTACK_DAMAGE, 15.0D);
+                .add(Attributes.KNOCKBACK_RESISTANCE, 1.0D).add(Attributes.ATTACK_DAMAGE, 15.0D)
+                .add(Attributes.FOLLOW_RANGE, 64D);
     }
 
     @Override
     protected void registerGoals() {
-        this.goalSelector.addGoal(1, new RangedAttackGoal(this, 0, 20, 10.0F));
-        this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, Mob.class, 10, true, false, (p_29932_) -> {
-            return p_29932_ instanceof Enemy;
-        }));
+        this.goalSelector.addGoal(1, new RangedAttackGoal(this, 0, 8, 64.0F));
+        this.targetSelector.addGoal(0, new NearestAttackableTargetGoal<>(this, Mob.class, 10, true, false, (p_29932_) -> p_29932_ instanceof Enemy));
     }
-
 
 
     @Override
     public void performRangedAttack(LivingEntity entity, float p_33318_) {
-        Arrow snowball = new Arrow(this.level, this);
-        double d0 = entity.getEyeY() - 1.6f;
+        Arrow bullet = new Arrow(this.level, this);
+        double d0 = entity.getEyeY();
         double d1 = entity.getX() - this.getX();
-        double d2 = d0 - snowball.getY();
+        double d2 = d0 - bullet.getY() - 2.0F;
         double d3 = entity.getZ() - this.getZ();
-        double d4 = Math.sqrt(d1 * d1 + d3 * d3) * (double) 0.2F;
-        snowball.shoot(d1, d2 + d4, d3, 1.6F, 12.0F);
-        this.playSound(SoundEvents.SNOW_GOLEM_SHOOT, 1.0F, 0.4F / (this.getRandom().nextFloat() * 0.4F + 0.8F));
-        this.level.addFreshEntity(snowball);
+        double d4 = Math.sqrt(d1 * d1 + d3 * d3) * (double) 0.15F;
+        bullet.shoot(d1, d2 + d4, d3, 3.2F, 4.0F);
+        this.playSound(SoundEvents.ARROW_SHOOT, 1.0F, 0.4F / (this.getRandom().nextFloat() * 0.4F + 0.8F));
+        this.level.addFreshEntity(bullet);
         fireCountMod2++;
         fireCountMod2 %= 2;
     }
