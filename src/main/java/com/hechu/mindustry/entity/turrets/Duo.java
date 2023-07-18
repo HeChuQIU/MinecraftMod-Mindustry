@@ -41,7 +41,7 @@ public class Duo extends Mob implements RangedAttackMob, GeoEntity {
 
     @Override
     public void performRangedAttack(LivingEntity entity, float p_33318_) {
-        Arrow bullet = new Arrow(this.level, this);
+        Arrow bullet = new Arrow(this.level(), this);
         double d0 = entity.getEyeY();
         double d1 = entity.getX() - this.getX();
         double d2 = d0 - bullet.getY() - 2.0F;
@@ -49,7 +49,7 @@ public class Duo extends Mob implements RangedAttackMob, GeoEntity {
         double d4 = Math.sqrt(d1 * d1 + d3 * d3) * (double) 0.15F;
         bullet.shoot(d1, d2 + d4, d3, 3.2F, 4.0F);
         this.playSound(SoundEvents.ARROW_SHOOT, 1.0F, 0.4F / (this.getRandom().nextFloat() * 0.4F + 0.8F));
-        this.level.addFreshEntity(bullet);
+        this.level().addFreshEntity(bullet);
         fireCountMod2++;
         fireCountMod2 %= 2;
     }

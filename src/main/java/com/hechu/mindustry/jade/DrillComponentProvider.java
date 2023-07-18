@@ -4,10 +4,7 @@ import com.hechu.mindustry.block.DrillBlockEntity;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec2;
 import snownee.jade.api.BlockAccessor;
@@ -18,7 +15,7 @@ import snownee.jade.api.config.IPluginConfig;
 import snownee.jade.api.ui.IElement;
 import snownee.jade.api.ui.IElementHelper;
 
-public enum DrillComponentProvider implements IBlockComponentProvider, IServerDataProvider<BlockEntity> {
+public enum DrillComponentProvider implements IBlockComponentProvider, IServerDataProvider<BlockAccessor> {
     INSTANCE;
 
     @Override
@@ -41,10 +38,9 @@ public enum DrillComponentProvider implements IBlockComponentProvider, IServerDa
     }
 
     @Override
-    public void appendServerData(CompoundTag compoundTag, ServerPlayer serverPlayer, Level level, BlockEntity blockEntity, boolean b) {
-        if (blockEntity instanceof DrillBlockEntity) {
-            compoundTag.putFloat("progress", ((DrillBlockEntity) blockEntity).getProgress());
-            compoundTag.putFloat("miningSpeed", ((DrillBlockEntity) blockEntity).getMiningSpeed());
-        }
+    public void appendServerData(CompoundTag data, BlockAccessor accessor) {
+        DrillBlockEntity drill= (DrillBlockEntity) accessor.getBlockEntity();
+        data.putFloat("progress", drill.getProgress());
+        data.putFloat("miningSpeed", drill.getMiningSpeed());
     }
 }

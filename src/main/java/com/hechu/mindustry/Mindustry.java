@@ -4,24 +4,19 @@ import com.hechu.mindustry.block.BlockEntityRegister;
 import com.hechu.mindustry.block.BlockRegister;
 import com.hechu.mindustry.block.MechanicalDrillBlockEntityRenderer;
 import com.hechu.mindustry.block.PneumaticDrillBlockEntityRenderer;
+import com.hechu.mindustry.creative.CreativeModeTabRegister;
 import com.hechu.mindustry.entity.EntityRegister;
 import com.hechu.mindustry.entity.turrets.Duo;
 import com.hechu.mindustry.entity.turrets.DuoRenderer;
 import com.hechu.mindustry.item.ItemRegister;
 import com.mojang.logging.LogUtils;
 import net.minecraft.client.Minecraft;
-import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.entity.PathfinderMob;
-import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
-import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.monster.Monster;
-import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.CreativeModeTabEvent;
+import net.minecraftforge.event.BuildCreativeModeTabContentsEvent;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraftforge.event.server.ServerStartingEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -32,8 +27,6 @@ import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.registries.ForgeRegistries;
 import org.slf4j.Logger;
-import software.bernie.example.GeckoLibMod;
-import software.bernie.example.registry.EntityRegistry;
 import software.bernie.geckolib.GeckoLib;
 
 // The value here should match an entry in the META-INF/mods.toml file
@@ -63,6 +56,8 @@ public class Mindustry {
 
         BlockEntityRegister.BLOCK_ENTITIES.register(modEventBus);
 
+        CreativeModeTabRegister.CREATIVE_MODE_TABS.register(modEventBus);
+
         // Register ourselves for server and other game events we are interested in
         MinecraftForge.EVENT_BUS.register(this);
     }
@@ -73,15 +68,19 @@ public class Mindustry {
         LOGGER.info("DIRT BLOCK >> {}", ForgeRegistries.BLOCKS.getKey(Blocks.DIRT));
     }
 
-    private void registerTabs(final CreativeModeTabEvent.Register event) {
-        event.registerCreativeModeTab(new ResourceLocation(MODID, "mindustry"), builder -> builder
+    private void registerTabs(final BuildCreativeModeTabContentsEvent event) {
+        /*event.accept(new ResourceLocation(MODID, "mindustry"), builder -> builder
                 .title(Component.translatable("itemGroup." + MODID + ".mindustry"))
                 .icon(() -> new ItemStack(ItemRegister.MECHANICAL_DRILL_ITEM.get()))
                 .displayItems((featureFlags, output) -> {
                     output.accept(ItemRegister.MECHANICAL_DRILL_ITEM.get());
                     output.accept(ItemRegister.PNEUMATIC_DRILL_ITEM.get());
                 })
-        );
+        );*/
+        if (event.getTabKey() == CreativeModeTabs.INGREDIENTS) {
+            event.accept(ItemRegister.MECHANICAL_DRILL_ITEM.get());
+            event.accept(ItemRegister.PNEUMATIC_DRILL_ITEM.get());
+        }
     }
 
     // You can use SubscribeEvent and let the Event Bus discover methods to call

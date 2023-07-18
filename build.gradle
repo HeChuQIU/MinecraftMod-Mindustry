@@ -204,8 +204,8 @@ dependencies {
     // at runtime, use the full JEI jar for Forge
     runtimeOnly(fg.deobf("mezz.jei:jei-${minecraft_version}-forge:${jei_version}"))
     implementation fg.deobf("software.bernie.geckolib:geckolib-forge-${minecraft_version}:${geckolib_version}")
-    implementation fg.deobf("curse.maven:BetterF3-401648:4553937")
-    implementation fg.deobf("curse.maven:ClothConfigAPI-348521:4440461")
+    implementation fg.deobf("curse.maven:BetterF3-401648:${betterF3_id}")
+    implementation fg.deobf("curse.maven:ClothConfigAPI-348521:${clothConfigAPI_id}")
 //    implementation "mcjty.theoneprobe:theoneprobe:${top_version}"
     // Visit https://www.curseforge.com/minecraft/mc-mods/jade/files/all?filter-status=1&filter-game-version=2020709689%3A7498
     // to get the latest version's jade_id
