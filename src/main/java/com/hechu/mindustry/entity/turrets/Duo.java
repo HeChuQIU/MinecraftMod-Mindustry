@@ -1,5 +1,6 @@
 package com.hechu.mindustry.entity.turrets;
 
+import com.hechu.mindustry.Mindustry;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -11,7 +12,11 @@ import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.entity.monster.RangedAttackMob;
 import net.minecraft.world.entity.projectile.Arrow;
+import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.level.Level;
+import net.minecraftforge.event.entity.living.LivingHurtEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.common.Mod;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.core.animation.AnimatableManager;
@@ -29,12 +34,12 @@ public class Duo extends Mob implements RangedAttackMob, GeoEntity {
     public static AttributeSupplier.Builder createAttributes() {
         return Mob.createMobAttributes().add(Attributes.MAX_HEALTH, 20.0D).add(Attributes.MOVEMENT_SPEED, 0.0D)
                 .add(Attributes.KNOCKBACK_RESISTANCE, 1.0D).add(Attributes.ATTACK_DAMAGE, 15.0D)
-                .add(Attributes.FOLLOW_RANGE, 64D);
+                .add(Attributes.FOLLOW_RANGE, 128D);
     }
 
     @Override
     protected void registerGoals() {
-        this.goalSelector.addGoal(1, new RangedAttackGoal(this, 0, 8, 64.0F));
+        this.goalSelector.addGoal(1, new RangedAttackGoal(this, 0, 8, 128.0F));
         this.targetSelector.addGoal(0, new NearestAttackableTargetGoal<>(this, Mob.class, 10, true, false, (p_29932_) -> p_29932_ instanceof Enemy));
     }
 
@@ -44,10 +49,10 @@ public class Duo extends Mob implements RangedAttackMob, GeoEntity {
         Arrow bullet = new Arrow(this.level(), this);
         double d0 = entity.getEyeY();
         double d1 = entity.getX() - this.getX();
-        double d2 = d0 - bullet.getY() - 2.0F;
+        double d2 = d0 - bullet.getY() - 1.6F;
         double d3 = entity.getZ() - this.getZ();
-        double d4 = Math.sqrt(d1 * d1 + d3 * d3) * (double) 0.15F;
-        bullet.shoot(d1, d2 + d4, d3, 3.2F, 4.0F);
+        double d4 = Math.pow(Math.sqrt(d1 * d1 + d3 * d3), 1.55) * (double) 0.02F;
+        bullet.shoot(d1, d2 + d4, d3, 3.2F, 2.56F);
         this.playSound(SoundEvents.ARROW_SHOOT, 1.0F, 0.4F / (this.getRandom().nextFloat() * 0.4F + 0.8F));
         this.level().addFreshEntity(bullet);
         fireCountMod2++;
@@ -76,5 +81,18 @@ public class Duo extends Mob implements RangedAttackMob, GeoEntity {
     @Override
     public AnimatableInstanceCache getAnimatableInstanceCache() {
         return cache;
+    }
+
+    @Mod.EventBusSubscriber(modid = Mindustry.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
+    public static class DuoEventHandler {
+        @SubscribeEvent
+        public static void onEntityHurt(LivingHurtEvent event) {
+            LivingEntity entity = event.getEntity();
+            if (!(event.getSource().getDirectEntity() instanceof Projectile))
+                return;
+            if (!(((Projectile) event.getSource().getDirectEntity()).getOwner() instanceof Duo))
+                return;
+            entity.invulnerableTime = 0;
+        }
     }
 }
