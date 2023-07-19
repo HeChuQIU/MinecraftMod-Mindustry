@@ -1,6 +1,5 @@
 package com.hechu.mindustry.block;
 
-import com.google.common.collect.ImmutableMap;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.level.BlockGetter;
@@ -21,7 +20,6 @@ import org.jetbrains.annotations.Nullable;
 
 import java.lang.reflect.Constructor;
 import java.util.List;
-import java.util.function.Function;
 
 public abstract class DrillBlock<TBlockEntity extends DrillBlockEntity> extends BaseEntityBlock {
     protected Class<TBlockEntity> blockEntityClass;
@@ -45,7 +43,7 @@ public abstract class DrillBlock<TBlockEntity extends DrillBlockEntity> extends 
 
     @Override
     public @NotNull VoxelShape getShape(@NotNull BlockState state, @NotNull BlockGetter getter, @NotNull BlockPos pos, @NotNull CollisionContext context) {
-        return Block.box(0d,0d,0d,32d,32d,32d);
+        return Block.box(0d,0d,0d,32d,16d,32d);
     }
 
     @Override
