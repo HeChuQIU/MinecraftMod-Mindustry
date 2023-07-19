@@ -68,9 +68,9 @@ description='''${mod_description}'''
     versionRange="[4.0,)"
     ordering="AFTER"
     side="BOTH"
-[[dependencies.${mod_id}]]
-    modId="zerocore"
-    mandatory=true
-    versionRange="[1.20.1-2.1.37,)"
-    ordering="AFTER"
-    side="BOTH"
+#[[dependencies.${mod_id}]]
+#    modId="zerocore"
+#    mandatory=true
+#    versionRange="[1.20.1-2.1.37,)"
+#    ordering="AFTER"
+#    side="BOTH"
