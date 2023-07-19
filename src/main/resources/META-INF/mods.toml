@@ -66,5 +66,11 @@ description='''${mod_description}'''
     mandatory=true
     # This version range declares a minimum of the current minecraft version up to but not including the next major version
     versionRange="[4.0,)"
-    ordering="NONE"
+    ordering="AFTER"
+    side="BOTH"
+[[dependencies.${mod_id}]]
+    modId="zerocore"
+    mandatory=true
+    versionRange="[1.20.1-2.1.37,)"
+    ordering="AFTER"
     side="BOTH"
