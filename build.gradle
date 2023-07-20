@@ -208,7 +208,6 @@ dependencies {
 //    implementation fg.deobf("it.zerono.mods.zerocore:ZeroCore2:${minecraft_version}-${zeroCore_version}")
 //    implementation fg.deobf("curse.maven:ZeroCore2-247921:${zeroCore_id}")
 //    implementation fg.deobf("curse.maven:ExtremeReactors-250277:${extremeReactors_id}")
-    implementation fg.deobf("curse.maven:Patchouli-306770:${patchouli_id}")
     implementation fg.deobf("curse.maven:BetterF3-401648:${betterF3_id}")
     implementation fg.deobf("curse.maven:ClothConfigAPI-348521:${clothConfigAPI_id}")
 //    implementation "mcjty.theoneprobe:theoneprobe:${top_version}"

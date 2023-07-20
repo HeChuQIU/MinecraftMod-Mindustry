@@ -1,5 +1,6 @@
 package com.hechu.mindustry.block;
 
+import com.mojang.logging.LogUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
@@ -9,15 +10,20 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import org.slf4j.Logger;
 import software.bernie.geckolib.animatable.GeoBlockEntity;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.core.animation.AnimatableManager;
+import software.bernie.geckolib.util.GeckoLibUtil;
 
 import java.util.*;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
+import static com.hechu.mindustry.block.DrillBlock.PART;
+
 public abstract class DrillBlockEntity extends BlockEntity implements GeoBlockEntity {
+    public static final Logger LOGGER = LogUtils.getLogger();
 
     protected float progress = 0;
     protected List<BlockPos> miningBlocksPos = Collections.emptyList();
@@ -25,6 +31,7 @@ public abstract class DrillBlockEntity extends BlockEntity implements GeoBlockEn
     protected float baseMiningSpeed = 0;
     protected BlockState miningBlockState = null;
     protected float miningSpeed;
+    public BlockPos masterPos;
 
     public DrillBlockEntity(BlockEntityType<?> blockEntityType, BlockPos pos, BlockState state) {
         super(blockEntityType, pos, state);
@@ -40,11 +47,27 @@ public abstract class DrillBlockEntity extends BlockEntity implements GeoBlockEn
     @Override
     public abstract void registerControllers(AnimatableManager.ControllerRegistrar controllerRegistrar);
 
+    private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
+
     @Override
-    public abstract AnimatableInstanceCache getAnimatableInstanceCache();
+    public AnimatableInstanceCache getAnimatableInstanceCache() {
+        return this.cache;
+    }
 
     public void tick() {
         if (level == null)
+            return;
+
+        LOGGER.debug(getBlockState().getValue(PART) + "");
+//        if (!level.isClientSide
+//                && !(level.getBlockEntity(masterPos) instanceof DrillBlockEntity
+//                || (level.getBlockState(masterPos).getValue(PART).equals(DrillBlock.DrillPart.MASTER)))) {
+//            level.removeBlock(getBlockPos(), false);
+//        }
+//        level.removeBlock(getBlockPos(), false);
+        if (masterPos == null || !level.getBlockState(masterPos).hasProperty(PART) || !DrillBlock.DrillPart.MASTER.equals(level.getBlockState(masterPos).getValue(PART)))
+            level.destroyBlock(getBlockPos(), false);
+        if (!getBlockState().getValue(PART).equals(DrillBlock.DrillPart.MASTER))
             return;
 
         // 创建字典用于存储映射结果
@@ -118,14 +141,34 @@ public abstract class DrillBlockEntity extends BlockEntity implements GeoBlockEn
     }
 
     public float getProgress() {
-        return progress;
+        if (getBlockState().getValue(PART).equals(DrillBlock.DrillPart.MASTER))
+            return progress;
+        else if (level != null) {
+            return ((DrillBlockEntity) Objects.requireNonNull(level.getBlockEntity(masterPos))).getProgress();
+        }
+        return 0;
     }
 
     public BlockState getMiningBlockState() {
-        return miningBlockState;
+        if (getBlockState().getValue(PART).equals(DrillBlock.DrillPart.MASTER))
+            return miningBlockState;
+        else if (level != null) {
+            return ((DrillBlockEntity) Objects.requireNonNull(level.getBlockEntity(masterPos))).getMiningBlockState();
+        }
+        return null;
     }
 
     public float getMiningSpeed() {
-        return miningSpeed;
+        if (getBlockState().getValue(PART).equals(DrillBlock.DrillPart.MASTER))
+            return miningSpeed;
+        else if (level != null) {
+            return ((DrillBlockEntity) Objects.requireNonNull(level.getBlockEntity(masterPos))).getMiningSpeed();
+        }
+        return 0;
+    }
+
+    @Override
+    public void clearRemoved() {
+        super.clearRemoved();
     }
 }

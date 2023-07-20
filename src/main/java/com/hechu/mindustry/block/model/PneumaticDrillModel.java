@@ -1,12 +1,11 @@
 package com.hechu.mindustry.block.model;
 
-import com.hechu.mindustry.block.MechanicalDrillBlock;
 import com.hechu.mindustry.block.PneumaticDrillBlockEntity;
 
 public class PneumaticDrillModel extends DrillModel<PneumaticDrillBlockEntity> {
 
     public PneumaticDrillModel() {
-        super(MechanicalDrillBlock.NAME);
+        super(PneumaticDrillBlockEntity.NAME);
     }
 
     @Override
