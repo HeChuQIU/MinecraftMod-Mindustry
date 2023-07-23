@@ -2,7 +2,7 @@
 # MinecraftMod-Mindustry
 # 本模组还处于不稳定的开发阶段，*请勿*在没有备份存档的情况下使用
 这是一个运行于 Minecraft Java Edition 1.20.1 上的 Forge 模组。模组依赖：
-* Forge (>=45.1.0)
+* Forge (>=47.1.37)
 * Geckolib (>=4.2)
 
 此外，本模组与以下模组有联动：
