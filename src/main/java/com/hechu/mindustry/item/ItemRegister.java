@@ -14,4 +14,6 @@ public class ItemRegister {
             () -> new MechanicalDrill(BlockRegister.MECHANICAL_DRILL.get(), new Item.Properties()));
     public static final RegistryObject<Item> PNEUMATIC_DRILL_ITEM = ITEMS.register(com.hechu.mindustry.item.PneumaticDrill.NAME,
             () -> new PneumaticDrill(BlockRegister.PNEUMATIC_DRILL.get(), new Item.Properties()));
+    public static final RegistryObject<Item>  HEALTH_TEST_ITEM = ITEMS.register(com.hechu.mindustry.item.HealthTest.NAME,
+            () -> new HealthTest(BlockRegister.HEALTH_TEST.get(), new Item.Properties()));
 }

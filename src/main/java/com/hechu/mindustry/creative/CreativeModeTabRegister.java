@@ -17,6 +17,7 @@ public class CreativeModeTabRegister {
             .displayItems((featureFlags, output) -> {
                 output.accept(ItemRegister.MECHANICAL_DRILL_ITEM.get());
                 output.accept(ItemRegister.PNEUMATIC_DRILL_ITEM.get());
+                output.accept(ItemRegister.HEALTH_TEST_ITEM.get());
             }).build()
     );
 }
