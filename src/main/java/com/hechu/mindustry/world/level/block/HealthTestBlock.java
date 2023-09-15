@@ -3,6 +3,8 @@ package com.hechu.mindustry.world.level.block;
 import com.hechu.mindustry.utils.capabilities.MindustryCapabilities;
 import com.hechu.mindustry.world.level.block.entity.HealthTestBlockEntity;
 import net.minecraft.core.BlockPos;
+import net.minecraft.util.Mth;
+import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseEntityBlock;
@@ -32,11 +34,23 @@ public class HealthTestBlock extends BaseEntityBlock {
 
     @Override
     public void onProjectileHit(Level pLevel, @NotNull BlockState pState, BlockHitResult pHit, @NotNull Projectile pProjectile) {
+        super.onProjectileHit(pLevel, pState, pHit, pProjectile);
+        if(pLevel.isClientSide) return;
+
         HealthTestBlockEntity blockEntity = (HealthTestBlockEntity) pLevel.getBlockEntity(pHit.getBlockPos());
-        if (blockEntity == null)
-            return;
+        if (blockEntity == null) return;
+
+        float damage;
+        if(pProjectile instanceof AbstractArrow arrow) {
+            float f = (float) arrow.getDeltaMovement().length();
+            int i = Mth.ceil(Mth.clamp((double) f * arrow.getBaseDamage(), 0.0D, (double) Integer.MAX_VALUE));
+            damage = i;
+        }
+        else {
+            damage = 1;
+        }
         blockEntity.getCapability(MindustryCapabilities.HEALTH_HANDLER, null).ifPresent(healthHandler -> {
-            healthHandler.setHealth(healthHandler.getHealth() - 1);
+            healthHandler.setHealth(healthHandler.getHealth() - damage);
             if (healthHandler.getHealth() <= 0) {
                 pLevel.destroyBlock(pHit.getBlockPos(), true, pProjectile);
             }

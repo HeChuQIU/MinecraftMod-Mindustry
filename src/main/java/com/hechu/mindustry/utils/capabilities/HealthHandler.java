@@ -1,14 +1,14 @@
 package com.hechu.mindustry.utils.capabilities;
 
 public class HealthHandler implements IHealthHandler {
-    private int health = -1;
+    private float health = -1;
     @Override
-    public int getHealth() {
+    public float getHealth() {
         return health;
     }
 
     @Override
-    public void setHealth(int health) {
+    public void setHealth(float health) {
         this.health = health;
     }
 }

@@ -15,13 +15,13 @@ public enum HealthBlockComponentProvider implements IBlockComponentProvider, ISe
 
     @Override
     public void appendTooltip(ITooltip tooltip, BlockAccessor accessor, IPluginConfig config) {
-        tooltip.append(Component.translatable("mindustry.block_health", accessor.getServerData().getInt("health")));
+        tooltip.append(Component.translatable("mindustry.block_health", accessor.getServerData().getFloat("health")));
     }
 
     @Override
     public void appendServerData(CompoundTag data, BlockAccessor accessor) {
         HealthTestBlockEntity healthBlockEntity = (HealthTestBlockEntity) accessor.getBlockEntity();
-        data.putInt("health", healthBlockEntity.getHealth());
+        data.putFloat("health", healthBlockEntity.getHealth());
     }
 
     @Override

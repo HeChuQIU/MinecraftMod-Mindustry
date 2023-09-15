@@ -4,6 +4,6 @@ import net.minecraftforge.common.capabilities.AutoRegisterCapability;
 
 @AutoRegisterCapability
 public interface IHealthHandler {
-    int getHealth();
-    void setHealth(int health);
+    float getHealth();
+    void setHealth(float health);
 }
