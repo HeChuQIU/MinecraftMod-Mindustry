@@ -1,10 +1,10 @@
 package com.hechu.mindustry.jade;
 
 import com.hechu.mindustry.Mindustry;
-import com.hechu.mindustry.block.DrillBlock;
-import com.hechu.mindustry.block.DrillBlockEntity;
-import com.hechu.mindustry.block.HealthTestBlock;
-import com.hechu.mindustry.block.HealthTestBlockEntity;
+import com.hechu.mindustry.world.level.block.DrillBlock;
+import com.hechu.mindustry.world.level.block.entity.DrillBlockEntity;
+import com.hechu.mindustry.world.level.block.HealthTestBlock;
+import com.hechu.mindustry.world.level.block.entity.HealthTestBlockEntity;
 import net.minecraft.resources.ResourceLocation;
 import snownee.jade.api.*;
 

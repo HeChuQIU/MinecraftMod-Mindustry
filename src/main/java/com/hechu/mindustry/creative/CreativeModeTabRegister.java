@@ -1,7 +1,7 @@
 package com.hechu.mindustry.creative;
 
 import com.hechu.mindustry.Mindustry;
-import com.hechu.mindustry.item.ItemRegister;
+import com.hechu.mindustry.world.item.ItemRegister;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.CreativeModeTab;

@@ -1,14 +1,14 @@
 package com.hechu.mindustry;
 
-import com.hechu.mindustry.block.BlockEntityRegister;
-import com.hechu.mindustry.block.BlockRegister;
-import com.hechu.mindustry.block.MechanicalDrillBlockEntityRenderer;
-import com.hechu.mindustry.block.PneumaticDrillBlockEntityRenderer;
+import com.hechu.mindustry.world.level.block.entity.BlockEntityRegister;
+import com.hechu.mindustry.world.level.block.BlockRegister;
+import com.hechu.mindustry.client.renderer.block.MechanicalDrillBlockEntityRenderer;
+import com.hechu.mindustry.client.renderer.block.PneumaticDrillBlockEntityRenderer;
 import com.hechu.mindustry.creative.CreativeModeTabRegister;
-import com.hechu.mindustry.entity.EntityRegister;
-import com.hechu.mindustry.entity.turrets.Duo;
-import com.hechu.mindustry.entity.turrets.DuoRenderer;
-import com.hechu.mindustry.item.ItemRegister;
+import com.hechu.mindustry.world.entity.EntityRegister;
+import com.hechu.mindustry.world.entity.turrets.Duo;
+import com.hechu.mindustry.world.entity.turrets.DuoRenderer;
+import com.hechu.mindustry.world.item.ItemRegister;
 import com.mojang.logging.LogUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.item.CreativeModeTabs;

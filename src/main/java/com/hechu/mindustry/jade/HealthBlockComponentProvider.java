@@ -1,12 +1,9 @@
 package com.hechu.mindustry.jade;
 
-import com.hechu.mindustry.block.DrillBlockEntity;
-import com.hechu.mindustry.block.HealthTestBlockEntity;
+import com.hechu.mindustry.world.level.block.entity.HealthTestBlockEntity;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.level.block.state.BlockState;
 import snownee.jade.api.BlockAccessor;
 import snownee.jade.api.IBlockComponentProvider;
 import snownee.jade.api.IServerDataProvider;

@@ -1,7 +1,6 @@
 package com.hechu.mindustry.jade;
 
-import com.hechu.mindustry.block.DrillBlockEntity;
-import com.hechu.mindustry.block.HealthTestBlockEntity;
+import com.hechu.mindustry.world.level.block.entity.DrillBlockEntity;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
