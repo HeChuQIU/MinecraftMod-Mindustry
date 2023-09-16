@@ -27,6 +27,7 @@ public class HealthTestBlock extends BaseEntityBlock {
     public BlockEntity newBlockEntity(@NotNull BlockPos pPos, @NotNull BlockState pState) {
         HealthTestBlockEntity healthTestBlockEntity = new HealthTestBlockEntity(pPos, pState);
         healthTestBlockEntity.getCapability(MindustryCapabilities.HEALTH_HANDLER, null).ifPresent(healthHandler -> {
+            healthHandler.setMaxHealth(100);
             healthHandler.setHealth(100);
         });
         return healthTestBlockEntity;

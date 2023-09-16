@@ -8,7 +8,7 @@
   "item.mindustry.health_test": "生命测试",
   "config.jade.plugin_mindustry.drill": "不知道干嘛的",
   "mindustry.drill_progress": "%d%%已挖掘",
-  "mindustry.drill_speed": "挖掘速度:%d/秒",
+  "mindustry.drill_speed": "挖掘速度 : %d/秒",
   "config.jade.plugin_mindustry.health_block": "不知道干嘛的",
-  "mindustry.block_health": "生命值:%d"
+  "mindustry.block_health": "生命值 : %d / %d"
 }

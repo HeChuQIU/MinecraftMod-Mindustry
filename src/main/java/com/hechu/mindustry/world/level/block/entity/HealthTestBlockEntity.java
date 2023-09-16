@@ -36,12 +36,14 @@ public class HealthTestBlockEntity extends BlockEntity {
     @Override
     public void load(CompoundTag tag) {
         setHealth(tag.getFloat("health"));
+        setMaxHealth(tag.getFloat("maxHealth"));
         super.load(tag);
     }
 
     @Override
     protected void saveAdditional(CompoundTag tag) {
         tag.putFloat("health", getHealth());
+        tag.putFloat("maxHealth", getMaxHealth());
         super.saveAdditional(tag);
     }
 
@@ -60,15 +62,18 @@ public class HealthTestBlockEntity extends BlockEntity {
     public @NotNull CompoundTag getUpdateTag() {
         CompoundTag tag = super.getUpdateTag();
         tag.putFloat("health", health);
+        tag.putFloat("maxHealth", maxHealth);
         return tag;
     }
 
     @Override
     public void handleUpdateTag(CompoundTag tag) {
         health = tag.getFloat("health");
+        maxHealth = tag.getFloat("maxHealth");
     }
 
-    float health = 0;
+    float health = -1;
+    float maxHealth = -1;
 
     public float getHealth() {
         return healthHandler.orElseThrow(NullPointerException::new).getHealth();
@@ -77,5 +82,14 @@ public class HealthTestBlockEntity extends BlockEntity {
     public void setHealth(float health) {
         this.health = health;
         healthHandler.ifPresent(h -> h.setHealth(health));
+    }
+
+    public float getMaxHealth() {
+        return healthHandler.orElseThrow(NullPointerException::new).getMaxHealth();
+    }
+
+    public void setMaxHealth(float maxHealth) {
+        this.maxHealth = maxHealth;
+        healthHandler.ifPresent(h -> h.setMaxHealth(maxHealth));
     }
 }

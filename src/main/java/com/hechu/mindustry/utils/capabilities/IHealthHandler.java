@@ -6,4 +6,7 @@ import net.minecraftforge.common.capabilities.AutoRegisterCapability;
 public interface IHealthHandler {
     float getHealth();
     void setHealth(float health);
+
+    float getMaxHealth();
+    void setMaxHealth(float maxHealth);
 }
