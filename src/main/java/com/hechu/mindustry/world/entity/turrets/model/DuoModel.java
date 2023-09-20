@@ -16,7 +16,7 @@ public class DuoModel extends DefaultedEntityGeoModel<Duo> {
     }
 
     public String getTexturePath() {
-        return "textures/entity/turrets/duo.png";
+        return "textures/entity/turrets/turret.png";
     }
 
     public String getAnimationPath() {

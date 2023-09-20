@@ -16,4 +16,8 @@ public class EntityRegister {
                     .sized(0.5F, 0.8F)
                     .build("duo"));
 
+    public static final  RegistryObject<EntityType<Turret>> TURRET = ENTITIES.register("turret",() ->
+            EntityType.Builder.of(Turret::new,MobCategory.MISC)
+                    .sized(0.5f,0.8f)
+                    .build("turret"));
 }

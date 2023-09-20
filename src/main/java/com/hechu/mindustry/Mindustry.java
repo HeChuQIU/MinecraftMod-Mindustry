@@ -1,9 +1,11 @@
 package com.hechu.mindustry;
 
+import com.hechu.mindustry.client.model.TurretModel;
+import com.hechu.mindustry.client.renderer.blockentity.TurretRenderer;
 import com.hechu.mindustry.world.level.block.entity.BlockEntityRegister;
 import com.hechu.mindustry.world.level.block.BlockRegister;
-import com.hechu.mindustry.client.renderer.block.MechanicalDrillBlockEntityRenderer;
-import com.hechu.mindustry.client.renderer.block.PneumaticDrillBlockEntityRenderer;
+import com.hechu.mindustry.client.renderer.blockentity.MechanicalDrillBlockEntityRenderer;
+import com.hechu.mindustry.client.renderer.blockentity.PneumaticDrillBlockEntityRenderer;
 import com.hechu.mindustry.creative.CreativeModeTabRegister;
 import com.hechu.mindustry.world.entity.EntityRegister;
 import com.hechu.mindustry.world.entity.turrets.Duo;
@@ -11,10 +13,16 @@ import com.hechu.mindustry.world.entity.turrets.DuoRenderer;
 import com.hechu.mindustry.world.item.ItemRegister;
 import com.mojang.logging.LogUtils;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.model.geom.ModelLayerLocation;
+import net.minecraft.client.resources.model.BakedModel;
+import net.minecraft.client.resources.model.ModelResourceLocation;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.EntityRenderersEvent;
+import net.minecraftforge.client.event.ModelEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.BuildCreativeModeTabContentsEvent;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
@@ -107,6 +115,7 @@ public class Mindustry {
             //BLOCK ENTITIES
             event.registerBlockEntityRenderer(BlockEntityRegister.MECHANICAL_DRILL_BLOCK_ENTITY.get(), context -> new MechanicalDrillBlockEntityRenderer());
             event.registerBlockEntityRenderer(BlockEntityRegister.PNEUMATIC_DRILL_BLOCK_ENTITY.get(), context -> new PneumaticDrillBlockEntityRenderer());
+            event.registerBlockEntityRenderer(BlockEntityRegister.TURRET_BLOCK_ENTITY.get(), TurretRenderer::new);
 
             //ENTITIES
             event.registerEntityRenderer(EntityRegister.DUO.get(), DuoRenderer::new);

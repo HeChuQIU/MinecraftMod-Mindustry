@@ -1,4 +1,4 @@
-package com.hechu.mindustry.client.renderer.block;
+package com.hechu.mindustry.client.renderer.blockentity;
 
 import com.hechu.mindustry.world.level.block.entity.PneumaticDrillBlockEntity;
 import com.hechu.mindustry.world.level.block.model.PneumaticDrillModel;

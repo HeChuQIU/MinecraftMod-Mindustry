@@ -1,4 +1,4 @@
-package com.hechu.mindustry.client.renderer.block;
+package com.hechu.mindustry.client.renderer.blockentity;
 
 import com.hechu.mindustry.world.level.block.DrillBlock;
 import com.hechu.mindustry.world.level.block.entity.DrillBlockEntity;
