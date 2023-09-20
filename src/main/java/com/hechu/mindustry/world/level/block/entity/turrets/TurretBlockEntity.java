@@ -96,10 +96,10 @@ public class TurretBlockEntity extends BlockEntity {
         targetPosZ = tag.getDouble("targetPosZ");
     }
 
-    public static void serverTick(Level level, BlockPos blockPos, BlockState blockState, TurretBlockEntity
-            blockEntity) {
+    public static void tick(Level level, BlockPos blockPos, BlockState blockState, TurretBlockEntity
+            blockEntity){
         blockEntity.time++;
-        if (blockEntity.time % 10 != 0)
+        if (blockEntity.time % 5 != 0)
             return;
 
         Vec3 pos = blockPos.getCenter();
@@ -113,7 +113,10 @@ public class TurretBlockEntity extends BlockEntity {
             double d2 = d0 - bullet.getY() - target.getBoundingBox().getYsize();
             double d3 = target.getZ() - blockPosCenter.z;
             double d4 = Math.pow(Math.sqrt(d1 * d1 + d3 * d3), 1.55) * (double) 0.02F;
+
             bullet.shoot(d1, d2 + d4, d3, 3.2F, 2.56F);
+//            bullet.noPhysics = true;
+//            bullet.shoot(d1, 0, d3, 3.2F, 2.56F);
 //        this.playSound(SoundEvents.ARROW_SHOOT, 1.0F, 0.4F / (this.getRandom().nextFloat() * 0.4F + 0.8F));
             level.addFreshEntity(bullet);
         }
@@ -127,11 +130,18 @@ public class TurretBlockEntity extends BlockEntity {
             blockEntity.targetPosY = 0;
             blockEntity.targetPosZ = 0;
         }
+    }
+
+    public static void serverTick(Level level, BlockPos blockPos, BlockState blockState, TurretBlockEntity
+            blockEntity) {
+        tick(level, blockPos, blockState, blockEntity);
         level.sendBlockUpdated(blockPos, blockState, blockState, 3);
     }
 
-    public static void turretAnimationTick(Level level, BlockPos blockPos, BlockState blockState, TurretBlockEntity
+    public static void clientTick(Level level, BlockPos blockPos, BlockState blockState, TurretBlockEntity
             blockEntity) {
+        tick(level, blockPos, blockState, blockEntity);
+
         blockEntity.oRot = blockEntity.rot;
         if (blockEntity.targetPosX != 0 || blockEntity.targetPosY != 0 || blockEntity.targetPosZ != 0) {
             double d0 = blockEntity.targetPosX - ((double) blockPos.getX() + 0.5D);
@@ -168,7 +178,6 @@ public class TurretBlockEntity extends BlockEntity {
         }
 
         blockEntity.rot += f2 * 0.4F;
-        ++blockEntity.time;
         float f3 = 0.2F;
     }
 }

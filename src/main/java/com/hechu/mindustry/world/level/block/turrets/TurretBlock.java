@@ -37,7 +37,7 @@ public class TurretBlock extends BaseEntityBlock {
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(@NotNull Level level, @NotNull BlockState state, @NotNull BlockEntityType<T> type) {
         return level.isClientSide?
-                createTickerHelper(type, BlockEntityRegister.TURRET_BLOCK_ENTITY.get(), TurretBlockEntity::turretAnimationTick):
+                createTickerHelper(type, BlockEntityRegister.TURRET_BLOCK_ENTITY.get(), TurretBlockEntity::clientTick):
                 createTickerHelper(type, BlockEntityRegister.TURRET_BLOCK_ENTITY.get(), TurretBlockEntity::serverTick);
     }
 
