@@ -1,7 +1,11 @@
 package com.hechu.mindustry.world.level.block.entity.turrets;
 
+import com.hechu.mindustry.utils.capabilities.HealthHandler;
+import com.hechu.mindustry.utils.capabilities.IHealthHandler;
+import com.hechu.mindustry.utils.capabilities.MindustryCapabilities;
 import com.hechu.mindustry.world.level.block.entity.BlockEntityRegister;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.Connection;
 import net.minecraft.network.protocol.Packet;
@@ -9,7 +13,6 @@ import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.targeting.TargetingConditions;
 import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.entity.projectile.Arrow;
@@ -18,6 +21,8 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.util.LazyOptional;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -31,6 +36,16 @@ public class TurretBlockEntity extends BlockEntity {
 
     public TurretBlockEntity(BlockPos pPos, BlockState pBlockState) {
         super(BlockEntityRegister.TURRET_BLOCK_ENTITY.get(), pPos, pBlockState);
+    }
+
+    private final LazyOptional<IHealthHandler> healthHandler = LazyOptional.of(HealthHandler::new);
+
+    @Override
+    public @NotNull <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction side) {
+        if (cap == MindustryCapabilities.HEALTH_HANDLER) {
+            return healthHandler.cast();
+        }
+        return super.getCapability(cap, side);
     }
 
     public LivingEntity target = null;

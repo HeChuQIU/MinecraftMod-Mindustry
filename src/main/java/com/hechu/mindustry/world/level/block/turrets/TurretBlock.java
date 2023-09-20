@@ -1,5 +1,6 @@
 package com.hechu.mindustry.world.level.block.turrets;
 
+import com.hechu.mindustry.utils.capabilities.MindustryCapabilities;
 import com.hechu.mindustry.world.level.block.entity.BlockEntityRegister;
 import com.hechu.mindustry.world.level.block.entity.turrets.TurretBlockEntity;
 import net.minecraft.core.BlockPos;
@@ -24,7 +25,12 @@ public class TurretBlock extends BaseEntityBlock {
     @Nullable
     @Override
     public BlockEntity newBlockEntity(@NotNull BlockPos pPos, @NotNull BlockState pState) {
-        return new TurretBlockEntity(pPos, pState);
+        TurretBlockEntity turretBlockEntity = new TurretBlockEntity(pPos, pState);
+        turretBlockEntity.getCapability(MindustryCapabilities.HEALTH_HANDLER, null).ifPresent(healthHandler -> {
+            healthHandler.setMaxHealth(100);
+            healthHandler.setHealth(100);
+        });
+        return turretBlockEntity;
     }
 
     @Nullable
