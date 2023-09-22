@@ -16,10 +16,12 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.targeting.TargetingConditions;
 import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.entity.projectile.Arrow;
+import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
@@ -40,6 +42,12 @@ public class TurretBlockEntity extends BlockEntity {
 
     private final LazyOptional<IHealthHandler> healthHandler = LazyOptional.of(HealthHandler::new);
 
+    private boolean isCanSeeEntity(LivingEntity e) {
+        return e instanceof Enemy
+                && (this.level.clip(new ClipContext(getBlockPos().above().above().getCenter(), e.position(), ClipContext.Block.COLLIDER,
+                ClipContext.Fluid.NONE, null)).getType() == HitResult.Type.MISS);
+    }
+
     @Override
     public @NotNull <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction side) {
         if (cap == MindustryCapabilities.HEALTH_HANDLER) {
@@ -56,7 +64,7 @@ public class TurretBlockEntity extends BlockEntity {
     @Nullable
     LivingEntity getNearestEnemy(Vec3 range) {
         BlockPos blockPos = this.getBlockPos();
-        return level.getNearestEntity(LivingEntity.class, TargetingConditions.forCombat().selector(e -> e instanceof Enemy), null,
+        return level.getNearestEntity(LivingEntity.class, TargetingConditions.forCombat().selector(this::isCanSeeEntity), null,
                 blockPos.getX(), blockPos.getY(), blockPos.getZ(), new AABB(blockPos).inflate(range.x, range.y, range.z));
     }
 
@@ -97,7 +105,7 @@ public class TurretBlockEntity extends BlockEntity {
     }
 
     public static void tick(Level level, BlockPos blockPos, BlockState blockState, TurretBlockEntity
-            blockEntity){
+            blockEntity) {
         blockEntity.time++;
         if (blockEntity.time % 5 != 0)
             return;
