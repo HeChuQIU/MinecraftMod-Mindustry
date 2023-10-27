@@ -1,5 +1,8 @@
-package com.hechu.mindustry;
+package com.hechu.mindustry.datagen;
 
+import com.hechu.mindustry.Mindustry;
+import com.hechu.mindustry.datagen.block.TurretBlockModelGenerator;
+import com.hechu.mindustry.datagen.block.TurretBlockStateGenerator;
 import com.hechu.mindustry.world.item.ItemRegister;
 import com.hechu.mindustry.world.level.block.BlockRegister;
 import net.minecraft.data.DataGenerator;
@@ -20,6 +23,8 @@ public class DataGenEvent {
         gen.addProvider(event.includeClient(), new EnglishLanguageProvider(packOutput));
         gen.addProvider(event.includeClient(), new ChineseLanguageProvider(packOutput));
         gen.addProvider(event.includeClient(), new MindustryItemModelProvider(event));
+        gen.addProvider(event.includeClient(), new TurretBlockModelGenerator(packOutput, Mindustry.MODID, event.getExistingFileHelper()));
+        gen.addProvider(event.includeClient(), new TurretBlockStateGenerator(packOutput, Mindustry.MODID, event.getExistingFileHelper()));
     }
 
     // 英文语言文件
@@ -37,6 +42,12 @@ public class DataGenEvent {
             this.addBlock(BlockRegister.PNEUMATIC_DRILL, "pneumatic drill");
             this.addBlock(BlockRegister.HEALTH_TEST, "health test");
             this.addBlock(BlockRegister.TURRET, "turret");
+
+            this.add("config.jade.plugin_mindustry.drill", "不知道干嘛的");
+            this.add("mindustry.drill_progress","%d%%已挖掘");
+            this.add("mindustry.drill_speed","挖掘速度 : %d/秒");
+            this.add("config.jade.plugin_mindustry.health_block", "不知道干嘛的");
+            this.add("mindustry.block_health","生命值 : %d / %d");
         }
     }
 
@@ -55,6 +66,12 @@ public class DataGenEvent {
             this.addBlock(BlockRegister.PNEUMATIC_DRILL, "气动钻头");
             this.addBlock(BlockRegister.HEALTH_TEST, "生命测试");
             this.addBlock(BlockRegister.TURRET, "炮台");
+
+            this.add("config.jade.plugin_mindustry.drill", "不知道干嘛的");
+            this.add("mindustry.drill_progress","%d%%已挖掘");
+            this.add("mindustry.drill_speed","挖掘速度 : %d/秒");
+            this.add("config.jade.plugin_mindustry.health_block", "不知道干嘛的");
+            this.add("mindustry.block_health","生命值 : %d / %d");
         }
     }
 
