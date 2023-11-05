@@ -1,28 +1,20 @@
 package com.hechu.mindustry;
 
-import com.hechu.mindustry.client.model.TurretModel;
-import com.hechu.mindustry.client.renderer.blockentity.TurretRenderer;
-import com.hechu.mindustry.world.level.block.entity.BlockEntityRegister;
-import com.hechu.mindustry.world.level.block.BlockRegister;
 import com.hechu.mindustry.client.renderer.blockentity.MechanicalDrillBlockEntityRenderer;
 import com.hechu.mindustry.client.renderer.blockentity.PneumaticDrillBlockEntityRenderer;
+import com.hechu.mindustry.client.renderer.blockentity.PowerNodeRenderer;
+import com.hechu.mindustry.client.renderer.blockentity.TurretRenderer;
 import com.hechu.mindustry.creative.CreativeModeTabRegister;
 import com.hechu.mindustry.world.entity.EntityRegister;
 import com.hechu.mindustry.world.entity.turrets.Duo;
 import com.hechu.mindustry.world.entity.turrets.DuoRenderer;
 import com.hechu.mindustry.world.item.ItemRegister;
+import com.hechu.mindustry.world.level.block.BlockRegister;
+import com.hechu.mindustry.world.level.block.entity.BlockEntityRegister;
 import com.mojang.logging.LogUtils;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.model.geom.ModelLayerLocation;
-import net.minecraft.client.resources.model.BakedModel;
-import net.minecraft.client.resources.model.ModelResourceLocation;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.CreativeModeTabs;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.EntityRenderersEvent;
-import net.minecraftforge.client.event.ModelEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.BuildCreativeModeTabContentsEvent;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
@@ -33,7 +25,6 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
-import net.minecraftforge.registries.ForgeRegistries;
 import org.slf4j.Logger;
 import software.bernie.geckolib.GeckoLib;
 
@@ -72,8 +63,8 @@ public class Mindustry {
 
     private void commonSetup(final FMLCommonSetupEvent event) {
         // Some common setup code
-        LOGGER.info("HELLO FROM COMMON SETUP");
-        LOGGER.info("DIRT BLOCK >> {}", ForgeRegistries.BLOCKS.getKey(Blocks.DIRT));
+        // LOGGER.info("HELLO FROM COMMON SETUP");
+        // LOGGER.info("DIRT BLOCK >> {}", ForgeRegistries.BLOCKS.getKey(Blocks.DIRT));
     }
 
     private void registerTabs(final BuildCreativeModeTabContentsEvent event) {
@@ -95,7 +86,7 @@ public class Mindustry {
     @SubscribeEvent
     public void onServerStarting(ServerStartingEvent event) {
         // Do something when the server starts
-        LOGGER.info("HELLO from server starting");
+        // LOGGER.info("HELLO from server starting");
     }
 
     // You can use EventBusSubscriber to automatically register all static methods in the class annotated with @SubscribeEvent
@@ -105,17 +96,18 @@ public class Mindustry {
         @SubscribeEvent
         public static void onClientSetup(FMLClientSetupEvent event) {
             // Some client setup code
-            LOGGER.info("HELLO FROM CLIENT SETUP");
-            LOGGER.info("MINECRAFT NAME >> {}", Minecraft.getInstance().getUser().getName());
+            // LOGGER.info("HELLO FROM CLIENT SETUP");
+            // LOGGER.info("MINECRAFT NAME >> {}", Minecraft.getInstance().getUser().getName());
         }
 
         @SubscribeEvent
         public static void onRegisterRenderers(EntityRenderersEvent.RegisterRenderers event) {
-            LOGGER.info("HELLO from register renderers");
+            // LOGGER.info("HELLO from register renderers");
             //BLOCK ENTITIES
             event.registerBlockEntityRenderer(BlockEntityRegister.MECHANICAL_DRILL_BLOCK_ENTITY.get(), context -> new MechanicalDrillBlockEntityRenderer());
             event.registerBlockEntityRenderer(BlockEntityRegister.PNEUMATIC_DRILL_BLOCK_ENTITY.get(), context -> new PneumaticDrillBlockEntityRenderer());
             event.registerBlockEntityRenderer(BlockEntityRegister.TURRET_BLOCK_ENTITY.get(), TurretRenderer::new);
+            event.registerBlockEntityRenderer(BlockEntityRegister.POWER_NODE_BLOCK_ENTITY.get(), pContext -> new PowerNodeRenderer());
 
             //ENTITIES
             event.registerEntityRenderer(EntityRegister.DUO.get(), DuoRenderer::new);

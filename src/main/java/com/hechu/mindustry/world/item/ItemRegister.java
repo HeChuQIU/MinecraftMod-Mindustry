@@ -3,6 +3,8 @@ package com.hechu.mindustry.world.item;
 import com.hechu.mindustry.Mindustry;
 import com.hechu.mindustry.world.level.block.BlockRegister;
 import com.hechu.mindustry.world.level.block.multiblock.KilnBlock;
+import com.hechu.mindustry.world.level.block.Equipment.PowerNodeBlock;
+import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -27,4 +29,7 @@ public class ItemRegister {
 
     public static final RegistryObject<Item> KILN_ITEM = ITEMS.register(KilnBlock.NAME,
             () -> new Kiln(KILN_BLOCK.get(), new Item.Properties()));
+
+    public static final RegistryObject<Item> POWER_NODE_BLOCK_ITEM = ITEMS.register(PowerNodeBlock.NAME,
+            () -> new BlockItem(BlockRegister.POWER_NODE.get(), new Item.Properties()));
 }

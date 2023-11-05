@@ -18,6 +18,7 @@ public class CreativeModeTabRegister {
                 output.accept(ItemRegister.MECHANICAL_DRILL_ITEM.get());
                 output.accept(ItemRegister.PNEUMATIC_DRILL_ITEM.get());
                 output.accept(ItemRegister.HEALTH_TEST_ITEM.get());
+                output.accept(ItemRegister.POWER_NODE_BLOCK_ITEM.get());
             }).build()
     );
 }
