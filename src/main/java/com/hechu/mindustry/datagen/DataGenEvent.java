@@ -48,6 +48,7 @@ public class DataGenEvent {
             this.add("mindustry.drill_speed","挖掘速度 : %d/秒");
             this.add("config.jade.plugin_mindustry.health_block", "不知道干嘛的");
             this.add("mindustry.block_health","生命值 : %d / %d");
+            this.add("config.jade.plugin_mindustry.crafting_block","不知道干嘛的");
         }
     }
 

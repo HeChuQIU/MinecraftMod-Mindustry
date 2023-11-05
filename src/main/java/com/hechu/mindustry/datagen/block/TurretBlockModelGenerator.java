@@ -6,6 +6,7 @@ import com.hechu.mindustry.world.level.block.BlockRegister;
 import com.hechu.mindustry.world.level.block.multiblock.MultiblockCoreBlock;
 import com.hechu.mindustry.world.level.block.multiblock.TestMultiblockCoreBlock;
 import net.minecraft.core.Direction;
+import net.minecraft.core.Vec3i;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
@@ -24,13 +25,14 @@ public class TurretBlockModelGenerator extends BlockModelProvider {
     protected void registerModels() {
         BlockRegister.BLOCKS.getEntries().stream()
                 .map(RegistryObject::get)
-                .filter(block -> block.getClass().isAnnotationPresent(Multiblock.class) && block.getClass().isAnnotationPresent(Block.class))
+                .filter(block -> block instanceof MultiblockCoreBlock)
+                .map(block -> (MultiblockCoreBlock) block)
                 .forEach(block -> {
-                    Multiblock multiblock = block.getClass().getAnnotation(Multiblock.class);
-                    String name = block.getClass().getAnnotation(Block.class).name();
-                    int sizeX = multiblock.sizeX();
-                    int sizeZ = multiblock.sizeZ();
-                    int sizeY = multiblock.sizeY();
+                    Vec3i size = block.getSize();
+                    String name = block.getBlockName();
+                    int sizeX = size.getX();
+                    int sizeZ = size.getZ();
+                    int sizeY = size.getY();
                     for (int x = 0; x < sizeX; x++) {
                         for (int z = 0; z < sizeZ; z++) {
                             for (int y = 0; y < sizeY; y++) {
@@ -38,16 +40,21 @@ public class TurretBlockModelGenerator extends BlockModelProvider {
                                 int finalX = x;
                                 int finalZ = z;
                                 int finalY = y;
-                                var elementBuilder = this
-                                        .getBuilder("block/" + name + "/" + name + "_" + i)
-                                        .texture("west", "block/" + name + "/" + name + "_west")
-                                        .texture("east", "block/" + name + "/" + name + "_east")
-                                        .texture("north", "block/" + name + "/" + name + "_north")
-                                        .texture("south", "block/" + name + "/" + name + "_south")
-                                        .texture("up", "block/" + name + "/" + name + "_up")
-                                        .texture("down", "block/" + name + "/" + name + "_down")
-                                        .texture("particle", new ResourceLocation("minecraft", "block/stone"))
-                                        .element().from(0, 0, 0).to(16, 16, 16);
+                                var elementBuilder = block.isSingleTexture() ?
+                                        this.getBuilder("block/" + name + "/" + name + "_" + i)
+                                                .texture("0", "block/" + name + "/" + name)
+                                                .texture("particle", new ResourceLocation("minecraft", "block/stone"))
+                                                .element().from(0, 0, 0).to(16, 16, 16)
+                                        :
+                                        this.getBuilder("block/" + name + "/" + name + "_" + i)
+                                                .texture("west", "block/" + name + "/" + name + "_west")
+                                                .texture("east", "block/" + name + "/" + name + "_east")
+                                                .texture("north", "block/" + name + "/" + name + "_north")
+                                                .texture("south", "block/" + name + "/" + name + "_south")
+                                                .texture("up", "block/" + name + "/" + name + "_up")
+                                                .texture("down", "block/" + name + "/" + name + "_down")
+                                                .texture("particle", new ResourceLocation("minecraft", "block/stone"))
+                                                .element().from(0, 0, 0).to(16, 16, 16);
                                 if (finalX == 0) {
                                     elementBuilder.face(Direction.WEST);
                                 }
@@ -79,7 +86,7 @@ public class TurretBlockModelGenerator extends BlockModelProvider {
 //                                                        float v1 = 16 - (16f * finalY) / sizeY;
 //                                                        float u2 = u1 + 16f / sizeZ;
 //                                                        float v2 = v1 - 16f / sizeY;
-                                                        faceBuilder.uvs(u1, v1, u2, v2).texture("#west");
+                                                        faceBuilder.uvs(u1, v1, u2, v2).texture(block.isSingleTexture() ? "#0" : "#west");
                                                     }
                                                 }
                                                 case EAST -> {
@@ -92,7 +99,7 @@ public class TurretBlockModelGenerator extends BlockModelProvider {
 //                                                        float v1 = 16 - (16f * finalY) / sizeY;
 //                                                        float u2 = u1 - 16f / sizeZ;
 //                                                        float v2 = v1 - 16f / sizeY;
-                                                        faceBuilder.uvs(u1, v1, u2, v2).texture("#east");
+                                                        faceBuilder.uvs(u1, v1, u2, v2).texture(block.isSingleTexture() ? "#0" : "#east");
                                                     }
                                                 }
                                                 case NORTH -> {
@@ -105,7 +112,7 @@ public class TurretBlockModelGenerator extends BlockModelProvider {
 //                                                        float v1 = 16 - (16f * finalY) / sizeY;
 //                                                        float u2 = u1 - 16f / sizeX;
 //                                                        float v2 = v1 - 16f / sizeY;
-                                                        faceBuilder.uvs(u1, v1, u2, v2).texture("#north");
+                                                        faceBuilder.uvs(u1, v1, u2, v2).texture(block.isSingleTexture() ? "#0" : "#north");
                                                     }
                                                 }
                                                 case SOUTH -> {
@@ -118,7 +125,7 @@ public class TurretBlockModelGenerator extends BlockModelProvider {
 //                                                        float v1 = 16 - (16f * finalY) / sizeY;
 //                                                        float u2 = u1 + 16f / sizeX;
 //                                                        float v2 = v1 - 16f / sizeY;
-                                                        faceBuilder.uvs(u1, v1, u2, v2).texture("#south");
+                                                        faceBuilder.uvs(u1, v1, u2, v2).texture(block.isSingleTexture() ? "#0" : "#south");
                                                     }
                                                 }
                                                 case DOWN -> {
@@ -131,7 +138,7 @@ public class TurretBlockModelGenerator extends BlockModelProvider {
 //                                                        float v1 = (16f * finalZ) / sizeZ;
 //                                                        float u2 = u1 - 16f / sizeX;
 //                                                        float v2 = v1 + 16f / sizeZ;
-                                                        faceBuilder.uvs(u1, v1, u2, v2).texture("#down");
+                                                        faceBuilder.uvs(u1, v1, u2, v2).texture(block.isSingleTexture() ? "#0" : "#down");
                                                     }
                                                 }
                                                 case UP -> {
@@ -140,7 +147,7 @@ public class TurretBlockModelGenerator extends BlockModelProvider {
                                                         float v1 = 16 - (16f * finalZ) / sizeZ;
                                                         float u2 = u1 - 16f / sizeX;
                                                         float v2 = v1 - 16f / sizeZ;
-                                                        faceBuilder.uvs(u1, v1, u2, v2).texture("#up");
+                                                        faceBuilder.uvs(u1, v1, u2, v2).texture(block.isSingleTexture() ? "#0" : "#up");
                                                     }
                                                 }
                                             }

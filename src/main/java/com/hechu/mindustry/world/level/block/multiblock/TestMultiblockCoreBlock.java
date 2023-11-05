@@ -3,6 +3,7 @@ package com.hechu.mindustry.world.level.block.multiblock;
 import com.hechu.mindustry.annotation.Block;
 import com.hechu.mindustry.annotation.Multiblock;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Vec3i;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
@@ -11,7 +12,6 @@ import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import org.jetbrains.annotations.NotNull;
 
 @Block(name = TestMultiblockCoreBlock.NAME)
-@Multiblock(sizeX = 4, sizeY = 2, sizeZ = 2)
 public class TestMultiblockCoreBlock extends MultiblockCoreBlock {
     public static final String NAME = "test_multiblock_core";
 
@@ -19,23 +19,30 @@ public class TestMultiblockCoreBlock extends MultiblockCoreBlock {
 
     public TestMultiblockCoreBlock() {
         super(Properties.of().destroyTime(3).strength(3.0F, 3.0F));
-        this.stateDefinition.any().setValue(PART, 0);
     }
 
     public TestMultiblockCoreBlock(int part) {
-        super(Properties.of().destroyTime(3).strength(3.0F, 3.0F));
-        this.stateDefinition.any().setValue(PART, part);
-    }
-
-    @Override
-    protected void createBlockStateDefinition(StateDefinition.Builder<net.minecraft.world.level.block.Block, BlockState> builder) {
-        builder.add(PART);
-        super.createBlockStateDefinition(builder);
+        super(Properties.of().destroyTime(3).strength(3.0F, 3.0F), part);
     }
 
     @Override
     public IntegerProperty getPartProperty() {
         return PART;
+    }
+
+    @Override
+    public Vec3i getSize() {
+        return new Vec3i(4, 2, 2);
+    }
+
+    @Override
+    public String getBlockName() {
+        return NAME;
+    }
+
+    @Override
+    public boolean isSingleTexture() {
+        return false;
     }
 
     @Override

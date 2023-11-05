@@ -1,7 +1,9 @@
 package com.hechu.mindustry.world.level.block;
 
 import com.hechu.mindustry.Mindustry;
+import com.hechu.mindustry.world.level.block.multiblock.KilnBlock;
 import com.hechu.mindustry.world.level.block.multiblock.TestMultiblockCoreBlock;
+import com.hechu.mindustry.world.level.block.multiblock.TestTurretMultiblockEntityBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -16,4 +18,6 @@ public class BlockRegister {
     public static final RegistryObject<Block> HEALTH_TEST = BLOCKS.register(HealthTestBlock.NAME, HealthTestBlock::new);
     public static final RegistryObject<Block> TURRET = BLOCKS.register(TurretBlock.NAME, TurretBlock::new);
     public static final RegistryObject<Block> TEST_MULTIBLOCK_CORE = BLOCKS.register(TestMultiblockCoreBlock.NAME, TestMultiblockCoreBlock::new);
+    public static final RegistryObject<Block> TEST_TURRET_MULTIBLOCK_ENTITY_BLOCK = BLOCKS.register(TestTurretMultiblockEntityBlock.NAME, TestTurretMultiblockEntityBlock::new);
+    public static final RegistryObject<Block> KILN_BLOCK = BLOCKS.register(KilnBlock.NAME, KilnBlock::new);
 }

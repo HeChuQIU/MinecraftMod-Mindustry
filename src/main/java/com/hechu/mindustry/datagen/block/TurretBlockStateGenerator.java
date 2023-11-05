@@ -21,14 +21,13 @@ public class TurretBlockStateGenerator extends BlockStateProvider {
     protected void registerStatesAndModels() {
         BlockRegister.BLOCKS.getEntries().stream()
                 .map(RegistryObject::get)
-                .filter(block -> block.getClass().isAnnotationPresent(Multiblock.class) && block.getClass().isAnnotationPresent(Block.class))
+                .filter(block -> block instanceof MultiblockCoreBlock)
+                .map(block -> (MultiblockCoreBlock)block)
                 .forEach(block -> {
-                    Multiblock multiblock = block.getClass().getAnnotation(Multiblock.class);
                     String name = block.getClass().getAnnotation(Block.class).name();
-
                     this.getVariantBuilder(block)
                             .forAllStates(state -> {
-                                IntegerProperty partProperty = ((MultiblockCoreBlock) block).getPartProperty();
+                                IntegerProperty partProperty = block.getPartProperty();
                                 int part = state.getValue(partProperty);
                                 return ConfiguredModel.builder()
                                         .modelFile(this.models().getExistingFile(this.modLoc("block/" + name + "/" + name + "_" + part)))

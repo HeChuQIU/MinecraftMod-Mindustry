@@ -52,6 +52,6 @@ public enum HealthBlockComponentProvider implements IBlockComponentProvider, ISe
 
     @Override
     public ResourceLocation getUid() {
-        return MindustryPlugin.HealthBlock;
+        return MindustryPlugin.CraftingBlock;
     }
 }

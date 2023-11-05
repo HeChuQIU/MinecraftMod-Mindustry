@@ -13,4 +13,6 @@ public @interface Multiblock {
     int sizeX() default 1;
     int sizeY() default 1;
     int sizeZ() default 1;
+
+    boolean useSingleTexture() default false;
 }

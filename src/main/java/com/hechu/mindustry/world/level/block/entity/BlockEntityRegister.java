@@ -2,6 +2,8 @@ package com.hechu.mindustry.world.level.block.entity;
 
 import com.hechu.mindustry.Mindustry;
 import com.hechu.mindustry.world.level.block.BlockRegister;
+import com.hechu.mindustry.world.level.block.entity.multiblock.KilnBlockEntity;
+import com.hechu.mindustry.world.level.block.entity.multiblock.TestTurretMultiblockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -14,4 +16,6 @@ public class BlockEntityRegister {
     public static final RegistryObject<BlockEntityType<PneumaticDrillBlockEntity>> PNEUMATIC_DRILL_BLOCK_ENTITY = BLOCK_ENTITIES.register(PneumaticDrillBlockEntity.NAME, () -> BlockEntityType.Builder.of(PneumaticDrillBlockEntity::new, BlockRegister.PNEUMATIC_DRILL.get()).build(null));
     public static final RegistryObject<BlockEntityType<HealthTestBlockEntity>> HEALTH_TEST_BLOCK_ENTITY = BLOCK_ENTITIES.register(HealthTestBlockEntity.NAME, () -> BlockEntityType.Builder.of(HealthTestBlockEntity::new, BlockRegister.HEALTH_TEST.get()).build(null));
     public static final RegistryObject<BlockEntityType<TurretBlockEntity>> TURRET_BLOCK_ENTITY = BLOCK_ENTITIES.register(TurretBlockEntity.NAME, () -> BlockEntityType.Builder.of(TurretBlockEntity::new, BlockRegister.TURRET.get()).build(null));
+    public static final RegistryObject<BlockEntityType<TestTurretMultiblockEntity>> TEST_TURRET_MULTIBLOCK_ENTITY_BLOCK_ENTITY = BLOCK_ENTITIES.register(TestTurretMultiblockEntity.NAME, () -> BlockEntityType.Builder.of(TestTurretMultiblockEntity::new, BlockRegister.TEST_TURRET_MULTIBLOCK_ENTITY_BLOCK.get()).build(null));
+    public static final RegistryObject<BlockEntityType<KilnBlockEntity>> KILN_BLOCK_ENTITY = BLOCK_ENTITIES.register(KilnBlockEntity.NAME, () -> BlockEntityType.Builder.of(KilnBlockEntity::new, BlockRegister.KILN_BLOCK.get()).build(null));
 }
