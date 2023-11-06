@@ -1,5 +1,7 @@
 package com.hechu.mindustry.world.level.block;
 
+import com.hechu.mindustry.utils.Utils;
+import com.hechu.mindustry.world.item.drill.Drill;
 import com.hechu.mindustry.world.level.block.entity.DrillBlockEntity;
 import com.mojang.logging.LogUtils;
 import net.minecraft.core.BlockPos;
@@ -99,20 +101,10 @@ public abstract class DrillBlock<TBlockEntity extends DrillBlockEntity> extends 
 
     @Override
     public void setPlacedBy(@NotNull Level level, @NotNull BlockPos pos, @NotNull BlockState state, @Nullable LivingEntity entity, @NotNull ItemStack stack) {
-        if(entity==null)
+        if (entity == null)
             return;
         Vec3i size = getSize();
-        List<BlockPos> posList = new ArrayList<>();
-        boolean isEast = Direction.getFacingAxis(entity, Direction.Axis.X).equals(Direction.EAST);
-        boolean isUp = Direction.getFacingAxis(entity, Direction.Axis.Y).equals(Direction.UP);
-        boolean isSouth = Direction.getFacingAxis(entity, Direction.Axis.Z).equals(Direction.SOUTH);
-        for (int i = 0; i < size.getX(); i++) {
-            for (int j = 0; j < size.getY(); j++) {
-                for (int k = 0; k < size.getZ(); k++) {
-                    posList.add(pos.east(i * (isEast ? 1 : -1)).above(j * (isUp ? 1 : -1)).south(k * (isSouth ? 1 : -1)));
-                }
-            }
-        }
+        List<BlockPos> posList = Utils.checkPlayerFace(pos, size, entity);
         posList.sort((pos1, pos2) -> {
             int c1 = Integer.compare(pos1.getX(), pos2.getX());
             if (c1 != 0)

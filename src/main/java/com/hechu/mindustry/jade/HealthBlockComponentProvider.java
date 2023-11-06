@@ -26,8 +26,8 @@ public enum HealthBlockComponentProvider implements IBlockComponentProvider, ISe
             float maxHealth = accessor.getServerData().getFloat("maxHealth");
 
             ProgressStyle progressStyle = new ProgressStyle();
-            progressStyle.color = 0xff0000|0xff<<24;
-            progressStyle.color2 = 0x000000|0x88<<24;
+            progressStyle.color = 0xff0000 | 0xff << 24;
+            progressStyle.color2 = 0x88 << 24;
             progressStyle.glowText = true;
 
             BoxStyle boxStyle = new BoxStyle();
@@ -35,7 +35,6 @@ public enum HealthBlockComponentProvider implements IBlockComponentProvider, ISe
             ProgressElement progressElement = new ProgressElement(health / maxHealth,
                     Component.translatable("mindustry.block_health", health, maxHealth),
                     progressStyle, boxStyle, true);
-//        progressElement.size(new Vec2(100f,progressElement.getSize().y));
             tooltip.add(progressElement);
         }
     }
@@ -52,6 +51,6 @@ public enum HealthBlockComponentProvider implements IBlockComponentProvider, ISe
 
     @Override
     public ResourceLocation getUid() {
-        return MindustryPlugin.CraftingBlock;
+        return MindustryPlugin.HealthBlock;
     }
 }

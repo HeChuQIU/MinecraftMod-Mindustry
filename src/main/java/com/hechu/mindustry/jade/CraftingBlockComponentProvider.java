@@ -1,12 +1,10 @@
 package com.hechu.mindustry.jade;
 
-import com.hechu.mindustry.utils.capabilities.MindustryCapabilities;
 import com.hechu.mindustry.world.level.block.entity.multiblock.MultiblockCraftingBlockEntity;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec2;
 import snownee.jade.api.BlockAccessor;
 import snownee.jade.api.IBlockComponentProvider;
@@ -61,6 +59,6 @@ public enum CraftingBlockComponentProvider implements IBlockComponentProvider, I
 
     @Override
     public ResourceLocation getUid() {
-        return MindustryPlugin.HealthBlock;
+        return MindustryPlugin.CraftingBlock;
     }
 }

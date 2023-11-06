@@ -1,5 +1,6 @@
-package com.hechu.mindustry.world.item;
+package com.hechu.mindustry.world.item.drill;
 
+import com.hechu.mindustry.utils.Utils;
 import com.hechu.mindustry.world.level.block.DrillBlock;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -37,21 +38,11 @@ public abstract class Drill extends BlockItem implements GeoItem {
     @Override
     public @NotNull InteractionResult place(BlockPlaceContext context) {
         Player player = context.getPlayer();
-        if(player==null)
+        if (player == null)
             return super.place(context);
         BlockPos pos = context.getClickedPos();
         Vec3i size = ((DrillBlock<?>) getBlock()).getSize();
-        List<BlockPos> posList=new ArrayList<>();
-        boolean isEast = Direction.getFacingAxis(player, Direction.Axis.X).equals(Direction.EAST);
-        boolean isUp = Direction.getFacingAxis(player, Direction.Axis.Y).equals(Direction.UP);
-        boolean isSouth = Direction.getFacingAxis(player, Direction.Axis.Z).equals(Direction.SOUTH);
-        for (int i = 0; i < size.getX(); i++) {
-            for (int j = 0; j < size.getY(); j++) {
-                for (int k = 0; k < size.getZ(); k++) {
-                    posList.add(pos.east(i*(isEast?1:-1)).above(j*(isUp?1:-1)).south(k*(isSouth?1:-1)));
-                }
-            }
-        }
+        List<BlockPos> posList = Utils.checkPlayerFace(pos, size, player);
         for (BlockPos blockPos : posList) {
             if (!context.getLevel().getBlockState(blockPos).is(BlockTags.REPLACEABLE))
                 return InteractionResult.FAIL;

@@ -1,5 +1,6 @@
 package com.hechu.mindustry.world.level.block.multiblock;
 
+import com.hechu.mindustry.utils.Utils;
 import com.hechu.mindustry.world.level.block.DrillBlock;
 import com.hechu.mindustry.world.level.block.entity.DrillBlockEntity;
 import com.hechu.mindustry.world.level.block.entity.multiblock.MultiblockEntity;
@@ -50,14 +51,12 @@ public abstract class MultiblockEntityBlock<TBlockEntity extends MultiblockEntit
         if (entity == null)
             return;
         Vec3i size = getSize();
-        List<BlockPos> posList = new ArrayList<>();
-        boolean isEast = Direction.getFacingAxis(entity, Direction.Axis.X).equals(Direction.EAST);
-        boolean isUp = Direction.getFacingAxis(entity, Direction.Axis.Y).equals(Direction.UP);
-        boolean isSouth = Direction.getFacingAxis(entity, Direction.Axis.Z).equals(Direction.SOUTH);
+        boolean[] faceData = Utils.checkDirection(entity);
+//        List<BlockPos> posList = Utils.checkPlayerFace(pos, size, faceData);
         BlockPos masterPos = pos
-                .east(isEast ? 0 : -(size.getX() - 1))
-                .above(!isUp ? 0 : -(size.getY() - 1))
-                .south(isSouth ? 0 : -(size.getZ() - 1));
+                .east(faceData[0] ? 0 : -(size.getX() - 1))
+                .above(!faceData[1] ? 0 : -(size.getY() - 1))
+                .south(faceData[2] ? 0 : -(size.getZ() - 1));
         for (int x = 0; x < size.getX(); x++) {
             for (int z = 0; z < size.getZ(); z++) {
                 for (int y = 0; y < size.getY(); y++) {

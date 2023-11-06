@@ -1,6 +1,6 @@
 package com.hechu.mindustry.world.entity.turrets.model;
 
-import com.hechu.mindustry.Mindustry;
+import com.hechu.mindustry.MindustryConstants;
 import com.hechu.mindustry.world.entity.turrets.Duo;
 import net.minecraft.resources.ResourceLocation;
 import software.bernie.geckolib.model.DefaultedEntityGeoModel;
@@ -8,7 +8,7 @@ import software.bernie.geckolib.model.DefaultedEntityGeoModel;
 public class DuoModel extends DefaultedEntityGeoModel<Duo> {
 
     public DuoModel(String name) {
-        super(new ResourceLocation(Mindustry.MODID, name));
+        super(new ResourceLocation(MindustryConstants.MOD_ID, name));
     }
 
     public String getModelPath() {
@@ -25,16 +25,16 @@ public class DuoModel extends DefaultedEntityGeoModel<Duo> {
 
     @Override
     public ResourceLocation getModelResource(Duo object) {
-        return new ResourceLocation(Mindustry.MODID, getModelPath());
+        return new ResourceLocation(MindustryConstants.MOD_ID, getModelPath());
     }
 
     @Override
     public ResourceLocation getTextureResource(Duo object) {
-        return new ResourceLocation(Mindustry.MODID, getTexturePath());
+        return new ResourceLocation(MindustryConstants.MOD_ID, getTexturePath());
     }
 
     @Override
     public ResourceLocation getAnimationResource(Duo animatable) {
-        return new ResourceLocation(Mindustry.MODID, getAnimationPath());
+        return new ResourceLocation(MindustryConstants.MOD_ID, getAnimationPath());
     }
 }

@@ -1,6 +1,7 @@
-package com.hechu.mindustry.world.item;
+package com.hechu.mindustry.world.item.drill;
 
 import com.hechu.mindustry.client.renderer.item.PneumaticDrillRenderer;
+import com.hechu.mindustry.world.item.drill.Drill;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
@@ -26,7 +27,7 @@ public class PneumaticDrill extends Drill {
     private static final RawAnimation ROTATION_ANIMS = RawAnimation.begin().thenLoop("2x2drill_template.rotate");
 
     @Override
-    public void initializeClient(Consumer<IClientItemExtensions> consumer) {
+    public void initializeClient(@NotNull Consumer<IClientItemExtensions> consumer) {
         consumer.accept(new IClientItemExtensions() {
             private PneumaticDrillRenderer renderer;
 
