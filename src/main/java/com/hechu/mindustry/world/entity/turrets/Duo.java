@@ -1,6 +1,6 @@
 package com.hechu.mindustry.world.entity.turrets;
 
-import com.hechu.mindustry.Static;
+import com.hechu.mindustry.MindustryConstants;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -83,7 +83,7 @@ public class Duo extends Mob implements RangedAttackMob, GeoEntity {
         return cache;
     }
 
-    @Mod.EventBusSubscriber(modid = Static.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
+    @Mod.EventBusSubscriber(modid = MindustryConstants.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
     public static class DuoEventHandler {
         @SubscribeEvent
         public static void onEntityHurt(LivingHurtEvent event) {

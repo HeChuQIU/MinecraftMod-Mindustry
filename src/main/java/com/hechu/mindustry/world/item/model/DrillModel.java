@@ -1,6 +1,6 @@
 package com.hechu.mindustry.world.item.model;
 
-import com.hechu.mindustry.Static;
+import com.hechu.mindustry.MindustryConstants;
 import com.hechu.mindustry.world.item.drill.Drill;
 import net.minecraft.resources.ResourceLocation;
 import software.bernie.geckolib.model.GeoModel;
@@ -19,16 +19,16 @@ public abstract class DrillModel<TDrill extends Drill> extends GeoModel<TDrill> 
 
     @Override
     public ResourceLocation getModelResource(TDrill object) {
-        return new ResourceLocation(Static.MOD_ID, modelPath);
+        return new ResourceLocation(MindustryConstants.MOD_ID, modelPath);
     }
 
     @Override
     public ResourceLocation getTextureResource(TDrill object){
-        return new ResourceLocation(Static.MOD_ID, texturePath);
+        return new ResourceLocation(MindustryConstants.MOD_ID, texturePath);
     }
 
     @Override
     public ResourceLocation getAnimationResource(TDrill animatable){
-        return new ResourceLocation(Static.MOD_ID, animationPath);
+        return new ResourceLocation(MindustryConstants.MOD_ID, animationPath);
     }
 }

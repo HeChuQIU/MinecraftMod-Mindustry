@@ -11,9 +11,9 @@ import java.lang.reflect.InvocationTargetException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 
-import static com.hechu.mindustry.Static.config_folder;
-import static com.hechu.mindustry.Static.logger;
-import static com.hechu.mindustry.Static.MOD_ID;
+import static com.hechu.mindustry.MindustryConstants.config_folder;
+import static com.hechu.mindustry.MindustryConstants.logger;
+import static com.hechu.mindustry.MindustryConstants.MOD_ID;
 
 public class ConfigHandler {
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().excludeFieldsWithoutExposeAnnotation().create();

@@ -1,6 +1,6 @@
 package com.hechu.mindustry.world.level.block;
 
-import com.hechu.mindustry.Static;
+import com.hechu.mindustry.MindustryConstants;
 import com.hechu.mindustry.world.level.block.multiblock.KilnBlock;
 import com.hechu.mindustry.world.level.block.multiblock.TestMultiblockCoreBlock;
 import com.hechu.mindustry.world.level.block.multiblock.TestTurretMultiblockEntityBlock;
@@ -12,7 +12,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
 public class BlockRegister {
-    public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, Static.MOD_ID);
+    public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, MindustryConstants.MOD_ID);
     public static final RegistryObject<Block> MECHANICAL_DRILL = BLOCKS.register(MechanicalDrillBlock.NAME, MechanicalDrillBlock::new);
     public static final RegistryObject<Block> PNEUMATIC_DRILL = BLOCKS.register(PneumaticDrillBlock.NAME, PneumaticDrillBlock::new);
     public static final RegistryObject<Block> HEALTH_TEST = BLOCKS.register(HealthTestBlock.NAME, HealthTestBlock::new);

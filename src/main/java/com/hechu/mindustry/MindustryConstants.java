@@ -6,7 +6,7 @@ import org.slf4j.Logger;
 
 import java.nio.file.Path;
 
-public class Static {
+public class MindustryConstants {
     public static final Logger logger = LogUtils.getLogger();
     public static final String MOD_ID = "mindustry";
     public static Path config_folder;

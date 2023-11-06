@@ -1,6 +1,6 @@
 package com.hechu.mindustry.world.item;
 
-import com.hechu.mindustry.Static;
+import com.hechu.mindustry.MindustryConstants;
 import com.hechu.mindustry.world.item.drill.MechanicalDrill;
 import com.hechu.mindustry.world.item.drill.PneumaticDrill;
 import com.hechu.mindustry.world.item.multiblock.Kiln;
@@ -17,7 +17,7 @@ import net.minecraftforge.registries.RegistryObject;
 import static com.hechu.mindustry.world.level.block.BlockRegister.KILN_BLOCK;
 
 public class ItemRegister {
-    public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, Static.MOD_ID);
+    public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, MindustryConstants.MOD_ID);
     public static final RegistryObject<Item> MECHANICAL_DRILL_ITEM = ITEMS.register(MechanicalDrill.NAME,
             () -> new MechanicalDrill(BlockRegister.MECHANICAL_DRILL.get(), new Item.Properties()));
     public static final RegistryObject<Item> PNEUMATIC_DRILL_ITEM = ITEMS.register(PneumaticDrill.NAME,

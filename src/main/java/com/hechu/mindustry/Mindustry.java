@@ -27,12 +27,12 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.fml.loading.FMLPaths;
 import software.bernie.geckolib.GeckoLib;
 
-@Mod(Static.MOD_ID)
+@Mod(MindustryConstants.MOD_ID)
 public class Mindustry {
     public Mindustry() {
-        Static.config_folder = FMLPaths.GAMEDIR.get().resolve("config/" + Static.MOD_ID);
-        Utils.checkFolder(Static.config_folder);
-        Static.commonConfig = ConfigHandler.readConfig("common", CommonConfig.class);
+        MindustryConstants.config_folder = FMLPaths.GAMEDIR.get().resolve("config/" + MindustryConstants.MOD_ID);
+        Utils.checkFolder(MindustryConstants.config_folder);
+        MindustryConstants.commonConfig = ConfigHandler.readConfig("common", CommonConfig.class);
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
 
         GeckoLib.initialize();
@@ -59,7 +59,7 @@ public class Mindustry {
         }
     }
 
-    @Mod.EventBusSubscriber(modid = Static.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
+    @Mod.EventBusSubscriber(modid = MindustryConstants.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
     public static class ClientModEvents {
         @SubscribeEvent
         public static void onRegisterRenderers(EntityRenderersEvent.RegisterRenderers event) {

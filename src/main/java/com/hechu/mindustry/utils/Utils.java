@@ -12,7 +12,7 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.hechu.mindustry.Static.logger;
+import static com.hechu.mindustry.MindustryConstants.logger;
 
 public class Utils {
     public static boolean @NotNull [] checkDirection(Entity entity) {

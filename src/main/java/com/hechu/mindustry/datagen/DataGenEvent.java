@@ -1,6 +1,6 @@
 package com.hechu.mindustry.datagen;
 
-import com.hechu.mindustry.Static;
+import com.hechu.mindustry.MindustryConstants;
 import com.hechu.mindustry.annotation.Block;
 import com.hechu.mindustry.world.level.block.BlockRegister;
 import com.hechu.mindustry.world.level.block.Equipment.PowerNodeBlock;
@@ -35,24 +35,24 @@ public class DataGenEvent {
 
     public static class MindustryItemModelProvider extends ItemModelProvider {
         public MindustryItemModelProvider(PackOutput packOutput, ExistingFileHelper existingFileHelper) {
-            super(packOutput, Static.MOD_ID, existingFileHelper);
+            super(packOutput, MindustryConstants.MOD_ID, existingFileHelper);
         }
 
         @Override
         protected void registerModels() {
-            this.singleTexture("copper", new ResourceLocation("item/generated"), "layer0", new ResourceLocation(Static.MOD_ID, "item/" + "copper"));
-            this.withExistingParent(PowerNodeBlock.NAME, new ResourceLocation(Static.MOD_ID, "block/power_node"));
+            this.singleTexture("copper", new ResourceLocation("item/generated"), "layer0", new ResourceLocation(MindustryConstants.MOD_ID, "item/" + "copper"));
+            this.withExistingParent(PowerNodeBlock.NAME, new ResourceLocation(MindustryConstants.MOD_ID, "block/power_node"));
         }
     }
 
     public static class MindustrySimpleBlockModelProvider extends BlockModelProvider {
         public MindustrySimpleBlockModelProvider(PackOutput packOutput, ExistingFileHelper existingFileHelper) {
-            super(packOutput, Static.MOD_ID, existingFileHelper);
+            super(packOutput, MindustryConstants.MOD_ID, existingFileHelper);
         }
 
         @Override
         protected void registerModels() {
-            this.cubeAll(PowerNodeBlock.NAME, new ResourceLocation(Static.MOD_ID, "block/power_node"));
+            this.cubeAll(PowerNodeBlock.NAME, new ResourceLocation(MindustryConstants.MOD_ID, "block/power_node"));
             registerMutilationModels();
         }
 
@@ -196,7 +196,7 @@ public class DataGenEvent {
 
     public static class MindustrySimpleBlockStateProvider extends BlockStateProvider {
         public MindustrySimpleBlockStateProvider(PackOutput output, ExistingFileHelper exFileHelper) {
-            super(output, Static.MOD_ID, exFileHelper);
+            super(output, MindustryConstants.MOD_ID, exFileHelper);
         }
 
         @Override
