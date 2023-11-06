@@ -24,7 +24,7 @@ public class MindustryPlugin implements IWailaPlugin {
     public void register(IWailaCommonRegistration registration) {
         registration.registerBlockDataProvider(DrillComponentProvider.INSTANCE, DrillBlockEntity.class);
         registration.registerBlockDataProvider(HealthBlockComponentProvider.INSTANCE, BlockEntity.class);
-        registration.registerBlockDataProvider(CraftingBlockComponentProvider.INSTANCE, BlockEntity.class);
+        registration.registerBlockDataProvider(CraftingBlockComponentProvider.INSTANCE, MultiblockCraftingBlockEntity.class);
     }
 
     @Override

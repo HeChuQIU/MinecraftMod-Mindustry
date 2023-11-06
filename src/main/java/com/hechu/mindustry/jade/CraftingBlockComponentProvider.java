@@ -55,8 +55,8 @@ public enum CraftingBlockComponentProvider implements IBlockComponentProvider, I
 
     @Override
     public void appendServerData(CompoundTag data, BlockAccessor accessor) {
-        MultiblockCraftingBlockEntity blockEntity = (MultiblockCraftingBlockEntity)accessor.getBlockEntity();
-        data.putInt("currentCraftTicks",blockEntity.getCurrentCraftTicks());
+        if (accessor.getBlockEntity() instanceof MultiblockCraftingBlockEntity blockEntity)
+            data.putInt("currentCraftTicks", blockEntity.getCurrentCraftTicks());
     }
 
     @Override
