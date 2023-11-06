@@ -1,4 +1,4 @@
-package com.hechu.mindustry.world.item;
+package com.hechu.mindustry.world.item.multiblock;
 
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;

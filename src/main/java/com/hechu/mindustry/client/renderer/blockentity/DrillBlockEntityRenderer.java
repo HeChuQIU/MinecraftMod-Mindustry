@@ -20,8 +20,8 @@ public abstract class DrillBlockEntityRenderer<T extends DrillBlockEntity & GeoA
 
     @Override
     public boolean shouldRender(T blockEntity, @NotNull Vec3 p_173569_) {
-        if(DrillBlock.DrillPart.MASTER.equals(blockEntity.getBlockState().getValue(PART)))
-            return super.shouldRender(blockEntity,p_173569_);
+        if (DrillBlock.DrillPart.MASTER.equals(blockEntity.getBlockState().getValue(PART)))
+            return super.shouldRender(blockEntity, p_173569_);
         else
             return false;
     }

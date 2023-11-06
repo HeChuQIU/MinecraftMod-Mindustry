@@ -1,0 +1,15 @@
+{
+  "block.mindustry.health_test": "生命测试",
+  "block.mindustry.mechanical_drill": "机械钻头",
+  "block.mindustry.pneumatic_drill": "气动钻头",
+  "block.mindustry.power_node": "能量节点",
+  "block.mindustry.turret": "炮台",
+  "block.mindustry.kiln_block": "窑",
+  "config.jade.plugin_mindustry.crafting_block": "显示工厂制作进度",
+  "config.jade.plugin_mindustry.drill": "显示钻头属性",
+  "config.jade.plugin_mindustry.health_block": "显示血量",
+  "itemGroup.mindustry.mindustry": "Mindustry",
+  "mindustry.block_health": "生命值 : %d / %d",
+  "mindustry.drill_progress": "%d%%已挖掘",
+  "mindustry.drill_speed": "挖掘速度 : %d/秒"
+}

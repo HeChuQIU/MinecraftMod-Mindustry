@@ -1,0 +1,15 @@
+{
+  "block.mindustry.health_test": "health test",
+  "block.mindustry.mechanical_drill": "Mechanical Drill",
+  "block.mindustry.pneumatic_drill": "Pneumatic Drill",
+  "block.mindustry.power_node": "Power Node",
+  "block.mindustry.turret": "Turret",
+  "block.mindustry.kiln_block": "Kiln",
+  "config.jade.plugin_mindustry.crafting_block": "Show Factory Progress",
+  "config.jade.plugin_mindustry.drill": "Show Drill Detail",
+  "config.jade.plugin_mindustry.health_block": "Show Block Health",
+  "itemGroup.mindustry.mindustry": "Mindustry",
+  "mindustry.block_health": "BlockHealth : %d / %d",
+  "mindustry.drill_progress": "Progress %d%%",
+  "mindustry.drill_speed": "Mining Speed : %d items/s"
+}

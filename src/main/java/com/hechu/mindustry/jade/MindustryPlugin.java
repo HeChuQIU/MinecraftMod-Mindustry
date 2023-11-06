@@ -1,6 +1,6 @@
 package com.hechu.mindustry.jade;
 
-import com.hechu.mindustry.Mindustry;
+import com.hechu.mindustry.Static;
 import com.hechu.mindustry.world.level.block.DrillBlock;
 import com.hechu.mindustry.world.level.block.entity.DrillBlockEntity;
 import com.hechu.mindustry.world.level.block.entity.multiblock.MultiblockCraftingBlockEntity;
@@ -16,9 +16,9 @@ import snownee.jade.api.WailaPlugin;
 @WailaPlugin
 public class MindustryPlugin implements IWailaPlugin {
 
-    public static final ResourceLocation Drill = new ResourceLocation(Mindustry.MODID, "drill");
-    public static final ResourceLocation HealthBlock = new ResourceLocation(Mindustry.MODID, "health_block");
-    public static final ResourceLocation CraftingBlock = new ResourceLocation(Mindustry.MODID, "crafting_block");
+    public static final ResourceLocation Drill = new ResourceLocation(Static.MOD_ID, "drill");
+    public static final ResourceLocation HealthBlock = new ResourceLocation(Static.MOD_ID, "health_block");
+    public static final ResourceLocation CraftingBlock = new ResourceLocation(Static.MOD_ID, "crafting_block");
 
     @Override
     public void register(IWailaCommonRegistration registration) {

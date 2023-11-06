@@ -39,7 +39,6 @@ import java.util.stream.Collectors;
 import static com.hechu.mindustry.world.level.block.DrillBlock.PART;
 
 public abstract class DrillBlockEntity extends BlockEntity implements GeoBlockEntity {
-    public static final Logger LOGGER = LogUtils.getLogger();
     public static final int SLOT_OUTPUT_COUNT = 1;
     private static final String ITEMS_OUTPUT_TAG = "item_output_tag";
     private static final String MASTER_POS = "master_pos";
@@ -134,12 +133,6 @@ public abstract class DrillBlockEntity extends BlockEntity implements GeoBlockEn
     public void tick() {
         if (level == null)
             return;
-//        if (!level.isClientSide
-//                && !(level.getBlockEntity(masterPos) instanceof DrillBlockEntity
-//                || (level.getBlockState(masterPos).getValue(PART).equals(DrillBlock.DrillPart.MASTER)))) {
-//            level.removeBlock(getBlockPos(), false);
-//        }
-//        level.removeBlock(getBlockPos(), false);
         if (masterPos == null || !level.getBlockState(masterPos).hasProperty(PART) || !DrillBlock.DrillPart.MASTER.equals(level.getBlockState(masterPos).getValue(PART)))
             level.destroyBlock(getBlockPos(), false);
         if (!getBlockState().getValue(PART).equals(DrillBlock.DrillPart.MASTER))
@@ -182,65 +175,66 @@ public abstract class DrillBlockEntity extends BlockEntity implements GeoBlockEn
         if (!fluidStack.isEmpty())
             miningSpeed *= 2.56F;
         if (level.isClientSide) {
-//            LocalPlayer localPlayer = Minecraft.getInstance().player;
+            if (miningBlocksPos == null) {
+                progress = 0;
+                return;
+            }
             if (isMining) {
                 progress += miningSpeed / 20;
-                /*if (localPlayer != null)
-                    level.destroyBlockProgress(localPlayer.getId(), miningBlockPos, (int) (progress * 10));*/
-                if (progress >= 1) {
-                    if (miningBlockState != null)
-                        for (BlockPos pos : miningBlocksPos) {
-                            level.addDestroyBlockEffect(pos, miningBlockState);
-                        }
-                    progress = 0;
+                if (progress < 1) {
+                    return;
                 }
-            } else {
+                for (BlockPos pos : miningBlocksPos) {
+                    level.addDestroyBlockEffect(pos, miningBlockState);
+                }
                 progress = 0;
+                return;
             }
-            /*else {
-                if (localPlayer != null)
-                    level.destroyBlockProgress(localPlayer.getId(), miningBlockPos, 10);
-            }*/
+            progress = 0;
             return;
         }
         // 服务器端
         if (isMining) {
             progress += miningSpeed / 20;
-            if (progress >= 1) {
-                for (ItemStack drop : Block.getDrops(miningBlockState, (ServerLevel) level, miningBlocksPos.get(0), null)) {
-                    //Block.popResource(level, getBlockPos().above(), drop);
-                    outputItems.insertItem(0, drop, false);
-                }
-                level.playSound(null, getBlockPos(), SoundEvents.STONE_BREAK, SoundSource.BLOCKS, 1f, 1f);
-                progress = 0;
+            if (progress < 1) {
+                return;
             }
-        } else {
+            for (ItemStack drop : Block.getDrops(miningBlockState, (ServerLevel) level, miningBlocksPos.get(0), null)) {
+                //Block.popResource(level, getBlockPos().above(), drop);
+                outputItems.insertItem(0, drop, false);
+            }
+            level.playSound(null, getBlockPos(), SoundEvents.STONE_BREAK, SoundSource.BLOCKS, 1f, 1f);
             progress = 0;
+            return;
         }
+        progress = 0;
     }
 
     public float getProgress() {
-        if (getBlockState().getValue(PART).equals(DrillBlock.DrillPart.MASTER))
+        if (getBlockState().getValue(PART).equals(DrillBlock.DrillPart.MASTER)) {
             return progress;
-        else if (level != null) {
+        }
+        if (level != null) {
             return ((DrillBlockEntity) Objects.requireNonNull(level.getBlockEntity(masterPos))).getProgress();
         }
         return 0;
     }
 
     public BlockState getMiningBlockState() {
-        if (getBlockState().getValue(PART).equals(DrillBlock.DrillPart.MASTER))
+        if (getBlockState().getValue(PART).equals(DrillBlock.DrillPart.MASTER)) {
             return miningBlockState;
-        else if (level != null) {
+        }
+        if (level != null) {
             return ((DrillBlockEntity) Objects.requireNonNull(level.getBlockEntity(masterPos))).getMiningBlockState();
         }
         return null;
     }
 
     public float getMiningSpeed() {
-        if (getBlockState().getValue(PART).equals(DrillBlock.DrillPart.MASTER))
+        if (getBlockState().getValue(PART).equals(DrillBlock.DrillPart.MASTER)) {
             return miningSpeed;
-        else if (level != null) {
+        }
+        if (level != null) {
             return ((DrillBlockEntity) Objects.requireNonNull(level.getBlockEntity(masterPos))).getMiningSpeed();
         }
         return 0;

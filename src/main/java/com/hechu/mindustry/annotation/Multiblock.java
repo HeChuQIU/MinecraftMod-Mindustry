@@ -1,7 +1,5 @@
 package com.hechu.mindustry.annotation;
 
-import net.minecraft.core.Vec3i;
-
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
