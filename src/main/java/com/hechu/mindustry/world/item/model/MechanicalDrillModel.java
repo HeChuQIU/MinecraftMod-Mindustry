@@ -4,8 +4,8 @@ import com.hechu.mindustry.world.item.drill.MechanicalDrill;
 
 public class MechanicalDrillModel extends DrillModel<MechanicalDrill> {
     public MechanicalDrillModel() {
-        super("geo/2x2drill_template.geo.json",
+        super("geo/mechanical_drill.geo.json",
                 "textures/block/mechanical_drill.png",
-                "animations/2x2drill_template.animation.json");
+                "animations/mechanical_drill.animation.json");
     }
 }

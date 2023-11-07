@@ -24,7 +24,7 @@ public class PneumaticDrill extends Drill {
 
     private final AnimatableInstanceCache cache = new SingletonAnimatableInstanceCache(this);
 
-    private static final RawAnimation ROTATION_ANIMS = RawAnimation.begin().thenLoop("2x2drill_template.rotate");
+    private static final RawAnimation ROTATION_ANIMS = RawAnimation.begin().thenLoop("pneumatic_drill.rotate");
 
     @Override
     public void initializeClient(@NotNull Consumer<IClientItemExtensions> consumer) {

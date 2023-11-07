@@ -5,6 +5,8 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec2;
@@ -31,6 +33,7 @@ public enum DrillComponentProvider implements IBlockComponentProvider, IServerDa
             tooltip.add(icon);
             tooltip.append(Component.translatable("mindustry.drill_progress", (int) (drillBlockEntity.getProgress() * 100)));
             tooltip.add(Component.translatable("mindustry.drill_speed", String.format("%.2f", drillBlockEntity.getMiningSpeed())));
+            tooltip.add(Component.translatable("mindustry.stored_item", accessor.getServerData().getInt("storeItem"), 64));
         }
     }
 
@@ -39,6 +42,7 @@ public enum DrillComponentProvider implements IBlockComponentProvider, IServerDa
         DrillBlockEntity drill= (DrillBlockEntity) accessor.getBlockEntity();
         data.putFloat("progress", drill.getProgress());
         data.putFloat("miningSpeed", drill.getMiningSpeed());
+        data.putInt("storeItem", drill.getStoreItemNumber());
     }
 
     @Override

@@ -3,40 +3,28 @@
 	"minecraft:geometry": [
 		{
 			"description": {
-				"identifier": "geometry.unknown",
-				"texture_width": 64,
-				"texture_height": 32,
+				"identifier": "geometry.mechanical_drill",
+				"texture_width": 128,
+				"texture_height": 128,
 				"visible_bounds_width": 2,
-				"visible_bounds_height": 3.5,
-				"visible_bounds_offset": [0, 1.25, 0]
+				"visible_bounds_height": 2.5,
+				"visible_bounds_offset": [0, 0.75, 0]
 			},
 			"bones": [
 				{
 					"name": "mechanical_drill",
-					"pivot": [0, 12.0625, 0],
+					"pivot": [0, 8, 0],
 					"cubes": [
-						{"origin": [-8, 0, -8], "size": [16, 16, 16], "uv": [0, 0]},
-						{
-							"origin": [-8, 16.125, -8],
-							"size": [16, 0, 16],
-							"uv": {
-								"up": {"uv": [0, 0], "uv_size": [16, 16]}
-							}
-						}
+						{"origin": [-24, 16.125, -8], "size": [32, 0, 32], "uv": [-32, 64]},
+						{"origin": [-24, 0, -8], "size": [32, 16, 32], "uv": [0, 0]}
 					]
 				},
 				{
-					"name": "rotator",
+					"name": "rotate",
 					"parent": "mechanical_drill",
-					"pivot": [0, 16, 0],
+					"pivot": [-8, 16.0625, 8],
 					"cubes": [
-						{
-							"origin": [-8, 16.0625, -8],
-							"size": [16, 0, 16],
-							"uv": {
-								"up": {"uv": [48, 0], "uv_size": [16, 16]}
-							}
-						}
+						{"origin": [-24, 16.0625, -8], "size": [32, 0, 32], "uv": [-32, 96]}
 					]
 				}
 			]

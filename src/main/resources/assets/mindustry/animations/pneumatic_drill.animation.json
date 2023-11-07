@@ -1,11 +1,11 @@
 {
 	"format_version": "1.8.0",
 	"animations": {
-		"2x2drill_template.rotate": {
+		"pneumatic_drill.rotate": {
 			"loop": true,
 			"animation_length": 4,
 			"bones": {
-				"rotation": {
+				"rotate": {
 					"rotation": {
 						"0.0": {
 							"vector": [0, 0, 0]
@@ -13,11 +13,6 @@
 						"4.0": {
 							"vector": [0, -360, 0]
 						}
-					}
-				},
-				"2x2drill_template": {
-					"position": {
-						"vector": [0, "- 0.125", 0]
 					}
 				}
 			}
