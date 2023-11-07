@@ -216,6 +216,9 @@ dependencies {
     // to get the latest version's jade_id
     implementation fg.deobf("curse.maven:jade-324717:${jade_id}")
     implementation fg.deobf("curse.maven:just-enough-characters-250702:${justEnoughCharacters_id}")
+
+    implementation fg.deobf("curse.maven:kiwi-303657:${kiwi_fileId}")
+//    annotationProcessor "curse.maven:kiwi-303657:${kiwi_fileId}"
     // Example mod dependency with JEI - using fg.deobf() ensures the dependency is remapped to your development mappings
     // The JEI API is declared for compile time use, while the full JEI artifact is used at runtime
     // compileOnly fg.deobf("mezz.jei:jei-${mc_version}-common-api:${jei_version}")
