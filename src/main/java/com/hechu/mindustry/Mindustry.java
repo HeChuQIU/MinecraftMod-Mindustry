@@ -6,14 +6,10 @@ import com.hechu.mindustry.client.renderer.blockentity.PowerNodeRenderer;
 import com.hechu.mindustry.client.renderer.blockentity.TurretRenderer;
 import com.hechu.mindustry.config.CommonConfig;
 import com.hechu.mindustry.config.ConfigHandler;
-import com.hechu.mindustry.creative.CreativeModeTabRegister;
 import com.hechu.mindustry.utils.Utils;
 import com.hechu.mindustry.world.entity.EntityRegister;
 import com.hechu.mindustry.world.entity.turrets.Duo;
 import com.hechu.mindustry.world.entity.turrets.DuoRenderer;
-import com.hechu.mindustry.world.item.ItemRegister;
-import com.hechu.mindustry.world.level.block.BlockRegister;
-import com.hechu.mindustry.world.level.block.entity.BlockEntityRegister;
 import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.EntityRenderersEvent;
@@ -37,26 +33,9 @@ public class Mindustry {
 
         GeckoLib.initialize();
 
-        modEventBus.addListener(this::registerTabs);
-
-        BlockRegister.BLOCKS.register(modEventBus);
-
-        ItemRegister.ITEMS.register(modEventBus);
-
         EntityRegister.ENTITIES.register(modEventBus);
 
-        BlockEntityRegister.BLOCK_ENTITIES.register(modEventBus);
-
-        CreativeModeTabRegister.CREATIVE_MODE_TABS.register(modEventBus);
-
         MinecraftForge.EVENT_BUS.register(this);
-    }
-
-    private void registerTabs(final BuildCreativeModeTabContentsEvent event) {
-        if (event.getTabKey() == CreativeModeTabs.INGREDIENTS) {
-            event.accept(ItemRegister.MECHANICAL_DRILL_ITEM.get());
-            event.accept(ItemRegister.PNEUMATIC_DRILL_ITEM.get());
-        }
     }
 
     @Mod.EventBusSubscriber(modid = MindustryConstants.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
@@ -64,10 +43,10 @@ public class Mindustry {
         @SubscribeEvent
         public static void onRegisterRenderers(EntityRenderersEvent.RegisterRenderers event) {
 
-            event.registerBlockEntityRenderer(BlockEntityRegister.MECHANICAL_DRILL_BLOCK_ENTITY.get(), context -> new MechanicalDrillBlockEntityRenderer());
-            event.registerBlockEntityRenderer(BlockEntityRegister.PNEUMATIC_DRILL_BLOCK_ENTITY.get(), context -> new PneumaticDrillBlockEntityRenderer());
-            event.registerBlockEntityRenderer(BlockEntityRegister.TURRET_BLOCK_ENTITY.get(), TurretRenderer::new);
-            event.registerBlockEntityRenderer(BlockEntityRegister.POWER_NODE_BLOCK_ENTITY.get(), pContext -> new PowerNodeRenderer());
+            event.registerBlockEntityRenderer(MindustryModule.MECHANICAL_DRILL_BLOCK_ENTITY.get(), context -> new MechanicalDrillBlockEntityRenderer());
+            event.registerBlockEntityRenderer(MindustryModule.PNEUMATIC_DRILL_BLOCK_ENTITY.get(), context -> new PneumaticDrillBlockEntityRenderer());
+            event.registerBlockEntityRenderer(MindustryModule.TURRET_BLOCK_ENTITY.get(), TurretRenderer::new);
+            event.registerBlockEntityRenderer(MindustryModule.POWER_NODE_BLOCK_ENTITY.get(), pContext -> new PowerNodeRenderer());
 
             event.registerEntityRenderer(EntityRegister.DUO.get(), DuoRenderer::new);
         }

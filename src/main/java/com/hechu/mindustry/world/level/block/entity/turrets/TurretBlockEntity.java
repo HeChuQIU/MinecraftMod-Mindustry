@@ -1,9 +1,9 @@
 package com.hechu.mindustry.world.level.block.entity.turrets;
 
+import com.hechu.mindustry.MindustryModule;
 import com.hechu.mindustry.utils.capabilities.HealthHandler;
 import com.hechu.mindustry.utils.capabilities.IHealthHandler;
 import com.hechu.mindustry.utils.capabilities.MindustryCapabilities;
-import com.hechu.mindustry.world.level.block.entity.BlockEntityRegister;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -37,7 +37,7 @@ public class TurretBlockEntity extends BlockEntity {
     public float tRot;
 
     public TurretBlockEntity(BlockPos pPos, BlockState pBlockState) {
-        super(BlockEntityRegister.TURRET_BLOCK_ENTITY.get(), pPos, pBlockState);
+        super(MindustryModule.TURRET_BLOCK_ENTITY.get(), pPos, pBlockState);
     }
 
     private final LazyOptional<IHealthHandler> healthHandler = LazyOptional.of(HealthHandler::new);

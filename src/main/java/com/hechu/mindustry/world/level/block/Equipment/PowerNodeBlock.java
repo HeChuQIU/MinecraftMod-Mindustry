@@ -1,7 +1,7 @@
 package com.hechu.mindustry.world.level.block.Equipment;
 
+import com.hechu.mindustry.MindustryModule;
 import com.hechu.mindustry.utils.capabilities.MindustryCapabilities;
-import com.hechu.mindustry.world.level.block.entity.BlockEntityRegister;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseEntityBlock;
@@ -38,7 +38,7 @@ public class PowerNodeBlock extends BaseEntityBlock {
     @Nullable
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(@NotNull Level pLevel, @NotNull BlockState pState, @NotNull BlockEntityType<T> pBlockEntityType) {
-        return createTickerHelper(pBlockEntityType, BlockEntityRegister.POWER_NODE_BLOCK_ENTITY.get(), PowerNodeBlockEntity::tick);
+        return createTickerHelper(pBlockEntityType, MindustryModule.POWER_NODE_BLOCK_ENTITY.get(), PowerNodeBlockEntity::tick);
     }
 
     @Override
