@@ -1,8 +1,8 @@
 package com.hechu.mindustry.datagen;
 
+import com.hechu.mindustry.MindustryModule;
 import com.hechu.mindustry.MindustryConstants;
 import com.hechu.mindustry.annotation.Block;
-import com.hechu.mindustry.world.level.block.BlockRegister;
 import com.hechu.mindustry.world.level.block.Equipment.PowerNodeBlock;
 import com.hechu.mindustry.world.level.block.multiblock.MultiblockCoreBlock;
 import net.minecraft.core.Direction;
@@ -19,7 +19,6 @@ import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.data.event.GatherDataEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.registries.RegistryObject;
 
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
 public class DataGenEvent {
@@ -57,8 +56,7 @@ public class DataGenEvent {
         }
 
         void registerMutilationModels() {
-            BlockRegister.BLOCKS.getEntries().stream()
-                    .map(RegistryObject::get)
+            MindustryModule.getAllBlocks().stream()
                     .filter(block -> block instanceof MultiblockCoreBlock)
                     .map(block -> (MultiblockCoreBlock) block)
                     .forEach(block -> {
@@ -201,13 +199,12 @@ public class DataGenEvent {
 
         @Override
         protected void registerStatesAndModels() {
-            this.simpleBlock(BlockRegister.POWER_NODE.get());
+            this.simpleBlock(MindustryModule.POWER_NODE.get());
             registerMultiblockStatesAndModels();
         }
 
         void registerMultiblockStatesAndModels() {
-            BlockRegister.BLOCKS.getEntries().stream()
-                    .map(RegistryObject::get)
+            MindustryModule.getAllBlocks().stream()
                     .filter(block -> block instanceof MultiblockCoreBlock)
                     .map(block -> (MultiblockCoreBlock) block)
                     .forEach(block -> {

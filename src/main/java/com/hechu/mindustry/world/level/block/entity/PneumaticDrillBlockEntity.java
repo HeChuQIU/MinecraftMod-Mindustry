@@ -1,5 +1,6 @@
 package com.hechu.mindustry.world.level.block.entity;
 
+import com.hechu.mindustry.MindustryModule;
 import net.minecraft.core.BlockPos;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.level.block.state.BlockState;
@@ -9,13 +10,11 @@ import software.bernie.geckolib.core.animation.RawAnimation;
 
 import java.util.Arrays;
 
-import static com.hechu.mindustry.world.level.block.entity.BlockEntityRegister.PNEUMATIC_DRILL_BLOCK_ENTITY;
-
 public class PneumaticDrillBlockEntity extends DrillBlockEntity {
     public static final String NAME = "pneumatic_drill";
 
     public PneumaticDrillBlockEntity(BlockPos pos, BlockState state) {
-        super(PNEUMATIC_DRILL_BLOCK_ENTITY.get(),pos, state,
+        super(MindustryModule.PNEUMATIC_DRILL_BLOCK_ENTITY.get(),pos, state,
                 Arrays.stream(new BlockPos[]{pos.below(),pos.below().east(),pos.below().south(),pos.below().east().south()}).toList(),
                 state1 -> state1.is(BlockTags.SAND) ||
                         state1.is(BlockTags.COAL_ORES) ||

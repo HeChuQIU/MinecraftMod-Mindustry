@@ -1,7 +1,7 @@
 package com.hechu.mindustry.world.level.block.turrets;
 
+import com.hechu.mindustry.MindustryModule;
 import com.hechu.mindustry.utils.capabilities.MindustryCapabilities;
-import com.hechu.mindustry.world.level.block.entity.BlockEntityRegister;
 import com.hechu.mindustry.world.level.block.entity.turrets.TurretBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
@@ -37,8 +37,8 @@ public class TurretBlock extends BaseEntityBlock {
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(@NotNull Level level, @NotNull BlockState state, @NotNull BlockEntityType<T> type) {
         return level.isClientSide?
-                createTickerHelper(type, BlockEntityRegister.TURRET_BLOCK_ENTITY.get(), TurretBlockEntity::clientTick):
-                createTickerHelper(type, BlockEntityRegister.TURRET_BLOCK_ENTITY.get(), TurretBlockEntity::serverTick);
+                createTickerHelper(type, MindustryModule.TURRET_BLOCK_ENTITY.get(), TurretBlockEntity::clientTick):
+                createTickerHelper(type, MindustryModule.TURRET_BLOCK_ENTITY.get(), TurretBlockEntity::serverTick);
     }
 
     @Override

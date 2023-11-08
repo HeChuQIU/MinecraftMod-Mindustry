@@ -1,7 +1,7 @@
 package com.hechu.mindustry.world.level.block.Equipment;
 
 import com.google.common.collect.Lists;
-import com.hechu.mindustry.world.level.block.entity.BlockEntityRegister;
+import com.hechu.mindustry.MindustryModule;
 import com.mojang.logging.LogUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
@@ -26,7 +26,7 @@ public class PowerNodeBlockEntity extends BlockEntity {
     private List<PowerNodeBeamSection> checkingBeamSections = Lists.newArrayList();
 
     public PowerNodeBlockEntity(BlockPos pPos, BlockState pBlockState) {
-        super(BlockEntityRegister.POWER_NODE_BLOCK_ENTITY.get(), pPos, pBlockState);
+        super(MindustryModule.POWER_NODE_BLOCK_ENTITY.get(), pPos, pBlockState);
     }
 
     public static void tick(Level pLevel, BlockPos pPos, BlockState pState, PowerNodeBlockEntity pBlockEntity) {
