@@ -3,7 +3,6 @@ package com.hechu.mindustry.world.entity.projectile;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.projectile.AbstractHurtingProjectile;
-import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.level.Level;
 
 public class Bullet extends AbstractHurtingProjectile {

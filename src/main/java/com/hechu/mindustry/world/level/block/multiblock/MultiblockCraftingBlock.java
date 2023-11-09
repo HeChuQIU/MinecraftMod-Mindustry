@@ -1,15 +1,11 @@
 package com.hechu.mindustry.world.level.block.multiblock;
 
 import com.hechu.mindustry.world.level.block.entity.multiblock.MultiblockCraftingBlockEntity;
-import com.hechu.mindustry.world.level.block.entity.multiblock.MultiblockEntity;
-import net.minecraft.core.Vec3i;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
-import net.minecraft.world.level.block.entity.TickingBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 

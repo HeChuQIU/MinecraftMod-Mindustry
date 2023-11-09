@@ -8,16 +8,15 @@ import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseEntityBlock;
-import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import snownee.kiwi.block.ModBlock;
+import snownee.kiwi.block.IKiwiBlock;
 
-public class HealthTestBlock extends ModBlock implements EntityBlock {
+public class HealthTestBlock extends BaseEntityBlock implements IKiwiBlock {
     public static final String NAME = "health_test";
 
     public HealthTestBlock() {

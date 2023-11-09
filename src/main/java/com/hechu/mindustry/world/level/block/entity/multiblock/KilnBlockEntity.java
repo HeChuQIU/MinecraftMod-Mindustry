@@ -1,18 +1,16 @@
 package com.hechu.mindustry.world.level.block.entity.multiblock;
 
-import com.hechu.mindustry.MindustryModule;
+import com.hechu.mindustry.kiwi.BlockEntityModule;
 import net.minecraft.core.BlockPos;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.state.BlockState;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
 public class KilnBlockEntity extends MultiblockCraftingBlockEntity {
     public KilnBlockEntity(BlockPos pos, BlockState blockState) {
-        super(MindustryModule.KILN_BLOCK_ENTITY.get(), pos, blockState);
+        super(BlockEntityModule.KILN_BLOCK_ENTITY.get(), pos, blockState);
     }
 
     public static final String NAME = "kiln_block_entity";

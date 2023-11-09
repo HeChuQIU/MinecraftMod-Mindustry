@@ -3,12 +3,10 @@ package com.hechu.mindustry.world.item.drill;
 import com.hechu.mindustry.utils.Utils;
 import com.hechu.mindustry.world.level.block.DrillBlock;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.core.Vec3i;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.client.extensions.common.IClientItemExtensions;
@@ -18,7 +16,6 @@ import software.bernie.geckolib.animatable.GeoItem;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.core.animation.AnimatableManager;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 

@@ -1,6 +1,6 @@
 package com.hechu.mindustry.world.level.block.entity;
 
-import com.hechu.mindustry.MindustryModule;
+import com.hechu.mindustry.kiwi.BlockEntityModule;
 import com.hechu.mindustry.utils.capabilities.HealthHandler;
 import com.hechu.mindustry.utils.capabilities.IHealthHandler;
 import com.hechu.mindustry.utils.capabilities.MindustryCapabilities;
@@ -11,7 +11,6 @@ import net.minecraft.network.Connection;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
-import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
@@ -24,7 +23,7 @@ public class HealthTestBlockEntity extends ModBlockEntity {
     private final LazyOptional<IHealthHandler> healthHandler = LazyOptional.of(HealthHandler::new);
 
     public HealthTestBlockEntity(BlockPos pPos, BlockState pBlockState) {
-        super(MindustryModule.HEALTH_TEST_BLOCK_ENTITY.get(), pPos, pBlockState);
+        super(BlockEntityModule.HEALTH_TEST_BLOCK_ENTITY.get(), pPos, pBlockState);
     }
 
     @Override
