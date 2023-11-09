@@ -1,20 +1,13 @@
 package com.hechu.mindustry.datagen.block;
 
-import com.hechu.mindustry.annotation.Block;
-import com.hechu.mindustry.annotation.Multiblock;
-import com.hechu.mindustry.world.level.block.BlockRegister;
+import com.hechu.mindustry.MindustryModule;
 import com.hechu.mindustry.world.level.block.multiblock.MultiblockCoreBlock;
-import com.hechu.mindustry.world.level.block.multiblock.TestMultiblockCoreBlock;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Vec3i;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraftforge.client.model.generators.BlockModelProvider;
-import net.minecraftforge.client.model.generators.ConfiguredModel;
-import net.minecraftforge.client.model.generators.ModelBuilder;
 import net.minecraftforge.common.data.ExistingFileHelper;
-import net.minecraftforge.registries.RegistryObject;
 
 public class TurretBlockModelGenerator extends BlockModelProvider {
     public TurretBlockModelGenerator(PackOutput output, String modid, ExistingFileHelper existingFileHelper) {
@@ -23,8 +16,7 @@ public class TurretBlockModelGenerator extends BlockModelProvider {
 
     @Override
     protected void registerModels() {
-        BlockRegister.BLOCKS.getEntries().stream()
-                .map(RegistryObject::get)
+        MindustryModule.getAllBlocks().stream()
                 .filter(block -> block instanceof MultiblockCoreBlock)
                 .map(block -> (MultiblockCoreBlock) block)
                 .forEach(block -> {

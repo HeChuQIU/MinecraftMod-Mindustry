@@ -1,5 +1,6 @@
 package com.hechu.mindustry.world.level.block.entity;
 
+import com.hechu.mindustry.MindustryModule;
 import com.hechu.mindustry.utils.capabilities.HealthHandler;
 import com.hechu.mindustry.utils.capabilities.IHealthHandler;
 import com.hechu.mindustry.utils.capabilities.MindustryCapabilities;
@@ -22,7 +23,7 @@ public class HealthTestBlockEntity extends BlockEntity {
     private final LazyOptional<IHealthHandler> healthHandler = LazyOptional.of(HealthHandler::new);
 
     public HealthTestBlockEntity(BlockPos pPos, BlockState pBlockState) {
-        super(BlockEntityRegister.HEALTH_TEST_BLOCK_ENTITY.get(), pPos, pBlockState);
+        super(MindustryModule.HEALTH_TEST_BLOCK_ENTITY.get(), pPos, pBlockState);
     }
 
     @Override
