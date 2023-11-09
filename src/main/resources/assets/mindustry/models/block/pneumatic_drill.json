@@ -1,128 +1,105 @@
 {
-  "parent": "builtin/entity",
-  "texture_size": [
-    128,
-    128
-  ],
-  "textures": {
-    "particle": "minecraft:block/stone"
-  },
-  "display": {
-    "thirdperson_righthand": {
-      "rotation": [
-        75,
-        45,
-        0
-      ],
-      "translation": [
-        -4,
-        4.25,
-        -6.5
-      ],
-      "scale": [
-        0.375,
-        0.375,
-        0.375
-      ]
-    },
-    "thirdperson_lefthand": {
-      "rotation": [
-        75,
-        45,
-        0
-      ],
-      "translation": [
-        0,
-        6.5,
-        -8
-      ],
-      "scale": [
-        0.375,
-        0.375,
-        0.375
-      ]
-    },
-    "firstperson_righthand": {
-      "rotation": [
-        0,
-        45,
-        0
-      ],
-      "translation": [
-        0,
-        -4,
-        0
-      ],
-      "scale": [
-        0.4,
-        0.4,
-        0.4
-      ]
-    },
-    "firstperson_lefthand": {
-      "rotation": [
-        0,
-        225,
-        0
-      ],
-      "translation": [
-        8,
-        -6.5,
-        0
-      ],
-      "scale": [
-        0.4,
-        0.4,
-        0.4
-      ]
-    },
-    "ground": {
-      "translation": [
-        -2,
-        -1,
-        -2
-      ],
-      "scale": [
-        0.25,
-        0.25,
-        0.25
-      ]
-    },
-    "gui": {
-      "rotation": [
-        30,
-        225,
-        0
-      ],
-      "translation": [
-        4,
-        -4,
-        0
-      ],
-      "scale": [
-        0.3125,
-        0.3125,
-        0.3125
-      ]
-    },
-    "head": {
-      "translation": [
-        -8,
-        0,
-        -8
-      ]
-    },
-    "fixed": {
-      "translation": [
-        -4,
-        -4,
-        -4
-      ],
-      "scale": [
-        0.5,
-        0.5,
-        0.5
-      ]
-    }
-  }
+	"credit": "Made with Blockbench",
+	"parent": "builtin/entity",
+	"texture_size": [128, 128],
+	"textures": {
+		"0": "mindustry:block/pneumatic_drill",
+		"particle": "mindustry:block/pneumatic_drill"
+	},
+	"elements": [
+		{
+			"name": "body",
+			"from": [0, 0, 0],
+			"to": [32, 16, 32],
+			"faces": {
+				"north": {"uv": [4, 4, 8, 6], "texture": "#0"},
+				"east": {"uv": [0, 4, 4, 6], "texture": "#0"},
+				"south": {"uv": [12, 4, 16, 6], "texture": "#0"},
+				"west": {"uv": [8, 4, 12, 6], "texture": "#0"},
+				"up": {"uv": [8, 4, 4, 0], "texture": "#0"},
+				"down": {"uv": [12, 0, 8, 4], "texture": "#0"}
+			}
+		},
+		{
+			"name": "static",
+			"from": [0, 16.125, 0],
+			"to": [32, 16.125, 32],
+			"faces": {
+				"north": {"uv": [0, 12, 4, 12], "texture": "#0"},
+				"east": {"uv": [-4, 12, 0, 12], "texture": "#0"},
+				"south": {"uv": [8, 12, 12, 12], "texture": "#0"},
+				"west": {"uv": [4, 12, 8, 12], "texture": "#0"},
+				"up": {"uv": [4, 12, 0, 8], "texture": "#0"},
+				"down": {"uv": [8, 8, 4, 12], "texture": "#0"}
+			}
+		},
+		{
+			"name": "rotate",
+			"from": [0, 16.0625, 0],
+			"to": [32, 16.0625, 32],
+			"faces": {
+				"north": {"uv": [0, 16, 4, 16], "texture": "#0"},
+				"east": {"uv": [-4, 16, 0, 16], "texture": "#0"},
+				"south": {"uv": [8, 16, 12, 16], "texture": "#0"},
+				"west": {"uv": [4, 16, 8, 16], "texture": "#0"},
+				"up": {"uv": [4, 16, 0, 12], "texture": "#0"},
+				"down": {"uv": [8, 12, 4, 16], "texture": "#0"}
+			}
+		}
+	],
+	"display": {
+		"thirdperson_righthand": {
+			"rotation": [75, 45, 0],
+			"translation": [-2.25, 2.75, 0],
+			"scale": [0.1875, 0.1875, 0.1875]
+		},
+		"thirdperson_lefthand": {
+			"rotation": [75, 45, 0],
+			"translation": [0, 4.75, -0.5],
+			"scale": [0.1875, 0.1875, 0.1875]
+		},
+		"firstperson_righthand": {
+			"rotation": [0, 45, 0],
+			"scale": [0.2, 0.2, 0.2]
+		},
+		"firstperson_lefthand": {
+			"rotation": [0, 225, 0],
+			"scale": [0.2, 0.2, 0.2]
+		},
+		"ground": {
+			"translation": [-2, 3, -2.25],
+			"scale": [0.25, 0.25, 0.25]
+		},
+		"gui": {
+			"rotation": [30, 225, 0],
+			"translation": [3.5, -2, 0],
+			"scale": [0.3125, 0.3125, 0.3125]
+		},
+		"head": {
+			"translation": [-3.25, 9.75, -3],
+			"scale": [0.4, 0.4, 0.4]
+		},
+		"fixed": {
+			"rotation": [-90, 0, 0],
+			"translation": [-4, -3.25, 0],
+			"scale": [0.5, 0.5, 0.5]
+		}
+	},
+	"groups": [
+		{
+			"name": "pneumatic_drill",
+			"origin": [0, 0, 0],
+			"color": 0,
+			"children": [
+				0,
+				1,
+				{
+					"name": "rotate",
+					"origin": [0, 0, 0],
+					"color": 0,
+					"children": [2]
+				}
+			]
+		}
+	]
 }

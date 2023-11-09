@@ -5,24 +5,14 @@
 			"loop": true,
 			"animation_length": 4,
 			"bones": {
-				"rotator": {
+				"rotate": {
 					"rotation": {
 						"0.0": {
 							"vector": [0, 0, 0]
 						},
 						"4.0": {
-							"vector": [0, "- 360", 0]
+							"vector": [0, -360, 0]
 						}
-					}
-				},
-				"cube": {
-					"position": {
-						"vector": [0, -0.16, 0]
-					}
-				},
-				"mechanical_drill": {
-					"position": {
-						"vector": [0, -0.16, 0]
 					}
 				}
 			}

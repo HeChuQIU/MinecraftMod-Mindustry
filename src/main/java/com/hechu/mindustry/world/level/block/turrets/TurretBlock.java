@@ -1,12 +1,10 @@
 package com.hechu.mindustry.world.level.block.turrets;
 
-import com.hechu.mindustry.MindustryModule;
 import com.hechu.mindustry.utils.capabilities.MindustryCapabilities;
 import com.hechu.mindustry.world.level.block.entity.turrets.TurretBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseEntityBlock;
-import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
@@ -14,9 +12,9 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import snownee.kiwi.block.ModBlock;
+import snownee.kiwi.block.IKiwiBlock;
 
-public class TurretBlock extends ModBlock implements EntityBlock {
+public class TurretBlock extends BaseEntityBlock implements IKiwiBlock {
 
     public static final String NAME = "turret";
 

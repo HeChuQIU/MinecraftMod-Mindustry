@@ -5,11 +5,38 @@
   "block.mindustry.power_node": "Power Node",
   "block.mindustry.turret": "Turret",
   "block.mindustry.kiln_block": "Kiln",
+  "block.mindustry.coal_ore": "Coal Ore",
+  "block.mindustry.copper_ore": "Copper Ore",
+  "block.mindustry.lead_ore": "Lead Ore",
+  "block.mindustry.scrap_ore": "Scrap Ore",
+  "block.mindustry.thorium_ore": "Thorium Ore",
+  "block.mindustry.titanium_ore": "Titanium Ore",
+
+
+  "item.mindustry.copper": "Copper",
+  "item.mindustry.coal": "Coal",
+  "item.mindustry.lead": "Lead",
+  "item.mindustry.scrap": "Scrap",
+  "item.mindustry.thorium": "Thorium",
+  "item.mindustry.titanium": "Titanium",
+
+  "item.mindustry.graphite": "Graphite",
+  "item.mindustry.meta_glass": "Meta Glass",
+  "item.mindustry.phase_fabric": "Phase Fabric",
+  "item.mindustry.plastanium": "Plastanium",
+  "item.mindustry.pyratite": "Pyratite",
+  "item.mindustry.silicon": "Silicon",
+  "item.mindustry.surge_alloy": "Surge Alloy",
+
   "config.jade.plugin_mindustry.crafting_block": "Show Factory Progress",
   "config.jade.plugin_mindustry.drill": "Show Drill Detail",
   "config.jade.plugin_mindustry.health_block": "Show Block Health",
+
   "itemGroup.mindustry.mindustry": "Mindustry",
+  "itemGroup.mindustry.materials": "Mindustry - Materials",
+
   "mindustry.block_health": "BlockHealth : %d / %d",
   "mindustry.drill_progress": "Progress %d%%",
-  "mindustry.drill_speed": "Mining Speed : %d items/s"
+  "mindustry.drill_speed": "Mining Speed : %d items/s",
+  "mindustry.stored_item": "Item Store : %d / %d"
 }

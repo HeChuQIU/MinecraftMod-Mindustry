@@ -1,6 +1,6 @@
 package com.hechu.mindustry.world.level.block.entity.multiblock;
 
-import com.hechu.mindustry.MindustryModule;
+import com.hechu.mindustry.kiwi.BlockEntityModule;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -18,7 +18,7 @@ public class TestTurretMultiblockEntity extends MultiblockEntity {
     public static final String NAME = "test_turret_multiblock_entity";
 
     public TestTurretMultiblockEntity(BlockPos pos, BlockState blockState) {
-        super(MindustryModule.TEST_TURRET_MULTIBLOCK_ENTITY_BLOCK_ENTITY.get(), pos, blockState);
+        super(BlockEntityModule.TEST_TURRET_MULTIBLOCK_ENTITY_BLOCK_ENTITY.get(), pos, blockState);
     }
 
     @Override

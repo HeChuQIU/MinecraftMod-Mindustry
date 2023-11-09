@@ -4,9 +4,10 @@ import com.hechu.mindustry.annotation.Block;
 import com.hechu.mindustry.world.level.block.entity.multiblock.KilnBlockEntity;
 import net.minecraft.core.Vec3i;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
+import snownee.kiwi.block.IKiwiBlock;
 
 @Block(name = KilnBlock.NAME)
-public class KilnBlock extends MultiblockCraftingBlock<KilnBlockEntity> {
+public class KilnBlock extends MultiblockCraftingBlock<KilnBlockEntity> implements IKiwiBlock {
     public static final String NAME = "kiln_block";
     public static final IntegerProperty PART = IntegerProperty.create("part", 0, 3);
 

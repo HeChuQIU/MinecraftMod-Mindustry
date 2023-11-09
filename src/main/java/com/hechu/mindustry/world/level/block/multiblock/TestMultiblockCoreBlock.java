@@ -1,18 +1,16 @@
 package com.hechu.mindustry.world.level.block.multiblock;
 
 import com.hechu.mindustry.annotation.Block;
-import com.hechu.mindustry.annotation.Multiblock;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Vec3i;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import org.jetbrains.annotations.NotNull;
+import snownee.kiwi.block.IKiwiBlock;
 
 @Block(name = TestMultiblockCoreBlock.NAME)
-public class TestMultiblockCoreBlock extends MultiblockCoreBlock {
+public class TestMultiblockCoreBlock extends MultiblockCoreBlock implements IKiwiBlock {
     public static final String NAME = "test_multiblock_core";
 
     public static final IntegerProperty PART = IntegerProperty.create("part", 0, 15);

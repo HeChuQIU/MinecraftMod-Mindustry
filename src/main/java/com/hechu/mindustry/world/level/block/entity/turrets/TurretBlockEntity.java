@@ -1,6 +1,6 @@
 package com.hechu.mindustry.world.level.block.entity.turrets;
 
-import com.hechu.mindustry.MindustryModule;
+import com.hechu.mindustry.kiwi.BlockEntityModule;
 import com.hechu.mindustry.utils.capabilities.HealthHandler;
 import com.hechu.mindustry.utils.capabilities.IHealthHandler;
 import com.hechu.mindustry.utils.capabilities.MindustryCapabilities;
@@ -17,8 +17,6 @@ import net.minecraft.world.entity.ai.targeting.TargetingConditions;
 import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.entity.projectile.Arrow;
 import net.minecraft.world.level.ClipContext;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.HitResult;
@@ -38,7 +36,7 @@ public class TurretBlockEntity extends ModBlockEntity {
     public float tRot;
 
     public TurretBlockEntity(BlockPos pPos, BlockState pBlockState) {
-        super(MindustryModule.TURRET_BLOCK_ENTITY.get(), pPos, pBlockState);
+        super(BlockEntityModule.TURRET_BLOCK_ENTITY.get(), pPos, pBlockState);
     }
 
     private final LazyOptional<IHealthHandler> healthHandler = LazyOptional.of(HealthHandler::new);

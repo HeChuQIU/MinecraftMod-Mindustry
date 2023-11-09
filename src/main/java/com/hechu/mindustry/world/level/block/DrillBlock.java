@@ -1,18 +1,15 @@
 package com.hechu.mindustry.world.level.block;
 
 import com.hechu.mindustry.utils.Utils;
-import com.hechu.mindustry.world.item.drill.Drill;
 import com.hechu.mindustry.world.level.block.entity.DrillBlockEntity;
 import com.mojang.logging.LogUtils;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.core.Vec3i;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -29,7 +26,6 @@ import org.slf4j.Logger;
 import snownee.kiwi.block.ModBlock;
 
 import java.lang.reflect.Constructor;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 

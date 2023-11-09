@@ -2,7 +2,6 @@ package com.hechu.mindustry.world.level.block.entity;
 
 import com.hechu.mindustry.utils.AdaptedItemHandler;
 import com.hechu.mindustry.world.level.block.DrillBlock;
-import com.mojang.logging.LogUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -25,7 +24,6 @@ import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.slf4j.Logger;
 import software.bernie.geckolib.animatable.GeoBlockEntity;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.core.animation.AnimatableManager;
@@ -238,5 +236,9 @@ public abstract class DrillBlockEntity extends BlockEntity implements GeoBlockEn
             return ((DrillBlockEntity) Objects.requireNonNull(level.getBlockEntity(masterPos))).getMiningSpeed();
         }
         return 0;
+    }
+
+    public int getStoreItemNumber() {
+        return outputItems.getStackInSlot(0).getCount();
     }
 }
