@@ -1,5 +1,7 @@
 package com.hechu.mindustry;
 
+import com.hechu.mindustry.world.item.drill.MechanicalDrill;
+import com.hechu.mindustry.world.item.drill.PneumaticDrill;
 import com.hechu.mindustry.world.level.block.Equipment.PowerNodeBlock;
 import com.hechu.mindustry.world.level.block.Equipment.PowerNodeBlockEntity;
 import com.hechu.mindustry.world.level.block.HealthTestBlock;
@@ -15,9 +17,9 @@ import com.hechu.mindustry.world.level.block.multiblock.KilnBlock;
 import com.hechu.mindustry.world.level.block.multiblock.TestMultiblockCoreBlock;
 import com.hechu.mindustry.world.level.block.multiblock.TestTurretMultiblockEntityBlock;
 import com.hechu.mindustry.world.level.block.turrets.TurretBlock;
-import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -37,14 +39,16 @@ public class MindustryModule extends AbstractModule {
 
     //#region Blocks
     public static final KiwiGO<Block> KILN_BLOCK = go(KilnBlock::new);
+    @KiwiModule.NoItem
     public static final KiwiGO<Block> MECHANICAL_DRILL = go(MechanicalDrillBlock::new);
+    @KiwiModule.NoItem
     public static final KiwiGO<Block> PNEUMATIC_DRILL = go(PneumaticDrillBlock::new);
     public static final KiwiGO<Block> HEALTH_TEST = go(HealthTestBlock::new);
     public static final KiwiGO<Block> TURRET = go(TurretBlock::new);
     public static final KiwiGO<Block> TEST_MULTIBLOCK_CORE = go(TestMultiblockCoreBlock::new);
     public static final KiwiGO<Block> TEST_TURRET_MULTIBLOCK_ENTITY_BLOCK = go(TestTurretMultiblockEntityBlock::new);
     public static final KiwiGO<Block> POWER_NODE = go(PowerNodeBlock::new);
-//#endregion
+    //#endregion
 
     //#region BlockEntities
     public static final KiwiGO<BlockEntityType<MechanicalDrillBlockEntity>> MECHANICAL_DRILL_BLOCK_ENTITY =
@@ -63,14 +67,21 @@ public class MindustryModule extends AbstractModule {
             go(() -> BlockEntityType.Builder.of(KilnBlockEntity::new, MindustryModule.KILN_BLOCK.get()).build(null));
     //#endregion
 
-    //BlockItems 默认的创造模式物品栏
+    //#region Items
+    @KiwiModule.Name("mechanical_drill")
+    public static final KiwiGO<Item> MECHANICAL_DRILL_ITEM = go(MechanicalDrill::new);
+    @KiwiModule.Name("pneumatic_drill")
+    public static final KiwiGO<Item> PNEUMATIC_DRILL_ITEM = go(PneumaticDrill::new);
+    //#endregion
+
+    //Items 默认的创造模式物品栏
     public static final CreativeModeTab MINDUSTRY_CREATIVE_TAB = CreativeModeTab.builder()
             .title(Component.translatable("itemGroup." + MOD_ID + ".mindustry"))
             .icon(() -> new ItemStack(POWER_NODE.get().asItem())).build();
 
-    public static List<Block> blocks = null;
+    protected static List<Block> blocks = null;
 
-    public static List<Block> getAllBlocks() {
+    public static List<Block> getBlocks() {
         if (blocks == null) {
             blocks = Arrays.stream(MindustryModule.class.getFields())
                     .filter(field -> {
@@ -91,5 +102,30 @@ public class MindustryModule extends AbstractModule {
                     .map(obj -> (Block) obj).toList();
         }
         return blocks;
+    }
+
+    protected static List<? extends BlockEntityType<?>> blockEntities = null;
+
+    public static List<? extends BlockEntityType<?>> getBlockEntities() {
+        if (blockEntities == null) {
+            blockEntities = Arrays.stream(MindustryModule.class.getFields())
+                    .filter(field -> {
+                        int modifiers = field.getModifiers();
+                        return (Modifier.isPublic(modifiers) && Modifier.isStatic(modifiers) && Modifier.isFinal(modifiers));
+                    })
+                    .map(field -> {
+                        try {
+                            return field.get(null);
+                        } catch (IllegalAccessException e) {
+                            throw new RuntimeException(e);
+                        }
+                    })
+                    .filter(obj -> obj instanceof KiwiGO<?>)
+                    .map(obj -> (KiwiGO<?>) obj)
+                    .map(KiwiGO::get)
+                    .filter(obj -> obj instanceof BlockEntityType<?>)
+                    .map(obj -> (BlockEntityType<?>) obj).toList();
+        }
+        return blockEntities;
     }
 }

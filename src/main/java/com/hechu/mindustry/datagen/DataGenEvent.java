@@ -56,7 +56,7 @@ public class DataGenEvent {
         }
 
         void registerMutilationModels() {
-            MindustryModule.getAllBlocks().stream()
+            MindustryModule.getBlocks().stream()
                     .filter(block -> block instanceof MultiblockCoreBlock)
                     .map(block -> (MultiblockCoreBlock) block)
                     .forEach(block -> {
@@ -204,7 +204,7 @@ public class DataGenEvent {
         }
 
         void registerMultiblockStatesAndModels() {
-            MindustryModule.getAllBlocks().stream()
+            MindustryModule.getBlocks().stream()
                     .filter(block -> block instanceof MultiblockCoreBlock)
                     .map(block -> (MultiblockCoreBlock) block)
                     .forEach(block -> {

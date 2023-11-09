@@ -9,27 +9,41 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
+import snownee.kiwi.block.entity.ModBlockEntity;
 
-public abstract class MultiblockEntity extends BlockEntity {
+public abstract class MultiblockEntity extends ModBlockEntity {
 
     public MultiblockEntity(BlockEntityType<?> pType, BlockPos pPos, BlockState pBlockState) {
         super(pType, pPos, pBlockState);
     }
 
     @Override
-    protected void saveAdditional(@NotNull CompoundTag tag) {
-        super.saveAdditional(tag);
-        if (masterBlockPos != null)
-            tag.putIntArray("masterBlockPos", new int[]{masterBlockPos.getX(), masterBlockPos.getY(), masterBlockPos.getZ()});
+    public void load(CompoundTag data) {
+        readPacketData(data);
+        super.load(data);
+        if (data.contains("masterBlockPos")) {
+            int[] masterBlockPos = data.getIntArray("masterBlockPos");
+            this.masterBlockPos = new BlockPos(masterBlockPos[0], masterBlockPos[1], masterBlockPos[2]);
+        }
     }
 
     @Override
-    public void load(@NotNull CompoundTag tag) {
-        super.load(tag);
-        if (tag.contains("masterBlockPos")) {
-            int[] masterBlockPos = tag.getIntArray("masterBlockPos");
-            this.masterBlockPos = new BlockPos(masterBlockPos[0], masterBlockPos[1], masterBlockPos[2]);
-        }
+    public void saveAdditional(CompoundTag data) {
+        if (masterBlockPos != null)
+            data.putIntArray("masterBlockPos", new int[]{masterBlockPos.getX(), masterBlockPos.getY(), masterBlockPos.getZ()});
+        writePacketData(data);
+        super.saveAdditional(data);
+    }
+
+    @Override
+    protected void readPacketData(CompoundTag compoundTag) {
+
+    }
+
+    @NotNull
+    @Override
+    protected CompoundTag writePacketData(CompoundTag compoundTag) {
+        return compoundTag;
     }
 
     public Vec3i getSize() {

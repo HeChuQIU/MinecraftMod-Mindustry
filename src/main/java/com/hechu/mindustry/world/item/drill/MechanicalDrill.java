@@ -1,8 +1,10 @@
 package com.hechu.mindustry.world.item.drill;
 
+import com.hechu.mindustry.MindustryModule;
 import com.hechu.mindustry.client.renderer.item.MechanicalDrillRenderer;
 import com.hechu.mindustry.world.item.drill.Drill;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 import org.jetbrains.annotations.NotNull;
@@ -17,8 +19,8 @@ import java.util.function.Consumer;
 public class MechanicalDrill extends Drill {
     public static final String NAME = "mechanical_drill";
 
-    public MechanicalDrill(Block block, Properties properties) {
-        super(block, properties);
+    public MechanicalDrill() {
+        super(MindustryModule.MECHANICAL_DRILL.get(),new Item.Properties());
     }
 
     private final AnimatableInstanceCache cache = new SingletonAnimatableInstanceCache(this);
