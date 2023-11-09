@@ -14,6 +14,7 @@ import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -25,13 +26,14 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
+import snownee.kiwi.block.ModBlock;
 
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public abstract class DrillBlock<TBlockEntity extends DrillBlockEntity> extends BaseEntityBlock {
+public abstract class DrillBlock<TBlockEntity extends DrillBlockEntity> extends ModBlock implements EntityBlock {
     public static final Logger LOGGER = LogUtils.getLogger();
     protected Class<TBlockEntity> blockEntityClass;
     public static final EnumProperty<DrillPart> PART = EnumProperty.create("part", DrillPart.class);

@@ -3,6 +3,7 @@ package com.hechu.mindustry.world.level.block.entity.multiblock;
 import com.hechu.mindustry.MindustryModule;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.state.BlockState;
@@ -41,5 +42,16 @@ public class TestTurretMultiblockEntity extends MultiblockEntity {
             }).cast();
         }
         return super.getCapability(cap, side);
+    }
+
+    @Override
+    protected void readPacketData(CompoundTag compoundTag) {
+
+    }
+
+    @NotNull
+    @Override
+    protected CompoundTag writePacketData(CompoundTag compoundTag) {
+        return compoundTag;
     }
 }
