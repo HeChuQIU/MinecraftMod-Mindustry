@@ -17,8 +17,9 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import snownee.kiwi.block.entity.ModBlockEntity;
 
-public class HealthTestBlockEntity extends BlockEntity {
+public class HealthTestBlockEntity extends ModBlockEntity {
     public static final String NAME = "health_test";
     private final LazyOptional<IHealthHandler> healthHandler = LazyOptional.of(HealthHandler::new);
 
@@ -65,6 +66,17 @@ public class HealthTestBlockEntity extends BlockEntity {
         tag.putFloat("health", health);
         tag.putFloat("maxHealth", maxHealth);
         return tag;
+    }
+
+    @Override
+    protected void readPacketData(CompoundTag compoundTag) {
+
+    }
+
+    @NotNull
+    @Override
+    protected CompoundTag writePacketData(CompoundTag compoundTag) {
+        return compoundTag;
     }
 
     @Override

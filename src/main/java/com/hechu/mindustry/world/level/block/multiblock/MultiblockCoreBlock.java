@@ -5,8 +5,9 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
+import snownee.kiwi.block.ModBlock;
 
-public abstract class MultiblockCoreBlock extends Block {
+public abstract class MultiblockCoreBlock extends ModBlock {
     protected MultiblockCoreBlock(Properties properties) {
         super(properties);
         this.stateDefinition.any().setValue(getPartProperty(), 0);

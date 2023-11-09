@@ -27,8 +27,9 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import snownee.kiwi.block.entity.ModBlockEntity;
 
-public class TurretBlockEntity extends BlockEntity {
+public class TurretBlockEntity extends ModBlockEntity {
     public static final String NAME = "turret";
 
     public int time;
@@ -98,21 +99,33 @@ public class TurretBlockEntity extends BlockEntity {
     }
 
     @Override
+    protected void readPacketData(CompoundTag compoundTag) {
+
+    }
+
+    @NotNull
+    @Override
+    protected CompoundTag writePacketData(CompoundTag compoundTag) {
+        return compoundTag;
+    }
+
+    @Override
     public void handleUpdateTag(CompoundTag tag) {
         targetPosX = tag.getDouble("targetPosX");
         targetPosY = tag.getDouble("targetPosY");
         targetPosZ = tag.getDouble("targetPosZ");
     }
 
-    public static void tick(Level level, BlockPos blockPos, BlockState blockState, TurretBlockEntity
-            blockEntity) {
-        blockEntity.time++;
-        if (blockEntity.time % 5 != 0)
+    public void tick() {
+        BlockPos blockPos = getBlockPos();
+
+        time++;
+        if (time % 5 != 0)
             return;
 
         Vec3 pos = blockPos.getCenter();
         pos = pos.add(0, 1, 0);
-        LivingEntity target = blockEntity.getTarget();
+        LivingEntity target = getTarget();
         if (target != null) {
             Arrow bullet = new Arrow(level, pos.x, pos.y, pos.z);
             Vec3 blockPosCenter = blockPos.getCenter();
@@ -130,53 +143,54 @@ public class TurretBlockEntity extends BlockEntity {
         }
 
         if (target != null) {
-            blockEntity.targetPosX = target.getX();
-            blockEntity.targetPosY = target.getY();
-            blockEntity.targetPosZ = target.getZ();
+            targetPosX = target.getX();
+            targetPosY = target.getY();
+            targetPosZ = target.getZ();
         } else {
-            blockEntity.targetPosX = 0;
-            blockEntity.targetPosY = 0;
-            blockEntity.targetPosZ = 0;
+            targetPosX = 0;
+            targetPosY = 0;
+            targetPosZ = 0;
         }
     }
 
-    public static void serverTick(Level level, BlockPos blockPos, BlockState blockState, TurretBlockEntity
-            blockEntity) {
-        tick(level, blockPos, blockState, blockEntity);
-        level.sendBlockUpdated(blockPos, blockState, blockState, 3);
+    public void serverTick() {
+        tick();
+        if (level != null) {
+            level.sendBlockUpdated(getBlockPos(), getBlockState(), getBlockState(), 3);
+        }
     }
 
-    public static void clientTick(Level level, BlockPos blockPos, BlockState blockState, TurretBlockEntity
-            blockEntity) {
-        tick(level, blockPos, blockState, blockEntity);
+    public void clientTick() {
+        tick();
 
-        blockEntity.oRot = blockEntity.rot;
-        if (blockEntity.targetPosX != 0 || blockEntity.targetPosY != 0 || blockEntity.targetPosZ != 0) {
-            double d0 = blockEntity.targetPosX - ((double) blockPos.getX() + 0.5D);
-            double d1 = blockEntity.targetPosZ - ((double) blockPos.getZ() + 0.5D);
-            blockEntity.tRot = (float) Mth.atan2(d1, d0);
+        BlockPos blockPos = getBlockPos();
+        oRot = rot;
+        if (targetPosX != 0 || targetPosY != 0 || targetPosZ != 0) {
+            double d0 = targetPosX - ((double) blockPos.getX() + 0.5D);
+            double d1 = targetPosZ - ((double) blockPos.getZ() + 0.5D);
+            tRot = (float) Mth.atan2(d1, d0);
         } else {
-            blockEntity.tRot += 0.02F;
+            tRot += 0.02F;
         }
 
-        while (blockEntity.rot >= (float) Math.PI) {
-            blockEntity.rot -= ((float) Math.PI * 2F);
+        while (rot >= (float) Math.PI) {
+            rot -= ((float) Math.PI * 2F);
         }
 
-        while (blockEntity.rot < -(float) Math.PI) {
-            blockEntity.rot += ((float) Math.PI * 2F);
+        while (rot < -(float) Math.PI) {
+            rot += ((float) Math.PI * 2F);
         }
 
-        while (blockEntity.tRot >= (float) Math.PI) {
-            blockEntity.tRot -= ((float) Math.PI * 2F);
+        while (tRot >= (float) Math.PI) {
+            tRot -= ((float) Math.PI * 2F);
         }
 
-        while (blockEntity.tRot < -(float) Math.PI) {
-            blockEntity.tRot += ((float) Math.PI * 2F);
+        while (tRot < -(float) Math.PI) {
+            tRot += ((float) Math.PI * 2F);
         }
 
         float f2;
-        f2 = blockEntity.tRot - blockEntity.rot;
+        f2 = tRot - rot;
         while (f2 >= (float) Math.PI) {
             f2 -= ((float) Math.PI * 2F);
         }
@@ -185,7 +199,7 @@ public class TurretBlockEntity extends BlockEntity {
             f2 += ((float) Math.PI * 2F);
         }
 
-        blockEntity.rot += f2 * 0.4F;
+        rot += f2 * 0.4F;
         float f3 = 0.2F;
     }
 }

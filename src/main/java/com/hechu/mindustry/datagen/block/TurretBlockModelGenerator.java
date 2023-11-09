@@ -16,7 +16,7 @@ public class TurretBlockModelGenerator extends BlockModelProvider {
 
     @Override
     protected void registerModels() {
-        MindustryModule.getAllBlocks().stream()
+        MindustryModule.getBlocks().stream()
                 .filter(block -> block instanceof MultiblockCoreBlock)
                 .map(block -> (MultiblockCoreBlock) block)
                 .forEach(block -> {
