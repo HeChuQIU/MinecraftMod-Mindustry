@@ -3,8 +3,6 @@ package com.hechu.mindustry.data.recipes;
 import com.google.common.collect.Lists;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-import com.hechu.mindustry.kiwi.RecipeModule;
-import com.hechu.mindustry.recipe.MindustryProcessingIngredient;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.AdvancementRewards;
 import net.minecraft.advancements.CriterionTriggerInstance;
@@ -31,10 +29,13 @@ public class MindustryProcessingRecipeBuilder implements RecipeBuilder {
     private final int count;
     private final List<MindustryProcessingIngredient> ingredients = Lists.newArrayList();
     private final Advancement.Builder advancement = Advancement.Builder.recipeAdvancement();
+    private final RecipeSerializer<?> recipeSerializerType;
     @Nullable
     private String group;
+    private int processTick;
 
-    public MindustryProcessingRecipeBuilder(RecipeCategory pCategory, ItemLike pResult, int pCount) {
+    public MindustryProcessingRecipeBuilder(RecipeSerializer<?> recipeSerializerType, RecipeCategory pCategory, ItemLike pResult, int pCount) {
+        this.recipeSerializerType = recipeSerializerType;
         this.category = pCategory;
         this.result = pResult.asItem();
         this.count = pCount;
@@ -90,16 +91,21 @@ public class MindustryProcessingRecipeBuilder implements RecipeBuilder {
         return this;
     }
 
+    public @NotNull MindustryProcessingRecipeBuilder processTick(int processTick) {
+        this.processTick = processTick;
+        return this;
+    }
+
     public @NotNull Item getResult() {
         return this.result;
     }
 
     public void save(Consumer<FinishedRecipe> finishedRecipeConsumer, @NotNull ResourceLocation recipeId) {
-        this.ensureValid(recipeId);
+//        this.ensureValid(recipeId);
         this.advancement.parent(ROOT_RECIPE_ADVANCEMENT).addCriterion("has_the_recipe",
                 RecipeUnlockedTrigger.unlocked(recipeId)).rewards(AdvancementRewards.Builder.recipe(recipeId)).requirements(RequirementsStrategy.OR);
-        finishedRecipeConsumer.accept(new MindustryProcessingRecipeBuilder.Result(recipeId, this.result, this.count,
-                this.group == null ? "" : this.group, this.ingredients,
+        finishedRecipeConsumer.accept(new MindustryProcessingRecipeBuilder.Result(recipeSerializerType,recipeId, this.result, this.count,
+                this.group == null ? "" : this.group, processTick, this.ingredients,
                 this.advancement, recipeId.withPrefix("recipes/" + this.category.getFolderName() + "/")));
     }
 
@@ -117,15 +123,18 @@ public class MindustryProcessingRecipeBuilder implements RecipeBuilder {
         private final Item result;
         private final int count;
         private final String group;
+        private final int processTick;
         private final List<MindustryProcessingIngredient> ingredients;
         private final Advancement.Builder advancement;
         private final ResourceLocation advancementId;
 
-        public Result(ResourceLocation pId, Item pResult, int pCount, String pGroup, List<MindustryProcessingIngredient> pIngredients, Advancement.Builder pAdvancement, ResourceLocation pAdvancementId) {
+        public Result(RecipeSerializer<?> recipeSerializerType, ResourceLocation pId, Item pResult, int pCount, String pGroup, int processTick, List<MindustryProcessingIngredient> pIngredients, Advancement.Builder pAdvancement, ResourceLocation pAdvancementId) {
+            this.recipeSerializerType = recipeSerializerType;
             this.id = pId;
             this.result = pResult;
             this.count = pCount;
             this.group = pGroup;
+            this.processTick = processTick;
             this.ingredients = pIngredients;
             this.advancement = pAdvancement;
             this.advancementId = pAdvancementId;
@@ -135,6 +144,7 @@ public class MindustryProcessingRecipeBuilder implements RecipeBuilder {
             if (!this.group.isEmpty()) {
                 pJson.addProperty("group", this.group);
             }
+            pJson.addProperty("processTick", this.processTick);
 
             JsonArray jsonarray = new JsonArray();
 
@@ -152,15 +162,17 @@ public class MindustryProcessingRecipeBuilder implements RecipeBuilder {
             pJson.add("result", jsonobject);
         }
 
-        public @NotNull RecipeSerializer<?> getType() {
-            return RecipeModule.MINDUSTRY_PROCESSING_SERIALIZER.get();
-        }
-
         /**
          * Gets the ID for the recipe.
          */
         public @NotNull ResourceLocation getId() {
             return this.id;
+        }
+
+        private RecipeSerializer<?> recipeSerializerType;
+        @Override
+        public @NotNull RecipeSerializer<?> getType() {
+            return recipeSerializerType;
         }
 
         /**

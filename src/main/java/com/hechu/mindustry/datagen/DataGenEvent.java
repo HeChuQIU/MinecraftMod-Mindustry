@@ -6,6 +6,7 @@ import com.hechu.mindustry.data.recipes.MindustryProcessingRecipeBuilder;
 import com.hechu.mindustry.kiwi.BlockModule;
 import com.hechu.mindustry.kiwi.ItemModule;
 import com.hechu.mindustry.kiwi.MutilBlockModule;
+import com.hechu.mindustry.kiwi.RecipeModule;
 import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.Vec3i;
@@ -266,9 +267,10 @@ public class DataGenEvent {
 
         @Override
         protected void buildRecipes(@NotNull Consumer<FinishedRecipe> writer) {
-            MindustryProcessingRecipeBuilder builder = new MindustryProcessingRecipeBuilder(RecipeCategory.MISC, Items.GLASS, 8);
-            builder.requires(Items.SAND,8).unlockedBy("has_item", has(Items.SAND))
-                    .save(writer, new ResourceLocation(MindustryConstants.MOD_ID, "kiln"));
+            MindustryProcessingRecipeBuilder builder =
+                    new MindustryProcessingRecipeBuilder(RecipeModule.KILN_RECIPE_SERIALIZER.get(), RecipeCategory.MISC, Items.GLASS, 8);
+            builder.requires(Items.SAND,8).processTick(80)
+                    .save(writer, new ResourceLocation(MindustryConstants.MOD_ID, "kiln_sand_to_glass"));
         }
     }
 }

@@ -1,7 +1,6 @@
 package com.hechu.mindustry.world.level.block.entity.multiblock;
 
-import com.hechu.mindustry.kiwi.RecipeModule;
-import com.hechu.mindustry.recipe.MindustryProcessingRecipe;
+import com.hechu.mindustry.data.recipes.MindustryProcessingRecipe;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.Container;
@@ -19,39 +18,47 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.IItemHandler;
+import net.minecraftforge.items.IItemHandlerModifiable;
 import net.minecraftforge.items.ItemStackHandler;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.List;
+import java.util.Arrays;
 
-public abstract class MultiblockCraftingBlockEntity extends MultiblockEntity implements Container, RecipeHolder {
+public abstract class MultiblockCraftingBlockEntity<C extends MultiblockCraftingBlockEntity<?>> extends MultiblockEntity implements Container, RecipeHolder {
 
     public MultiblockCraftingBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState blockState) {
         super(type, pos, blockState);
-        this.quickCheck = RecipeManager.createCheck(RecipeModule.MINDUSTRY_PROCESSING_RECIPE.get());
+        initQuickCheck();
     }
 
-    protected final RecipeManager.CachedCheck<MultiblockCraftingBlockEntity, ? extends MindustryProcessingRecipe> quickCheck;
+    protected RecipeManager.CachedCheck<C, ? extends MindustryProcessingRecipe<C>> quickCheck;
+
+    protected abstract void initQuickCheck();
 
     public void serverTick(Level level, BlockPos pos, BlockState state) {
         if (level.isClientSide) {
             return;
         }
 
-        Recipe<?> recipe = quickCheck.getRecipeFor(this, level).orElse(null);
+        MindustryProcessingRecipe<?> recipe = quickCheck.getRecipeFor((C)this, level).orElse(null);
 
-        if (recipe == null) {
-            currentCraftTicks = 0;
-            return;
+        if (recipe == null||recipe.equals(getRecipeUsed())) {
+            currentProcessTick = 0;
         }
 
-        if (currentCraftTicks < getCraftTicks()) {
-            currentCraftTicks += 1;
-        } else {
-            currentCraftTicks = 0;
-            IItemHandler itemHandler = getItemHandler();
-            itemHandler.insertItem(1, recipe.getResultItem(null).copy(), false);
+        setRecipeUsed(recipe);
+
+        currentProcessTick++;
+
+        if (currentProcessTick >= getCraftTicks()) {
+            currentProcessTick = 0;
+            IItemHandlerModifiable itemHandler = getItemHandler();
+            for (int i = 0; i < getInputSlotCount(); i++) {
+                int itemCost = recipe.getItemCostAtSlots(this)[i];
+                itemHandler.extractItem(i, itemCost, false);
+            }
+            itemHandler.insertItem(getInputSlotCount(), recipe.getResultItem(null).copy(), false);
         }
 
 
@@ -81,7 +88,10 @@ public abstract class MultiblockCraftingBlockEntity extends MultiblockEntity imp
 //            }
     }
 
-    LazyOptional<Capability<IItemHandler>> itemHandler = LazyOptional.of(() -> new ItemStackHandler(getInputs().size() + getOutputs().size()) {
+    public abstract int getInputSlotCount();
+    public abstract int getOutputSlotCount();
+
+    LazyOptional<Capability<IItemHandlerModifiable>> itemHandler = LazyOptional.of(() -> new ItemStackHandler(getInputSlotCount()+ getOutputSlotCount()) {
 
         @Override
         public @NotNull ItemStack extractItem(int slot, int amount, boolean simulate) {
@@ -102,8 +112,8 @@ public abstract class MultiblockCraftingBlockEntity extends MultiblockEntity imp
         }
     }).cast();
 
-    public IItemHandler getItemHandler() {
-        return (IItemHandler) itemHandler.cast().orElseThrow(NullPointerException::new);
+    public IItemHandlerModifiable getItemHandler() {
+        return (IItemHandlerModifiable) itemHandler.cast().orElseThrow(NullPointerException::new);
     }
 
     @Override
@@ -120,22 +130,18 @@ public abstract class MultiblockCraftingBlockEntity extends MultiblockEntity imp
         return LazyOptional.empty();
     }
 
-    public abstract List<ItemStack> getInputs();
-
-    public abstract List<ItemStack> getOutputs();
-
     public abstract int getCraftTicks();
 
-    protected int currentCraftTicks = 0;
+    protected int currentProcessTick = 0;
 
-    public int getCurrentCraftTicks() {
+    public int getCurrentProcessTick() {
         if (!getBlockPos().equals(getMasterBlockPos()))
             if (level != null && getMasterBlockPos() != null) {
                 BlockEntity blockEntity = level.getBlockEntity(getMasterBlockPos());
                 if (blockEntity instanceof MultiblockCraftingBlockEntity)
-                    return ((MultiblockCraftingBlockEntity) blockEntity).getCurrentCraftTicks();
+                    return ((MultiblockCraftingBlockEntity) blockEntity).getCurrentProcessTick();
             }
-        return currentCraftTicks;
+        return currentProcessTick;
     }
 
     /**
@@ -143,18 +149,14 @@ public abstract class MultiblockCraftingBlockEntity extends MultiblockEntity imp
      */
     @Override
     public int getContainerSize() {
-        return getInputs().size() + getOutputs().size();
+        return getItemHandler().getSlots();
     }
 
     @Override
     public boolean isEmpty() {
-        for (ItemStack itemStack : getInputs()) {
-            if (!itemStack.isEmpty()) {
-                return false;
-            }
-        }
-        for (ItemStack itemStack : getOutputs()) {
-            if (!itemStack.isEmpty()) {
+        IItemHandler itemHandler = getItemHandler();
+        for (int i = 0; i < itemHandler.getSlots(); i++) {
+            if (!itemHandler.getStackInSlot(i).isEmpty()) {
                 return false;
             }
         }
@@ -168,10 +170,10 @@ public abstract class MultiblockCraftingBlockEntity extends MultiblockEntity imp
      */
     @Override
     public @NotNull ItemStack getItem(int slot) {
-        if (slot < getInputs().size()) {
-            return getInputs().get(slot);
+        if (slot < getInputSlotCount() + getOutputSlotCount()) {
+            return getItemHandler().getStackInSlot(slot);
         }
-        return getOutputs().get(slot - getInputs().size());
+        return ItemStack.EMPTY;
     }
 
     /**
@@ -182,7 +184,7 @@ public abstract class MultiblockCraftingBlockEntity extends MultiblockEntity imp
      */
     @Override
     public @NotNull ItemStack removeItem(int slot, int amount) {
-        if (slot < getInputs().size() + getOutputs().size()) {
+        if (slot < getInputSlotCount() + getOutputSlotCount()) {
             return getItemHandler().extractItem(slot, amount, false);
         }
         return ItemStack.EMPTY;
@@ -195,7 +197,7 @@ public abstract class MultiblockCraftingBlockEntity extends MultiblockEntity imp
      */
     @Override
     public @NotNull ItemStack removeItemNoUpdate(int slot) {
-        if (slot < getInputs().size() + getOutputs().size()) {
+        if (slot < getInputSlotCount() + getOutputSlotCount()) {
             IItemHandler itemHandler = getItemHandler();
             ItemStack itemStack = itemHandler.getStackInSlot(slot).copy();
             itemHandler.extractItem(slot, itemStack.getCount(), false);
@@ -212,8 +214,8 @@ public abstract class MultiblockCraftingBlockEntity extends MultiblockEntity imp
      */
     @Override
     public void setItem(int slot, @NotNull ItemStack stack) {
-        if (slot < getInputs().size() + getOutputs().size()) {
-            getItemHandler().insertItem(slot, stack, false);
+        if (slot < getInputSlotCount() + getOutputSlotCount()) {
+            getItemHandler().setStackInSlot(slot, stack);
         }
     }
 
@@ -229,22 +231,22 @@ public abstract class MultiblockCraftingBlockEntity extends MultiblockEntity imp
 
     @Override
     public void clearContent() {
-        IItemHandler itemHandler = getItemHandler();
+        IItemHandlerModifiable itemHandler = getItemHandler();
         for (int i = 0; i < itemHandler.getSlots(); i++) {
-            itemHandler.extractItem(i, itemHandler.getStackInSlot(i).getCount(), false);
+            itemHandler.setStackInSlot(i, ItemStack.EMPTY);
         }
     }
 
-    protected Recipe<?> recipeUsed;
+    protected MindustryProcessingRecipe<?> recipeUsed;
 
     @Override
     public void setRecipeUsed(@Nullable Recipe<?> recipe) {
-        recipeUsed = recipe;
+        recipeUsed = (MindustryProcessingRecipe<?>) recipe;
     }
 
     @Nullable
     @Override
-    public Recipe<?> getRecipeUsed() {
+    public MindustryProcessingRecipe<?> getRecipeUsed() {
         return recipeUsed;
     }
 }
