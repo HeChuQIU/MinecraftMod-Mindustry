@@ -19,6 +19,8 @@ public class KilnBlockEntity extends MultiblockCraftingBlockEntity {
 
     public static final List<ItemStack> OUTPUTS = List.of(new ItemStack[]{new ItemStack(Items.GLASS, 8)});
 
+
+
     @Override
     public List<ItemStack> getInputs() {
         return INPUTS;

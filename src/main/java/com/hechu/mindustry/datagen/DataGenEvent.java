@@ -2,6 +2,7 @@ package com.hechu.mindustry.datagen;
 
 import com.hechu.mindustry.MindustryConstants;
 import com.hechu.mindustry.annotation.Block;
+import com.hechu.mindustry.data.recipes.MindustryProcessingRecipeBuilder;
 import com.hechu.mindustry.kiwi.BlockModule;
 import com.hechu.mindustry.kiwi.ItemModule;
 import com.hechu.mindustry.kiwi.MutilBlockModule;
@@ -10,7 +11,9 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.core.Vec3i;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.PackOutput;
+import net.minecraft.data.recipes.*;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraftforge.client.model.generators.BlockModelProvider;
 import net.minecraftforge.client.model.generators.BlockStateProvider;
@@ -22,9 +25,11 @@ import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.data.event.GatherDataEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
 import java.util.concurrent.CompletableFuture;
+import java.util.function.Consumer;
 
 
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
@@ -39,6 +44,7 @@ public class DataGenEvent {
         gen.addProvider(event.includeClient(), new MindustryBlockStateProvider(packOutput, existingFileHelper));
         gen.addProvider(event.includeClient(), new MindustryBlockTagsProvider(packOutput, lookupProvider, existingFileHelper));
         gen.addProvider(event.includeClient(), new MindustryItemModelProvider(packOutput, existingFileHelper));
+        gen.addProvider(event.includeServer(), new MindustryRecipeProvider(packOutput));
     }
     // TODO 方块战利品生成
     public static class MindustryBlockTagsProvider extends BlockTagsProvider {
@@ -47,7 +53,7 @@ public class DataGenEvent {
         }
 
         @Override
-        protected void addTags(HolderLookup.Provider pProvider) {
+        protected void addTags(HolderLookup.@NotNull Provider pProvider) {
             tag(Tags.Blocks.ORES_COAL).add(BlockModule.COAL_ORE_BLOCK.get());
             tag(Tags.Blocks.ORES_COPPER).add(BlockModule.COPPER_ORE_BLOCK.get());
         }
@@ -249,6 +255,20 @@ public class DataGenEvent {
                                     .build();
                         });
             });
+        }
+    }
+
+    public static class MindustryRecipeProvider extends RecipeProvider {
+
+        public MindustryRecipeProvider(PackOutput output) {
+            super(output);
+        }
+
+        @Override
+        protected void buildRecipes(@NotNull Consumer<FinishedRecipe> writer) {
+            MindustryProcessingRecipeBuilder builder = new MindustryProcessingRecipeBuilder(RecipeCategory.MISC, Items.GLASS, 8);
+            builder.requires(Items.SAND,8).unlockedBy("has_item", has(Items.SAND))
+                    .save(writer, new ResourceLocation(MindustryConstants.MOD_ID, "kiln"));
         }
     }
 }
