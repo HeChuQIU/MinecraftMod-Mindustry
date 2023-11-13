@@ -59,6 +59,10 @@ public abstract class MultiblockEntity extends ModBlockEntity {
         return masterBlockPos;
     }
 
+    public MultiblockEntity getMasterBlockEntity() {
+        return (MultiblockEntity) getLevel().getBlockEntity(getMasterBlockPos());
+    }
+
     public void setMasterBlockPos(BlockPos pos) {
         masterBlockPos = pos;
     }

@@ -9,7 +9,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public abstract class MultiblockCraftingBlock<TBlockEntity extends MultiblockCraftingBlockEntity> extends MultiblockEntityBlock<TBlockEntity> {
+public abstract class MultiblockCraftingBlock<TBlockEntity extends MultiblockCraftingBlockEntity<?>> extends MultiblockEntityBlock<TBlockEntity> {
 
     protected MultiblockCraftingBlock(Properties properties, Class<TBlockEntity> tBlockEntityClass) {
         super(properties, tBlockEntityClass);
@@ -19,9 +19,11 @@ public abstract class MultiblockCraftingBlock<TBlockEntity extends MultiblockCra
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(@NotNull Level level, @NotNull BlockState state, @NotNull BlockEntityType<T> blockEntityType) {
         return (pLevel1, pPos, pState1, pBlockEntity) -> {
-            if (pBlockEntity instanceof MultiblockCraftingBlockEntity && ((MultiblockCraftingBlockEntity) pBlockEntity).isMaster()) {
-                if (!pLevel1.isClientSide) {
-                    ((MultiblockCraftingBlockEntity) pBlockEntity).serverTick(pLevel1, pPos, pState1);
+            if (pBlockEntity instanceof MultiblockCraftingBlockEntity && ((MultiblockCraftingBlockEntity<?>) pBlockEntity).isMaster()) {
+                if (pLevel1.isClientSide) {
+//                    ((MultiblockCraftingBlockEntity<?>) pBlockEntity).clientTick(pLevel1, pPos, pState1);
+                } else {
+                    ((MultiblockCraftingBlockEntity<?>) pBlockEntity).serverTick(pLevel1, pPos, pState1);
                 }
             }
         };

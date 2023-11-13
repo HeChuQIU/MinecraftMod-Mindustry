@@ -23,8 +23,6 @@ import net.minecraftforge.items.ItemStackHandler;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Arrays;
-
 public abstract class MultiblockCraftingBlockEntity<C extends MultiblockCraftingBlockEntity<?>> extends MultiblockEntity implements Container, RecipeHolder {
 
     public MultiblockCraftingBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState blockState) {
@@ -36,30 +34,56 @@ public abstract class MultiblockCraftingBlockEntity<C extends MultiblockCrafting
 
     protected abstract void initQuickCheck();
 
+//    public void clientTick(Level level, BlockPos pos, BlockState state) {
+//        if (!level.isClientSide) {
+//            return;
+//        }
+//
+//        MindustryProcessingRecipe<?> recipe = getRecipeUsing();
+//
+//        if (recipe == null || !recipe.equals(getRecipeUsed())) {
+//            currentProcessTick = 0;
+//        }
+//        else if (currentProcessTick >= recipe.getProcessTick()) {
+//            currentProcessTick = 0;
+////            IItemHandlerModifiable itemHandler = getItemHandler();
+////            for (int i = 0; i < getInputSlotCount(); i++) {
+////                int itemCost = recipe.getItemCostAtSlots(this)[i];
+////                itemHandler.extractItem(i, itemCost, false);
+////            }
+////            itemHandler.insertItem(getInputSlotCount(), recipe.getResultItem(null).copy(), false);
+//        }
+//
+//        setRecipeUsed(recipe);
+//
+//        currentProcessTick++;
+//    }
+
     public void serverTick(Level level, BlockPos pos, BlockState state) {
         if (level.isClientSide) {
             return;
         }
 
-        MindustryProcessingRecipe<?> recipe = quickCheck.getRecipeFor((C)this, level).orElse(null);
+        MindustryProcessingRecipe<?> recipe = getRecipeUsing();
 
-        if (recipe == null||recipe.equals(getRecipeUsed())) {
+        if (recipe == null || !recipe.equals(getRecipeUsed())) {
             currentProcessTick = 0;
+        }
+        else if (currentProcessTick >= recipe.getProcessTick()) {
+            currentProcessTick = 0;
+            ItemHandler itemHandler = getItemHandler();
+            for (int i = 0; i < getInputSlotCount(); i++) {
+                int itemCost = recipe.getItemCostAtSlots(this)[i];
+                itemHandler.forceExtractItem(i, itemCost, false);
+            }
+            itemHandler.forceInsertItem(getInputSlotCount(), recipe.getResultItem(null).copy(), false);
         }
 
         setRecipeUsed(recipe);
 
         currentProcessTick++;
 
-        if (currentProcessTick >= getCraftTicks()) {
-            currentProcessTick = 0;
-            IItemHandlerModifiable itemHandler = getItemHandler();
-            for (int i = 0; i < getInputSlotCount(); i++) {
-                int itemCost = recipe.getItemCostAtSlots(this)[i];
-                itemHandler.extractItem(i, itemCost, false);
-            }
-            itemHandler.insertItem(getInputSlotCount(), recipe.getResultItem(null).copy(), false);
-        }
+
 
 
 //            List<ItemStack> inputs = getInputs();
@@ -89,31 +113,13 @@ public abstract class MultiblockCraftingBlockEntity<C extends MultiblockCrafting
     }
 
     public abstract int getInputSlotCount();
+
     public abstract int getOutputSlotCount();
 
-    LazyOptional<Capability<IItemHandlerModifiable>> itemHandler = LazyOptional.of(() -> new ItemStackHandler(getInputSlotCount()+ getOutputSlotCount()) {
+    LazyOptional<Capability<IItemHandlerModifiable>> itemHandler = LazyOptional.of(() -> new ItemHandler()).cast();
 
-        @Override
-        public @NotNull ItemStack extractItem(int slot, int amount, boolean simulate) {
-//            if (slot < getInputs().size()) {
-//                return ItemStack.EMPTY;
-//            }
-            return super.extractItem(slot, amount, simulate);
-        }
-
-        @Override
-        public boolean isItemValid(int slot, @NotNull ItemStack stack) {
-            if (slot < getSlots()) {
-                return getStackInSlot(slot).getItem() == Items.AIR ||
-                        getStackInSlot(slot).getItem() == stack.getItem()
-                                && getStackInSlot(slot).getCount() + stack.getCount() <= getStackInSlot(slot).getMaxStackSize();
-            }
-            return false;
-        }
-    }).cast();
-
-    public IItemHandlerModifiable getItemHandler() {
-        return (IItemHandlerModifiable) itemHandler.cast().orElseThrow(NullPointerException::new);
+    public ItemHandler getItemHandler() {
+        return (ItemHandler) itemHandler.cast().orElseThrow(NullPointerException::new);
     }
 
     @Override
@@ -129,8 +135,6 @@ public abstract class MultiblockCraftingBlockEntity<C extends MultiblockCrafting
         }
         return LazyOptional.empty();
     }
-
-    public abstract int getCraftTicks();
 
     protected int currentProcessTick = 0;
 
@@ -248,5 +252,50 @@ public abstract class MultiblockCraftingBlockEntity<C extends MultiblockCrafting
     @Override
     public MindustryProcessingRecipe<?> getRecipeUsed() {
         return recipeUsed;
+    }
+
+    public MindustryProcessingRecipe<?> getRecipeUsing() {
+        return quickCheck.getRecipeFor((C) this, level).orElse(null);
+    }
+
+    private class ItemHandler extends ItemStackHandler {
+
+        public ItemHandler() {
+            super(MultiblockCraftingBlockEntity.this.getInputSlotCount() + MultiblockCraftingBlockEntity.this.getOutputSlotCount());
+        }
+
+        @Override
+        public @NotNull ItemStack insertItem(int slot, @NotNull ItemStack stack, boolean simulate) {
+            if (slot >= getInputSlotCount()) {
+                return stack;
+            }
+            return super.insertItem(slot, stack, simulate);
+        }
+
+        public @NotNull ItemStack forceInsertItem(int slot, @NotNull ItemStack stack, boolean simulate) {
+            return super.insertItem(slot, stack, simulate);
+        }
+
+        @Override
+        public @NotNull ItemStack extractItem(int slot, int amount, boolean simulate) {
+            if (slot < getInputSlotCount()) {
+                return ItemStack.EMPTY;
+            }
+            return super.extractItem(slot, amount, simulate);
+        }
+
+        public @NotNull ItemStack forceExtractItem(int slot, int amount, boolean simulate) {
+            return super.extractItem(slot, amount, simulate);
+        }
+
+        @Override
+        public boolean isItemValid(int slot, @NotNull ItemStack stack) {
+            if (slot < getSlots()) {
+                return getStackInSlot(slot).getItem() == Items.AIR ||
+                        getStackInSlot(slot).getItem() == stack.getItem()
+                                && getStackInSlot(slot).getCount() + stack.getCount() <= getStackInSlot(slot).getMaxStackSize();
+            }
+            return false;
+        }
     }
 }

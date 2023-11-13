@@ -48,6 +48,11 @@ public class MindustryProcessingIngredient extends AbstractIngredient {
         return super.test(itemStack) && itemStack.getCount() >= this.itemStack.getCount();
     }
 
+    @Override
+    public boolean isEmpty() {
+        return itemStack.isEmpty();
+    }
+
     public static @NotNull MindustryProcessingIngredient fromJson(JsonElement json) {
         ItemStack itemStack;
         JsonObject jsonObject = json.getAsJsonObject();

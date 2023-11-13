@@ -47,6 +47,7 @@ public class DataGenEvent {
         gen.addProvider(event.includeClient(), new MindustryItemModelProvider(packOutput, existingFileHelper));
         gen.addProvider(event.includeServer(), new MindustryRecipeProvider(packOutput));
     }
+
     // TODO 方块战利品生成
     public static class MindustryBlockTagsProvider extends BlockTagsProvider {
         public MindustryBlockTagsProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider, @Nullable ExistingFileHelper existingFileHelper) {
@@ -267,10 +268,15 @@ public class DataGenEvent {
 
         @Override
         protected void buildRecipes(@NotNull Consumer<FinishedRecipe> writer) {
-            MindustryProcessingRecipeBuilder builder =
-                    new MindustryProcessingRecipeBuilder(RecipeModule.KILN_RECIPE_SERIALIZER.get(), RecipeCategory.MISC, Items.GLASS, 8);
-            builder.requires(Items.SAND,8).processTick(80)
+            new MindustryProcessingRecipeBuilder(RecipeModule.KILN_RECIPE_SERIALIZER.get(), RecipeCategory.MISC, Items.GLASS, 8)
+                    .requires(Items.SAND, 8).processTick(80)
                     .save(writer, new ResourceLocation(MindustryConstants.MOD_ID, "kiln_sand_to_glass"));
+            new MindustryProcessingRecipeBuilder(RecipeModule.KILN_RECIPE_SERIALIZER.get(), RecipeCategory.MISC, ItemModule.SURGE_ALLOY.get(), 2)
+                    .requires(ItemModule.COPPER.get(),32).processTick(10)
+                    .save(writer, new ResourceLocation(MindustryConstants.MOD_ID, "kiln_copper_to_surge_alloy"));
+            new MindustryProcessingRecipeBuilder(RecipeModule.KILN_RECIPE_SERIALIZER.get(), RecipeCategory.MISC, Items.DIAMOND, 1)
+                    .requires(ItemModule.COAL.get(), 8).processTick(10)
+                    .save(writer, new ResourceLocation(MindustryConstants.MOD_ID, "kiln_coal_to_diamond"));
         }
     }
 }

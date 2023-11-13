@@ -32,9 +32,4 @@ public class KilnBlockEntity extends MultiblockCraftingBlockEntity<KilnBlockEnti
     public int getOutputSlotCount() {
         return 1;
     }
-
-    @Override
-    public int getCraftTicks() {
-        return 80;
-    }
 }

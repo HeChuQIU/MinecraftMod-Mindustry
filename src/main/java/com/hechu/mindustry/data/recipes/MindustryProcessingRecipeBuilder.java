@@ -153,13 +153,13 @@ public class MindustryProcessingRecipeBuilder implements RecipeBuilder {
             }
 
             pJson.add("ingredients", jsonarray);
-            JsonObject jsonobject = new JsonObject();
-            jsonobject.addProperty("item", BuiltInRegistries.ITEM.getKey(this.result).toString());
+            JsonObject resultJson = new JsonObject();
+            resultJson.addProperty("item", BuiltInRegistries.ITEM.getKey(this.result).toString());
             if (this.count > 1) {
-                jsonobject.addProperty("count", this.count);
+                resultJson.addProperty("count", this.count);
             }
 
-            pJson.add("result", jsonobject);
+            pJson.add("result", resultJson);
         }
 
         /**

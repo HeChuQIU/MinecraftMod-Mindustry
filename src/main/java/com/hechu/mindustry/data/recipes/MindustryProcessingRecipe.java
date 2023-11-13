@@ -7,6 +7,7 @@ import com.hechu.mindustry.kiwi.RecipeModule;
 import com.hechu.mindustry.world.level.block.entity.multiblock.MultiblockCraftingBlockEntity;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.RegistryAccess;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
@@ -15,6 +16,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.items.IItemHandlerModifiable;
+import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.Constructor;
@@ -36,6 +38,13 @@ public abstract class MindustryProcessingRecipe<T extends MultiblockCraftingBloc
     }
 
     private final NonNullList<MindustryProcessingIngredient> ingredients;
+
+    @Override
+    public @NotNull NonNullList<Ingredient> getIngredients() {
+        NonNullList<Ingredient> nonNullList = net.minecraft.core.NonNullList.create();
+        ingredients.stream().map(ingredient -> (Ingredient) ingredient).forEach(nonNullList::add);
+        return nonNullList;
+    }
 
     public MindustryProcessingRecipe(ResourceLocation id, String group, int processTick, ItemStack result, NonNullList<MindustryProcessingIngredient> ingredients) {
         this.id = id;
@@ -143,6 +152,29 @@ public abstract class MindustryProcessingRecipe<T extends MultiblockCraftingBloc
                     throw new RuntimeException(e);
                 }
             }
+        }
+
+        public JsonObject toJson(T recipe) {
+            JsonObject jsonobject = new JsonObject();
+            if (!recipe.getGroup().isEmpty()) {
+                jsonobject.addProperty("group", recipe.getGroup());
+            }
+
+            JsonArray jsonarray = new JsonArray();
+
+            recipe.getIngredients().stream().map(ingredient -> (MindustryProcessingIngredient) ingredient)
+                    .map(MindustryProcessingIngredient::toJson).forEach(jsonarray::add);
+
+            jsonobject.add("ingredients", jsonarray);
+            JsonObject resultJson = new JsonObject();
+            ItemStack recipeResult = recipe.getResult();
+            resultJson.addProperty("item", ForgeRegistries.ITEMS.getKey(recipeResult.getItem()).toString());
+            if (recipeResult.getCount() > 1) {
+                resultJson.addProperty("count", recipeResult.getCount());
+            }
+            jsonobject.add("result", resultJson);
+            jsonobject.addProperty("processTick", recipe.getProcessTick());
+            return jsonobject;
         }
 
         private static NonNullList<MindustryProcessingIngredient> itemsFromJson(JsonArray a) {
