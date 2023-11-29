@@ -18,4 +18,6 @@ public class Bullet extends AbstractHurtingProjectile {
     public Bullet(EntityType<? extends AbstractHurtingProjectile> pEntityType, LivingEntity pShooter, double pOffsetX, double pOffsetY, double pOffsetZ, Level pLevel) {
         super(pEntityType, pShooter, pOffsetX, pOffsetY, pOffsetZ, pLevel);
     }
+
+
 }
