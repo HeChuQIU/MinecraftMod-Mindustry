@@ -3,6 +3,8 @@ package com.hechu.mindustry.kiwi;
 import com.hechu.mindustry.MindustryConstants;
 import com.hechu.mindustry.world.level.block.Equipment.PowerNodeBlock;
 import com.hechu.mindustry.world.level.block.ore.*;
+import com.hechu.mindustry.world.level.block.turrets.SpectreTurretBlock;
+import com.hechu.mindustry.world.level.block.turrets.SwarmerTurretBlock;
 import net.minecraft.world.level.block.Block;
 import snownee.kiwi.AbstractModule;
 import snownee.kiwi.KiwiGO;
@@ -32,8 +34,10 @@ public class BlockModule extends AbstractModule {
     public static final KiwiGO<Block> THORIUM_ORE_BLOCK = go(ThoriumOreBlock::new);
     @KiwiModule.Name("titanium_ore")
     public static final KiwiGO<Block> TITANIUM_ORE_BLOCK = go(TitaniumOreBlock::new);
+
     private static Set<Block> blocks = null;
     private static Set<String> registerName = null;
+
     public static Set<Block> getBlocks() {
         if (blocks == null) {
             blocks = Arrays.stream(BlockModule.class.getFields())
@@ -67,7 +71,7 @@ public class BlockModule extends AbstractModule {
                     })
                     .map(field -> {
                         KiwiModule.Name annotated = field.getAnnotation(KiwiModule.Name.class);
-                        if (annotated == null){
+                        if (annotated == null) {
                             return field.getName();
                         }
                         return annotated.value();

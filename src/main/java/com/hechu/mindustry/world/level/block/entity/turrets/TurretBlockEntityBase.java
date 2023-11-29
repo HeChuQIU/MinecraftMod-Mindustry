@@ -1,6 +1,5 @@
 package com.hechu.mindustry.world.level.block.entity.turrets;
 
-import com.hechu.mindustry.kiwi.BlockEntityModule;
 import com.hechu.mindustry.utils.capabilities.HealthHandler;
 import com.hechu.mindustry.utils.capabilities.IHealthHandler;
 import com.hechu.mindustry.utils.capabilities.MindustryCapabilities;
@@ -15,8 +14,8 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.targeting.TargetingConditions;
 import net.minecraft.world.entity.monster.Enemy;
-import net.minecraft.world.entity.projectile.Arrow;
 import net.minecraft.world.level.ClipContext;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.HitResult;
@@ -27,19 +26,22 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import snownee.kiwi.block.entity.ModBlockEntity;
 
-public class TurretBlockEntity extends ModBlockEntity {
-    public static final String NAME = "turret";
-
+public abstract class TurretBlockEntityBase extends ModBlockEntity {
+    private final LazyOptional<IHealthHandler> healthHandler = LazyOptional.of(HealthHandler::new);
     public int time;
     public float rot;
     public float oRot;
     public float tRot;
+    public LivingEntity target = null;
+    public Vec3 targetPos = Vec3.ZERO;
+    /**
+     * 是否正在发射
+     */
+    public boolean isShooting = false;
 
-    public TurretBlockEntity(BlockPos pPos, BlockState pBlockState) {
-        super(BlockEntityModule.TURRET_BLOCK_ENTITY.get(), pPos, pBlockState);
+    public TurretBlockEntityBase(BlockEntityType<?> tileEntityTypeIn, BlockPos pos, BlockState state) {
+        super(tileEntityTypeIn, pos, state);
     }
-
-    private final LazyOptional<IHealthHandler> healthHandler = LazyOptional.of(HealthHandler::new);
 
     private boolean isCanSeeEntity(LivingEntity e) {
         return e instanceof Enemy
@@ -54,11 +56,6 @@ public class TurretBlockEntity extends ModBlockEntity {
         }
         return super.getCapability(cap, side);
     }
-
-    public LivingEntity target = null;
-    public double targetPosX;
-    public double targetPosY;
-    public double targetPosZ;
 
     @Nullable
     LivingEntity getNearestEnemy(Vec3 range) {
@@ -90,9 +87,9 @@ public class TurretBlockEntity extends ModBlockEntity {
     @Override
     public @NotNull CompoundTag getUpdateTag() {
         CompoundTag tag = super.getUpdateTag();
-        tag.putDouble("targetPosX", targetPosX);
-        tag.putDouble("targetPosY", targetPosY);
-        tag.putDouble("targetPosZ", targetPosZ);
+        tag.putDouble("targetPosX", targetPos.x);
+        tag.putDouble("targetPosY", targetPos.y);
+        tag.putDouble("targetPosZ", targetPos.z);
         return tag;
     }
 
@@ -109,47 +106,10 @@ public class TurretBlockEntity extends ModBlockEntity {
 
     @Override
     public void handleUpdateTag(CompoundTag tag) {
-        targetPosX = tag.getDouble("targetPosX");
-        targetPosY = tag.getDouble("targetPosY");
-        targetPosZ = tag.getDouble("targetPosZ");
+        targetPos = new Vec3(tag.getDouble("targetPosX"), tag.getDouble("targetPosY"), tag.getDouble("targetPosZ"));
     }
 
-    public void tick() {
-        BlockPos blockPos = getBlockPos();
-
-        time++;
-        if (time % 5 != 0)
-            return;
-
-        Vec3 pos = blockPos.getCenter();
-        pos = pos.add(0, 1, 0);
-        LivingEntity target = getTarget();
-        if (target != null) {
-            Arrow bullet = new Arrow(level, pos.x, pos.y, pos.z);
-            Vec3 blockPosCenter = blockPos.getCenter();
-            double d0 = target.getEyeY();
-            double d1 = target.getX() - blockPosCenter.x;
-            double d2 = d0 - bullet.getY() - target.getBoundingBox().getYsize();
-            double d3 = target.getZ() - blockPosCenter.z;
-            double d4 = Math.pow(Math.sqrt(d1 * d1 + d3 * d3), 1.55) * (double) 0.02F;
-
-            bullet.shoot(d1, d2 + d4, d3, 3.2F, 2.56F);
-//            bullet.noPhysics = true;
-//            bullet.shoot(d1, 0, d3, 3.2F, 2.56F);
-//        this.playSound(SoundEvents.ARROW_SHOOT, 1.0F, 0.4F / (this.getRandom().nextFloat() * 0.4F + 0.8F));
-            level.addFreshEntity(bullet);
-        }
-
-        if (target != null) {
-            targetPosX = target.getX();
-            targetPosY = target.getY();
-            targetPosZ = target.getZ();
-        } else {
-            targetPosX = 0;
-            targetPosY = 0;
-            targetPosZ = 0;
-        }
-    }
+    public abstract void tick();
 
     public void serverTick() {
         tick();
@@ -160,44 +120,57 @@ public class TurretBlockEntity extends ModBlockEntity {
 
     public void clientTick() {
         tick();
-
         BlockPos blockPos = getBlockPos();
         oRot = rot;
-        if (targetPosX != 0 || targetPosY != 0 || targetPosZ != 0) {
-            double d0 = targetPosX - ((double) blockPos.getX() + 0.5D);
-            double d1 = targetPosZ - ((double) blockPos.getZ() + 0.5D);
-            tRot = (float) Mth.atan2(d1, d0);
-        } else {
-            tRot += 0.02F;
-        }
+        if (target != null) {
+        double d0 = targetPos.x - ((double) blockPos.getX() + 0.5D);
+        double d1 = targetPos.z - ((double) blockPos.getZ() + 0.5D);
+        tRot = (float) Mth.atan2(d1, d0);
+    } else
 
-        while (rot >= (float) Math.PI) {
-            rot -= ((float) Math.PI * 2F);
-        }
-
-        while (rot < -(float) Math.PI) {
-            rot += ((float) Math.PI * 2F);
-        }
-
-        while (tRot >= (float) Math.PI) {
-            tRot -= ((float) Math.PI * 2F);
-        }
-
-        while (tRot < -(float) Math.PI) {
-            tRot += ((float) Math.PI * 2F);
-        }
-
-        float f2;
-        f2 = tRot - rot;
-        while (f2 >= (float) Math.PI) {
-            f2 -= ((float) Math.PI * 2F);
-        }
-
-        while (f2 < -(float) Math.PI) {
-            f2 += ((float) Math.PI * 2F);
-        }
-
-        rot += f2 * 0.4F;
-        float f3 = 0.2F;
+    {
+        tRot += 0.02F;
     }
+
+        while(rot >=(float)Math.PI)
+
+    {
+        rot -= ((float) Math.PI * 2F);
+    }
+
+        while(rot< -(float)Math.PI)
+
+    {
+        rot += ((float) Math.PI * 2F);
+    }
+
+        while(tRot >=(float)Math.PI)
+
+    {
+        tRot -= ((float) Math.PI * 2F);
+    }
+
+        while(tRot< -(float)Math.PI)
+
+    {
+        tRot += ((float) Math.PI * 2F);
+    }
+
+    float f2;
+    f2 =tRot -rot;
+        while(f2 >=(float)Math.PI)
+
+    {
+        f2 -= ((float) Math.PI * 2F);
+    }
+
+        while(f2< -(float)Math.PI)
+
+    {
+        f2 += ((float) Math.PI * 2F);
+    }
+
+    rot +=f2 *0.4F;
+    float f3 = 0.2F;
+}
 }

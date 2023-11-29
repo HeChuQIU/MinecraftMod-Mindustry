@@ -1,9 +1,12 @@
 package com.hechu.mindustry;
 
+import com.hechu.mindustry.client.model.MissileBulletModel;
 import com.hechu.mindustry.client.renderer.blockentity.MechanicalDrillBlockEntityRenderer;
 import com.hechu.mindustry.client.renderer.blockentity.PneumaticDrillBlockEntityRenderer;
 import com.hechu.mindustry.client.renderer.blockentity.PowerNodeRenderer;
 import com.hechu.mindustry.client.renderer.blockentity.TurretRenderer;
+import com.hechu.mindustry.client.renderer.entity.BasicBulletRender;
+import com.hechu.mindustry.client.renderer.entity.MissileBulletRender;
 import com.hechu.mindustry.config.CommonConfig;
 import com.hechu.mindustry.config.ConfigHandler;
 import com.hechu.mindustry.kiwi.BlockEntityModule;
@@ -48,14 +51,22 @@ public class Mindustry {
     @Mod.EventBusSubscriber(modid = MindustryConstants.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
     public static class ClientModEvents {
         @SubscribeEvent
+        public static void onRegisterLayers(EntityRenderersEvent.RegisterLayerDefinitions event) {
+            event.registerLayerDefinition(MissileBulletModel.LAYER_LOCATION, MissileBulletModel::createBodyLayer);
+        }
+
+        @SubscribeEvent
         public static void onRegisterRenderers(EntityRenderersEvent.RegisterRenderers event) {
 
             event.registerBlockEntityRenderer(BlockEntityModule.MECHANICAL_DRILL_BLOCK_ENTITY.get(), context -> new MechanicalDrillBlockEntityRenderer());
             event.registerBlockEntityRenderer(BlockEntityModule.PNEUMATIC_DRILL_BLOCK_ENTITY.get(), context -> new PneumaticDrillBlockEntityRenderer());
-            event.registerBlockEntityRenderer(BlockEntityModule.TURRET_BLOCK_ENTITY.get(), TurretRenderer::new);
+            event.registerBlockEntityRenderer(BlockEntityModule.SWARMER_TURRET_BLOCK_ENTITY.get(), TurretRenderer::new);
+            event.registerBlockEntityRenderer(BlockEntityModule.SPECTRE_TURRET_BLOCK_ENTITY.get(), TurretRenderer::new);
             event.registerBlockEntityRenderer(BlockEntityModule.POWER_NODE_BLOCK_ENTITY.get(), pContext -> new PowerNodeRenderer());
 
             event.registerEntityRenderer(EntityModule.DUO.get(), DuoRenderer::new);
+            event.registerEntityRenderer(EntityModule.MISSILE_BULLET.get(), MissileBulletRender::new);
+            event.registerEntityRenderer(EntityModule.BASIC_BULLET.get(), BasicBulletRender::new);
         }
 
         @SubscribeEvent

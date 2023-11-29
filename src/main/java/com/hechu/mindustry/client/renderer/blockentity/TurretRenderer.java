@@ -1,6 +1,7 @@
 package com.hechu.mindustry.client.renderer.blockentity;
 
-import com.hechu.mindustry.world.level.block.entity.turrets.TurretBlockEntity;
+import com.hechu.mindustry.world.level.block.entity.turrets.SwarmerTurretBlockEntity;
+import com.hechu.mindustry.world.level.block.entity.turrets.TurretBlockEntityBase;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import net.minecraft.client.Minecraft;
@@ -21,7 +22,7 @@ import net.minecraftforge.client.model.data.ModelData;
 import org.jetbrains.annotations.NotNull;
 
 @OnlyIn(Dist.CLIENT)
-public class TurretRenderer implements BlockEntityRenderer<TurretBlockEntity> {
+public class TurretRenderer implements BlockEntityRenderer<TurretBlockEntityBase> {
     public static final Material TURRET_LOCATION = new Material(TextureAtlas.LOCATION_BLOCKS, new ResourceLocation("entity/turret"));
 
     public TurretRenderer(BlockEntityRendererProvider.Context context) {
@@ -29,7 +30,7 @@ public class TurretRenderer implements BlockEntityRenderer<TurretBlockEntity> {
     }
 
     @Override
-    public void render(@NotNull TurretBlockEntity blockEntity, float partialTick, @NotNull PoseStack poseStack, @NotNull MultiBufferSource buffer, int packedLight, int packedOverlay) {
+    public void render(@NotNull TurretBlockEntityBase blockEntity, float partialTick, @NotNull PoseStack poseStack, @NotNull MultiBufferSource buffer, int packedLight, int packedOverlay) {
         BlockRenderDispatcher blockRenderer = Minecraft.getInstance().getBlockRenderer();
 
 //        poseStack.pushPose();
@@ -54,10 +55,10 @@ public class TurretRenderer implements BlockEntityRenderer<TurretBlockEntity> {
 
         float f2 = blockEntity.oRot + f1 * partialTick;
         float f3;
-        if (blockEntity.targetPosX != 0 || blockEntity.targetPosY != 0 || blockEntity.targetPosZ != 0) {
-            f3 = (float) Mth.atan2(blockEntity.targetPosY - blockEntity.getBlockPos().getCenter().y,
-                    Mth.sqrt((float) (Mth.square(blockEntity.targetPosX - blockEntity.getBlockPos().getCenter().x)
-                            + Mth.square(blockEntity.targetPosZ - blockEntity.getBlockPos().getCenter().z))));
+        if (blockEntity.target != null) {
+            f3 = (float) Mth.atan2(blockEntity.targetPos.y - blockEntity.getBlockPos().getCenter().y,
+                    Mth.sqrt((float) (Mth.square(blockEntity.targetPos.x - blockEntity.getBlockPos().getCenter().x)
+                            + Mth.square(blockEntity.targetPos.z - blockEntity.getBlockPos().getCenter().z))));
 //            poseStack.mulPose(Axis.XN.rotationDegrees(90.0f));
         } else {
             f3 = 0f;

@@ -11,7 +11,8 @@
   "block.mindustry.scrap_ore": "Scrap Ore",
   "block.mindustry.thorium_ore": "Thorium Ore",
   "block.mindustry.titanium_ore": "Titanium Ore",
-
+  "block.mindustry.swarmer_turret": "Swarmer",
+  "block.mindustry.spectre_turret": "Spectre",
 
   "item.mindustry.copper": "Copper",
   "item.mindustry.coal": "Coal",
@@ -27,6 +28,11 @@
   "item.mindustry.pyratite": "Pyratite",
   "item.mindustry.silicon": "Silicon",
   "item.mindustry.surge_alloy": "Surge Alloy",
+  "item.mindustry.swarmer_turret": "Swarmer",
+  "item.mindustry.spectre_turret": "Spectre",
+
+  "entity.mindustry.missile_bullet": "Missile",
+  "entity.mindustry.basic_bullet": "Basic Bullet",
 
   "config.jade.plugin_mindustry.crafting_block": "Show Factory Progress",
   "config.jade.plugin_mindustry.drill": "Show Drill Detail",
