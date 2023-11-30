@@ -1,5 +1,6 @@
 package com.hechu.mindustry.client.renderer.blockentity;
 
+import com.hechu.mindustry.MindustryConstants;
 import com.hechu.mindustry.world.level.block.Equipment.PowerNodeBlockEntity;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
@@ -18,12 +19,15 @@ import org.joml.Matrix4f;
 
 import java.util.List;
 
+/**
+ * @author luobochuanqi
+ */
 @OnlyIn(Dist.CLIENT)
 public class PowerNodeRenderer implements BlockEntityRenderer<PowerNodeBlockEntity> {
-    public static final ResourceLocation BEAM_LOCATION = new ResourceLocation("textures/entity/beacon_beam.png");
+    public static final ResourceLocation BEAM_LOCATION = new ResourceLocation(MindustryConstants.MOD_ID, "textures/entity/power_node_beam.png");
 
     private static void renderPowerNodeBeam(PoseStack pPoseStack, MultiBufferSource pBufferSource, float pPartialTick, long pGameTime, int pYOffset, int pHeight) {
-        renderPowerNodeBeam(pPoseStack, pBufferSource, BEAM_LOCATION, pPartialTick, 1.0F, pGameTime, pYOffset, pHeight, 0.2F, 0.25F);
+        renderPowerNodeBeam(pPoseStack, pBufferSource, BEAM_LOCATION, pPartialTick, 1.0F, pGameTime, pYOffset, pHeight, 0.07F, 0.06F);
     }
 
     public static void renderPowerNodeBeam(PoseStack pPoseStack, MultiBufferSource pBufferSource, ResourceLocation pBeamLocation, float pPartialTick, float pTextureScale, long pGameTime, int pYOffset, int pHeight, float pBeamRadius, float pGlowRadius) {
@@ -33,32 +37,26 @@ public class PowerNodeRenderer implements BlockEntityRenderer<PowerNodeBlockEnti
         float f = (float) Math.floorMod(pGameTime, 40) + pPartialTick;
         float f1 = pHeight < 0 ? f : -f;
         float f2 = Mth.frac(f1 * 0.2F - (float) Mth.floor(f1 * 0.1F));
-        float f3 = 0.0f;
-        float f4 = 0.0f;
-        float f5 = 0.0f;
+        float fRed = 1.0f;
+        float fGreen = 5.0f;
+        float fBlue = 5.0f;
         pPoseStack.pushPose();
         pPoseStack.mulPose(Axis.YP.rotationDegrees(f * 2.25F - 45.0F));
         float f6 = 0.0F;
         float f8 = 0.0F;
         float f9 = -pBeamRadius;
-        float f10 = 0.0F;
-        float f11 = 0.0F;
         float f12 = -pBeamRadius;
-        float f13 = 0.0F;
-        float f14 = 1.0F;
         float f15 = -1.0F + f2;
         float f16 = (float) pHeight * pTextureScale * (0.5F / pBeamRadius) + f15;
-        renderPart(pPoseStack, pBufferSource.getBuffer(RenderType.beaconBeam(pBeamLocation, false)), f3, f4, f5, 1.0F, pYOffset, i, 0.0F, pBeamRadius, pBeamRadius, 0.0F, f9, 0.0F, 0.0F, f12, 0.0F, 1.0F, f16, f15);
+        renderPart(pPoseStack, pBufferSource.getBuffer(RenderType.beaconBeam(pBeamLocation, false)), fRed, fGreen, fBlue, 1.0F, pYOffset, i, 0.0F, pBeamRadius, pBeamRadius, 0.0F, f9, 0.0F, 0.0F, f12, 0.0F, 1.0F, f16, f15);
         pPoseStack.popPose();
         f6 = -pGlowRadius;
         float f7 = -pGlowRadius;
         f8 = -pGlowRadius;
         f9 = -pGlowRadius;
-        f13 = 0.0F;
-        f14 = 1.0F;
         f15 = -1.0F + f2;
         f16 = (float) pHeight * pTextureScale + f15;
-        renderPart(pPoseStack, pBufferSource.getBuffer(RenderType.beaconBeam(pBeamLocation, true)), f3, f4, f5, 0.125F, pYOffset, i, f6, f7, pGlowRadius, f8, f9, pGlowRadius, pGlowRadius, pGlowRadius, 0.0F, 1.0F, f16, f15);
+        renderPart(pPoseStack, pBufferSource.getBuffer(RenderType.beaconBeam(pBeamLocation, true)), fRed, fGreen, fBlue, 0.125F, pYOffset, i, f6, f7, pGlowRadius, f8, f9, pGlowRadius, pGlowRadius, pGlowRadius, 0.0F, 1.0F, f16, f15);
         pPoseStack.popPose();
     }
 
@@ -103,7 +101,7 @@ public class PowerNodeRenderer implements BlockEntityRenderer<PowerNodeBlockEnti
 
     @Override
     public int getViewDistance() {
-        return 256;
+        return 64;
     }
 
     /**
@@ -111,6 +109,8 @@ public class PowerNodeRenderer implements BlockEntityRenderer<PowerNodeBlockEnti
      */
     @Override
     public boolean shouldRender(PowerNodeBlockEntity pBlockEntity, Vec3 pCameraPos) {
-        return Vec3.atCenterOf(pBlockEntity.getBlockPos()).multiply(1.0D, 0.0D, 1.0D).closerThan(pCameraPos.multiply(1.0D, 0.0D, 1.0D), (double) this.getViewDistance());
+        return Vec3.atCenterOf(pBlockEntity.getBlockPos())
+                .multiply(1.0D, 0.0D, 1.0D)
+                .closerThan(pCameraPos.multiply(1.0D, 0.0D, 1.0D), (double) this.getViewDistance());
     }
 }

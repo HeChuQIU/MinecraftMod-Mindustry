@@ -30,7 +30,7 @@ public class PowerNodeBlockEntity extends BlockEntity {
     }
 
     public static void tick(Level pLevel, BlockPos pPos, BlockState pState, PowerNodeBlockEntity pBlockEntity) {
-        LOGGER.debug("lastCheckY:" + String.valueOf(pBlockEntity.lastCheckY));
+//        LOGGER.debug("lastCheckY:" + String.valueOf(pBlockEntity.lastCheckY));
 
         int i = pPos.getX();
         int j = pPos.getY();
