@@ -3,8 +3,6 @@ package com.hechu.mindustry.kiwi;
 import com.hechu.mindustry.MindustryConstants;
 import com.hechu.mindustry.world.level.block.Equipment.PowerNodeBlock;
 import com.hechu.mindustry.world.level.block.ore.*;
-import com.hechu.mindustry.world.level.block.turrets.SpectreTurretBlock;
-import com.hechu.mindustry.world.level.block.turrets.SwarmerTurretBlock;
 import net.minecraft.world.level.block.Block;
 import snownee.kiwi.AbstractModule;
 import snownee.kiwi.KiwiGO;
@@ -22,6 +20,7 @@ import static com.hechu.mindustry.MindustryConstants.logger;
 public class BlockModule extends AbstractModule {
     @KiwiModule.Category(value = MindustryConstants.MOD_ID + ":tab_main")
     public static final KiwiGO<Block> POWER_NODE = go(PowerNodeBlock::new);
+
     @KiwiModule.Name("lead_ore")
     public static final KiwiGO<Block> LEAD_ORE_BLOCK = go(LeadOreBlock::new);
     @KiwiModule.Name("coal_ore")

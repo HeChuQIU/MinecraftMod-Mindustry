@@ -27,12 +27,11 @@
   "item.mindustry.pyratite": "硫化物",
   "item.mindustry.silicon": "硅",
   "item.mindustry.surge_alloy": "巨浪合金",
+  "item.mindustry.wrench": "扳手",
   "item.mindustry.swarmer_turret": "蜂群",
   "item.mindustry.spectre_turret": "幽灵",
-
   "entity.mindustry.missile_bullet": "导弹",
   "entity.mindustry.basic_bullet": "普通子弹",
-
   "config.jade.plugin_mindustry.crafting_block": "显示工厂制作进度",
   "config.jade.plugin_mindustry.drill": "显示钻头属性",
   "config.jade.plugin_mindustry.health_block": "显示血量",
