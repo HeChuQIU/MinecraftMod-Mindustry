@@ -35,12 +35,12 @@
   "config.jade.plugin_mindustry.crafting_block": "显示工厂制作进度",
   "config.jade.plugin_mindustry.drill": "显示钻头属性",
   "config.jade.plugin_mindustry.health_block": "显示血量",
-
+  "item.mindustry.wrench.tip": "当前存储: d%",
   "itemGroup.mindustry.mindustry": "Mindustry",
   "itemGroup.mindustry.materials": "Mindustry - 材料",
-
   "mindustry.block_health": "生命值 : %d / %d",
   "mindustry.drill_progress": "%d%%已挖掘",
   "mindustry.drill_speed": "挖掘速度 : %d/秒",
-  "mindustry.stored_item": "已存储物品 : %d / %d"
+  "mindustry.stored_item": "已存储物品 : %d / %d",
+  "chat.mindustry.warning.linkSelf": "你不能连接要连接的节点本身"
 }

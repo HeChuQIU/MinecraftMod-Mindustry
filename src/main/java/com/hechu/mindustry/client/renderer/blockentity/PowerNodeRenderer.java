@@ -27,7 +27,7 @@ public class PowerNodeRenderer implements BlockEntityRenderer<PowerNodeBlockEnti
     public static final ResourceLocation BEAM_LOCATION = new ResourceLocation(MindustryConstants.MOD_ID, "textures/entity/power_node_beam.png");
 
     private static void renderPowerNodeBeam(PoseStack pPoseStack, MultiBufferSource pBufferSource, float pPartialTick, long pGameTime, int pYOffset, int pHeight) {
-        renderPowerNodeBeam(pPoseStack, pBufferSource, BEAM_LOCATION, pPartialTick, 1.0F, pGameTime, pYOffset, pHeight, 0.07F, 0.06F);
+        renderPowerNodeBeam(pPoseStack, pBufferSource, BEAM_LOCATION, pPartialTick, 1.0F, pGameTime, pYOffset, 1, 0.07F, 0.06F);
     }
 
     public static void renderPowerNodeBeam(PoseStack pPoseStack, MultiBufferSource pBufferSource, ResourceLocation pBeamLocation, float pPartialTick, float pTextureScale, long pGameTime, int pYOffset, int pHeight, float pBeamRadius, float pGlowRadius) {

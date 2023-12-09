@@ -18,6 +18,8 @@ import net.minecraft.world.phys.BlockHitResult;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.List;
+
 /**
  * @author luobochuanqi
  */
@@ -58,5 +60,15 @@ public class PowerNodeBlock extends BaseEntityBlock {
             MindustryConstants.logger.debug("from:" + powerNodeBlockEntity.getPassivelyConnectedNodes().toString());
         }
         return super.use(pState, pLevel, pPos, pPlayer, pHand, pHit);
+    }
+
+    @Override
+    public void onRemove(BlockState pState, Level pLevel, BlockPos pPos, BlockState pNewState, boolean pIsMoving) {
+        PowerNodeBlockEntity powerNodeBlockEntity = (PowerNodeBlockEntity) pLevel.getBlockEntity(pPos);
+        List<PowerNodeBlockEntity> passivelyConnectedNodes = powerNodeBlockEntity.getPassivelyConnectedNodes();
+        for (PowerNodeBlockEntity element : passivelyConnectedNodes) {
+            element.removeConnectedNode(powerNodeBlockEntity);
+        }
+        super.onRemove(pState, pLevel, pPos, pNewState, pIsMoving);
     }
 }

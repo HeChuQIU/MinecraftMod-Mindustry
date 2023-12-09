@@ -96,12 +96,20 @@ public class PowerNodeBlockEntity extends BlockEntity {
         return this.passivelyConnectedNodes;
     }
 
-    public void connectToOtherNode(PowerNodeBlockEntity pBlock) {
-        this.connectedNodes.add(pBlock);
+    public void connectToOtherNode(PowerNodeBlockEntity pBlockEntity) {
+        this.connectedNodes.add(pBlockEntity);
     }
 
-    public void connectFromOtherNode(PowerNodeBlockEntity pBlock) {
-        this.passivelyConnectedNodes.add(pBlock);
+    public void connectFromOtherNode(PowerNodeBlockEntity pBlockEntity) {
+        this.passivelyConnectedNodes.add(pBlockEntity);
+    }
+
+    public boolean removeConnectedNode(PowerNodeBlockEntity pBlockEntity) {
+        return this.getConnectedNodes().remove(pBlockEntity);
+    }
+
+    public boolean removePassivelyConnectedNode(PowerNodeBlockEntity pBlockEntity) {
+        return this.getPassivelyConnectedNodes().remove(pBlockEntity);
     }
 
     public static class PowerNodeBeamSection {

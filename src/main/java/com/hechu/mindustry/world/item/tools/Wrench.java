@@ -4,6 +4,7 @@ import com.hechu.mindustry.MindustryConstants;
 import com.hechu.mindustry.world.level.block.Equipment.PowerNodeBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.Tag;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.InteractionResultHolder;
@@ -33,21 +34,32 @@ public class Wrench extends ModItem {
         ItemStack itemStack = pContext.getItemInHand();
         NBTHelper tag = NBTHelper.of(itemStack).get() == null ? NBTHelper.create() : NBTHelper.of(itemStack);
         if (!pContext.getLevel().isClientSide() && blockEntity instanceof PowerNodeBlockEntity powerNodeBlockEntity2) {
-            // 判断当前 nbt 里是否已经存储了一个节点的坐标
+            // 判断当前 nbt 是否已经存储了一个节点的坐标
             if (tag.get().contains(NBT_KEY)) {
+                // powerNodeBlockEntity1 连接 powerNodeBlockEntity2
                 PowerNodeBlockEntity powerNodeBlockEntity1 = (PowerNodeBlockEntity) pContext.getLevel().getBlockEntity(tag.getPos(NBT_KEY));
-                powerNodeBlockEntity2.connectFromOtherNode(powerNodeBlockEntity1);
-                powerNodeBlockEntity1.connectToOtherNode(powerNodeBlockEntity2);
-//                    MindustryConstants.logger.debug("1: " + powerNodeBlock1.getConnectedNodes().toString());
-//                    MindustryConstants.logger.debug("2: " + powerNodeBlock2.getPassivelyConnectedNodes().toString());
-                tag.remove(NBT_KEY);
-                itemStack.setTag(tag.get());
+                if (powerNodeBlockEntity1 != powerNodeBlockEntity2) {
+                    // 如果点击的节点是已经被连接的，那么就取消连接
+                    if (powerNodeBlockEntity1.getConnectedNodes().contains(powerNodeBlockEntity2)
+                            && powerNodeBlockEntity2.getPassivelyConnectedNodes().contains(powerNodeBlockEntity1)) {
+                        powerNodeBlockEntity1.removeConnectedNode(powerNodeBlockEntity2);
+                        powerNodeBlockEntity2.removePassivelyConnectedNode(powerNodeBlockEntity1);
+                    } else {
+                        powerNodeBlockEntity2.connectFromOtherNode(powerNodeBlockEntity1);
+                        powerNodeBlockEntity1.connectToOtherNode(powerNodeBlockEntity2);
+                        tag.remove(NBT_KEY);
+                    }
+                } else {
+                    // 否则就可以判断点击的节点是已经存储的节点本身
+                    pContext.getPlayer().sendSystemMessage(Component.translatable(MindustryConstants.CHAT_WARN + "linkSelf"));
+                    return InteractionResult.PASS;
+                }
             } else {
                 tag.setPos(NBT_KEY, clickedPos);
-                itemStack.setTag(tag.get());
             }
+            itemStack.setTag(tag.get());
         }
-        return super.useOn(pContext);
+        return InteractionResult.SUCCESS;
     }
 
     @Override

@@ -35,12 +35,12 @@
   "config.jade.plugin_mindustry.crafting_block": "Show Factory Progress",
   "config.jade.plugin_mindustry.drill": "Show Drill Detail",
   "config.jade.plugin_mindustry.health_block": "Show Block Health",
-
+  "item.mindustry.wrench.tip": "Current: d%",
   "itemGroup.mindustry.mindustry": "Mindustry",
   "itemGroup.mindustry.materials": "Mindustry - Materials",
-
   "mindustry.block_health": "BlockHealth : %d / %d",
   "mindustry.drill_progress": "Progress %d%%",
   "mindustry.drill_speed": "Mining Speed : %d items/s",
-  "mindustry.stored_item": "Item Store : %d / %d"
+  "mindustry.stored_item": "Item Store : %d / %d",
+  "chat.mindustry.warning.linkSelf": "! You cannot connect to the node itself"
 }
