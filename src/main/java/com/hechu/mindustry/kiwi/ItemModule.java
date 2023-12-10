@@ -1,6 +1,7 @@
 package com.hechu.mindustry.kiwi;
 
 import com.hechu.mindustry.MindustryConstants;
+import com.hechu.mindustry.world.item.tools.Wrench;
 import net.minecraft.world.item.Item;
 import snownee.kiwi.AbstractModule;
 import snownee.kiwi.KiwiGO;
@@ -16,6 +17,9 @@ import static com.hechu.mindustry.MindustryConstants.logger;
 @KiwiModule(value = "item")
 @KiwiModule.Category(value = MindustryConstants.MOD_ID + ":tab_materials")
 public class ItemModule extends AbstractModule {
+    @KiwiModule.Category(value = MindustryConstants.MOD_ID + ":tab_main")
+    public static final KiwiGO<Item> WRENCH = go(() -> new Wrench(new Item.Properties()));
+
     public static final KiwiGO<Item> COPPER = go(() -> new Item(new Item.Properties()));
     public static final KiwiGO<Item> COAL = go(() -> new Item(new Item.Properties()));
     public static final KiwiGO<Item> LEAD = go(() -> new Item(new Item.Properties()));

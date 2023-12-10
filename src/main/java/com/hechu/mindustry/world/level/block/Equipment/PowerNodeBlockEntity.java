@@ -2,7 +2,6 @@ package com.hechu.mindustry.world.level.block.Equipment;
 
 import com.google.common.collect.Lists;
 import com.hechu.mindustry.kiwi.BlockEntityModule;
-import com.mojang.logging.LogUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -18,13 +17,28 @@ import java.util.List;
  */
 public class PowerNodeBlockEntity extends BlockEntity {
     public static final String NAME = "power_node";
-    private static final Logger LOGGER = LogUtils.getLogger();
     /**
      * A list of beam segments for this PowerNode.
      */
     List<PowerNodeBeamSection> beamSections = Lists.newArrayList();
     private int lastCheckY;
     private List<PowerNodeBeamSection> checkingBeamSections = Lists.newArrayList();
+    /**
+     * The maximum number of nodes that can be connected
+     */
+    public static final int MAX_CONNECTIONS = 10;
+    /**
+     * Range that can be connected to
+     */
+    public static final int POWER_RANGE = 6;
+    /**
+     * Other nodes connected from this node
+     */
+    List<PowerNodeBlockEntity> connectedNodes = org.apache.commons.compress.utils.Lists.newArrayList();
+    /**
+     * Other nodes connected to the current node from other nodes
+     */
+    List<PowerNodeBlockEntity> passivelyConnectedNodes = org.apache.commons.compress.utils.Lists.newArrayList();
 
     public PowerNodeBlockEntity(BlockPos pPos, BlockState pBlockState) {
         super(BlockEntityModule.POWER_NODE_BLOCK_ENTITY.get(), pPos, pBlockState);
@@ -76,6 +90,30 @@ public class PowerNodeBlockEntity extends BlockEntity {
         return (List<PowerNodeBeamSection>) this.beamSections;
     }
 
+    public List<PowerNodeBlockEntity> getConnectedNodes() {
+        return this.connectedNodes;
+    }
+
+    public List<PowerNodeBlockEntity> getPassivelyConnectedNodes() {
+        return this.passivelyConnectedNodes;
+    }
+
+    public void connectToOtherNode(PowerNodeBlockEntity pBlockEntity) {
+        this.connectedNodes.add(pBlockEntity);
+    }
+
+    public void connectFromOtherNode(PowerNodeBlockEntity pBlockEntity) {
+        this.passivelyConnectedNodes.add(pBlockEntity);
+    }
+
+    public boolean removeConnectedNode(PowerNodeBlockEntity pBlockEntity) {
+        return this.getConnectedNodes().remove(pBlockEntity);
+    }
+
+    public boolean removePassivelyConnectedNode(PowerNodeBlockEntity pBlockEntity) {
+        return this.getPassivelyConnectedNodes().remove(pBlockEntity);
+    }
+    
     /**
      * Return an {@link AABB} that controls the visible scope of a {@link BlockEntityWithoutLevelRenderer} associated with this {@link BlockEntity}
      * Defaults to the collision bounding box {@link BlockState#getCollisionShape(BlockGetter, BlockPos)} associated with the block

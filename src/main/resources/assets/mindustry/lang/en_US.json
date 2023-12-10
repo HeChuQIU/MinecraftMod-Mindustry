@@ -20,7 +20,6 @@
   "item.mindustry.scrap": "Scrap",
   "item.mindustry.thorium": "Thorium",
   "item.mindustry.titanium": "Titanium",
-
   "item.mindustry.graphite": "Graphite",
   "item.mindustry.meta_glass": "Meta Glass",
   "item.mindustry.phase_fabric": "Phase Fabric",
@@ -28,21 +27,20 @@
   "item.mindustry.pyratite": "Pyratite",
   "item.mindustry.silicon": "Silicon",
   "item.mindustry.surge_alloy": "Surge Alloy",
+  "item.mindustry.wrench": "Wrench",
   "item.mindustry.swarmer_turret": "Swarmer",
   "item.mindustry.spectre_turret": "Spectre",
-
   "entity.mindustry.missile_bullet": "Missile",
   "entity.mindustry.basic_bullet": "Basic Bullet",
-
   "config.jade.plugin_mindustry.crafting_block": "Show Factory Progress",
   "config.jade.plugin_mindustry.drill": "Show Drill Detail",
   "config.jade.plugin_mindustry.health_block": "Show Block Health",
-
+  "item.mindustry.wrench.tip": "Current: d%",
   "itemGroup.mindustry.mindustry": "Mindustry",
   "itemGroup.mindustry.materials": "Mindustry - Materials",
-
   "mindustry.block_health": "BlockHealth : %d / %d",
   "mindustry.drill_progress": "Progress %d%%",
   "mindustry.drill_speed": "Mining Speed : %d items/s",
-  "mindustry.stored_item": "Item Store : %d / %d"
+  "mindustry.stored_item": "Item Store : %d / %d",
+  "chat.mindustry.warning.linkSelf": "! You cannot connect to the node itself"
 }
