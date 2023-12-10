@@ -8,6 +8,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.Heightmap;
+import net.minecraft.world.phys.AABB;
 import org.slf4j.Logger;
 
 import java.util.List;
@@ -73,6 +74,18 @@ public class PowerNodeBlockEntity extends BlockEntity {
 
     public List<PowerNodeBeamSection> getBeamSections() {
         return (List<PowerNodeBeamSection>) this.beamSections;
+    }
+
+    /**
+     * Return an {@link AABB} that controls the visible scope of a {@link BlockEntityWithoutLevelRenderer} associated with this {@link BlockEntity}
+     * Defaults to the collision bounding box {@link BlockState#getCollisionShape(BlockGetter, BlockPos)} associated with the block
+     * at this location.
+     *
+     * @return an appropriately size {@link AABB} for the {@link BlockEntity}
+     */
+    @Override
+    public AABB getRenderBoundingBox() {
+        return INFINITE_EXTENT_AABB;
     }
 
     public static class PowerNodeBeamSection {
