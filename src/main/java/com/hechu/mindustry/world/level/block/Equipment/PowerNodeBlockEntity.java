@@ -112,6 +112,8 @@ public class PowerNodeBlockEntity extends BlockEntity {
 
     public boolean removePassivelyConnectedNode(PowerNodeBlockEntity pBlockEntity) {
         return this.getPassivelyConnectedNodes().remove(pBlockEntity);
+    }
+    
     /**
      * Return an {@link AABB} that controls the visible scope of a {@link BlockEntityWithoutLevelRenderer} associated with this {@link BlockEntity}
      * Defaults to the collision bounding box {@link BlockState#getCollisionShape(BlockGetter, BlockPos)} associated with the block
