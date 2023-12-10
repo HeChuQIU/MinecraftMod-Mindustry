@@ -96,12 +96,12 @@ public class PowerNodeRenderer implements BlockEntityRenderer<PowerNodeBlockEnti
 
     @Override
     public boolean shouldRenderOffScreen(PowerNodeBlockEntity pBlockEntity) {
-        return true;
+            return true;
     }
 
     @Override
     public int getViewDistance() {
-        return 64;
+        return 256;
     }
 
     /**
