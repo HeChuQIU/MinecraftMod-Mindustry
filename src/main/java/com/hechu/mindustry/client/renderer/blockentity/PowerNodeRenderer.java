@@ -96,7 +96,7 @@ public class PowerNodeRenderer implements BlockEntityRenderer<PowerNodeBlockEnti
 
     @Override
     public boolean shouldRenderOffScreen(PowerNodeBlockEntity pBlockEntity) {
-        return true;
+            return true;
     }
 
     @Override
