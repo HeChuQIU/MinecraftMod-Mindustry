@@ -5,16 +5,19 @@ import com.google.gson.annotations.SerializedName;
 
 import java.nio.file.Path;
 
-public class CommonConfig extends Config{
+public class CommonConfig extends Config {
     public CommonConfig(String configName, Path configPath) {
         super(configName, configPath);
     }
+
     @Expose()
     @SerializedName("common")
     private Common common = new Common();
+
     public Common getCommon() {
         return this.common;
     }
+
     public static class Common {
         @Expose()
         @SerializedName("mining_speed")

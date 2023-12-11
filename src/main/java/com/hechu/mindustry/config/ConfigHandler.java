@@ -19,7 +19,7 @@ public class ConfigHandler {
     @Nullable
     public static <T extends Config> T readConfig(String configName, Class<T> configClass) {
         configName = "%s_%s".formatted(MOD_ID, configName);
-        Path configPath = config_folder.resolve("%s.json".formatted(configName));
+        Path configPath = configFolder.resolve("%s.json".formatted(configName));
         if (configPath.toFile().isFile()) {
             try {
                 return GSON.fromJson(FileUtils.readFileToString(configPath.toFile(), StandardCharsets.UTF_8),
