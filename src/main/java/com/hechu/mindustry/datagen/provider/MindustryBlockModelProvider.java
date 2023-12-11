@@ -1,5 +1,7 @@
-package com.hechu.mindustry.datagen.block;
+package com.hechu.mindustry.datagen.provider;
 
+import com.hechu.mindustry.MindustryConstants;
+import com.hechu.mindustry.kiwi.BlockModule;
 import com.hechu.mindustry.kiwi.MutilBlockModule;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Vec3i;
@@ -8,13 +10,22 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.client.model.generators.BlockModelProvider;
 import net.minecraftforge.common.data.ExistingFileHelper;
 
-public class TurretBlockModelGenerator extends BlockModelProvider {
-    public TurretBlockModelGenerator(PackOutput output, String modid, ExistingFileHelper existingFileHelper) {
-        super(output, modid, existingFileHelper);
+public class MindustryBlockModelProvider extends BlockModelProvider {
+    public MindustryBlockModelProvider(PackOutput packOutput, ExistingFileHelper existingFileHelper) {
+        super(packOutput, MindustryConstants.MOD_ID, existingFileHelper);
     }
 
     @Override
     protected void registerModels() {
+        BlockModule.getRegisterName().forEach(this::registerBlockModel);
+        registerMutilationModels();
+    }
+
+    private void registerBlockModel(String name) {
+        this.cubeAll(name, new ResourceLocation(MindustryConstants.MOD_ID, "block/%s".formatted(name)));
+    }
+
+    void registerMutilationModels() {
         MutilBlockModule.getBlocks().forEach(block -> {
             Vec3i size = block.getSize();
             String name = block.getBlockName();
