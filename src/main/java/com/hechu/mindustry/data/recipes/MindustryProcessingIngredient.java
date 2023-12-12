@@ -62,7 +62,7 @@ public class MindustryProcessingIngredient extends AbstractIngredient {
             itemStack = itemStackFromJson(jsonObject);
         } else if (jsonObject.has("tag")) {
             //TODO
-            throw new JsonParseException("MindustryProcessingIngredient 暂不支持 Tag");
+            throw new JsonParseException("MindustryProcessingIngredient Tag");
 //            ResourceLocation resourcelocation = new ResourceLocation(GsonHelper.getAsString(json, "tag"));
 //            TagKey<Item> tagkey = TagKey.create(Registries.ITEM, resourcelocation);
 //            return new TagValue(tagkey);
@@ -92,7 +92,7 @@ public class MindustryProcessingIngredient extends AbstractIngredient {
     }
 
     public static @NotNull MindustryProcessingIngredient of(TagKey<Item> tag) {
-        throw new NotImplementedException("MindustryProcessingIngredient 暂不支持 Tag");
+        throw new NotImplementedException("MindustryProcessingIngredient 锟捷诧拷支锟斤拷 Tag");
     }
 
     public static MindustryProcessingIngredient of(ItemStack itemStack) {

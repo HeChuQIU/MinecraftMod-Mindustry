@@ -1,9 +1,12 @@
 package com.hechu.mindustry.utils;
 
+import com.hechu.mindustry.MindustryConstants;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Vec3i;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.player.Player;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
@@ -11,6 +14,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import static com.hechu.mindustry.MindustryConstants.logger;
 
@@ -50,5 +54,17 @@ public class Utils {
                 logger.error("Fail to create config folder.", e);
             }
         }
+    }
+
+    public static void chatSendMessage(@NotNull Player target, MindustryConstants.Chat prefix, String translateId, Object... args) {
+        target.sendSystemMessage(Component.translatable(prefix.msg + translateId, args));
+    }
+
+    public static void chatSendInfo(@NotNull Player target, String translateId, Object... args) {
+        chatSendMessage(target, MindustryConstants.Chat.CHAT_INFO, translateId, args);
+    }
+
+    public static void chatSendWarn(@NotNull Player target, String translateId, Object... args) {
+        chatSendMessage(target, MindustryConstants.Chat.CHAT_WARN, translateId, args);
     }
 }

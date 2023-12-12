@@ -26,8 +26,8 @@ import software.bernie.geckolib.GeckoLib;
 @Mod(MindustryConstants.MOD_ID)
 public class Mindustry {
     public Mindustry() {
-        MindustryConstants.config_folder = FMLPaths.GAMEDIR.get().resolve("config/" + MindustryConstants.MOD_ID);
-        Utils.checkFolder(MindustryConstants.config_folder);
+        MindustryConstants.configFolder = FMLPaths.GAMEDIR.get().resolve("config/" + MindustryConstants.MOD_ID);
+        Utils.checkFolder(MindustryConstants.configFolder);
         MindustryConstants.commonConfig = ConfigHandler.readConfig("common", CommonConfig.class);
 //        IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
 
