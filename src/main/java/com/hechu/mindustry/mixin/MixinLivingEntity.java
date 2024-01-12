@@ -11,8 +11,6 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.common.ForgeMod;
-import net.minecraftforge.fluids.FluidType;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -21,6 +19,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import javax.annotation.Nullable;
+import java.util.Objects;
 
 @Mixin(LivingEntity.class)
 public abstract class MixinLivingEntity extends Entity implements Attackable, net.minecraftforge.common.extensions.IForgeLivingEntity {
@@ -36,6 +35,9 @@ public abstract class MixinLivingEntity extends Entity implements Attackable, ne
 
     @Shadow
     public abstract boolean addEffect(MobEffectInstance pEffectInstance);
+
+    @Shadow
+    public abstract boolean addEffect(MobEffectInstance pEffectInstance, @org.jetbrains.annotations.Nullable Entity pEntity);
 
     public MixinLivingEntity(EntityType<?> pEntityType, Level pLevel) {
         super(pEntityType, pLevel);
@@ -81,14 +83,28 @@ public abstract class MixinLivingEntity extends Entity implements Attackable, ne
 
     @Inject(method = "baseTick", at = @At("HEAD"), cancellable = true)
     public void onBaseTick(CallbackInfo ci) {
-        if (this.isAlive() && this.isInWaterRainOrBubble()) {
-            if (!this.hasEffect(MobEffectModule.WET.get())
-                    ||
-                    (this.hasEffect(MobEffectModule.WET.get())
-                            && this.getEffect(MobEffectModule.WET.get()).getAmplifier() <= 0
-                            && this.getEffect(MobEffectModule.WET.get()).getDuration() <= 15 * 20)) {
-                this.removeEffect(MobEffectModule.WET.get());
-                this.addEffect(new MobEffectInstance(MobEffectModule.WET.get(), 15 * 20 + 1, 0));
+        if (this.isAlive()) {
+            if (this.isInWaterRainOrBubble() &&
+                    (!this.hasEffect(MobEffectModule.WET.get()) ||
+                            (this.hasEffect(MobEffectModule.WET.get()) &&
+                                    this.getEffect(MobEffectModule.WET.get()).getAmplifier() <= 0 &&
+                                    this.getEffect(MobEffectModule.WET.get()).getDuration() <= 15 * 20))) {
+                if (this.hasEffect(MobEffectModule.WET.get())) {
+                    Objects.requireNonNull(this.getEffect(MobEffectModule.WET.get())).duration = 15 * 20 + 1;
+                } else {
+                    this.addEffect(new MobEffectInstance(MobEffectModule.WET.get(), 15 * 20 + 1));
+                }
+            }
+            if ((this.isInLava() || this.isOnFire()) &&
+                    (!this.hasEffect(MobEffectModule.BURNING.get()) ||
+                            (this.hasEffect(MobEffectModule.BURNING.get()) &&
+                                    this.getEffect(MobEffectModule.BURNING.get()).getAmplifier() <= 0 &&
+                                    this.getEffect(MobEffectModule.BURNING.get()).getDuration() <= 15 * 20))) {
+                if (this.hasEffect(MobEffectModule.BURNING.get())) {
+                    Objects.requireNonNull(this.getEffect(MobEffectModule.BURNING.get())).duration = 15 * 20 + 1;
+                } else {
+                    this.addEffect(new MobEffectInstance(MobEffectModule.BURNING.get(), 15 * 20 + 1));
+                }
             }
         }
     }

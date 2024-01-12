@@ -10,7 +10,7 @@ public class BlastedMobEffect extends MindustryInstantenousMobEffect {
 
     public static BlastedMobEffect create() {
         return (BlastedMobEffect) new BlastedMobEffect()
-                .reactive(MobEffectModule.FREEZING.get(), params -> {
+                .reactive(MobEffectModule.FREEZING, params -> {
                     float j = (float) (9.0F * Math.pow(2, params.amplifier));
                     params.livingEntity.hurt(params.livingEntity.damageSources().magic(), j);
                 });
