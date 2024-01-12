@@ -10,9 +10,9 @@ import snownee.kiwi.KiwiModule;
 public class MobEffectModule extends AbstractModule {
     public static final KiwiGO<MobEffect> WET = go(WetMobEffect::create);
     public static final KiwiGO<MobEffect> BURNING = go(BurningMobEffect::create);
-    public static final KiwiGO<MobEffect> FREEZING = go(FreezingMobEffect::create);
     public static final KiwiGO<MobEffect> UNMOVING = go(UnmovingMobEffect::create);
     public static final KiwiGO<MobEffect> MELTING = go(MeltingMobEffect::create);
+    public static final KiwiGO<MobEffect> FREEZING = go(FreezingMobEffect::create);
     public static final KiwiGO<MobEffect> SAPPED = go(SappedMobEffect::create);
     public static final KiwiGO<MobEffect> ELECTRIFIED = go(ElectrifiedMobEffect::create);
     public static final KiwiGO<MobEffect> SPORE_SLOWED = go(SporeSlowedMobEffect::create);

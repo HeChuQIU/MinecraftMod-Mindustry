@@ -11,8 +11,9 @@ public class SappedMobEffect extends MobEffect {
     }
 
     public static SappedMobEffect create() {
-        return (SappedMobEffect) new SappedMobEffect().addAttributeModifier(Attributes.MOVEMENT_SPEED,
-                "0412E7B6-7A9B-4206-8291-F8911C9D4F67", BASE_SPEED_MULTIPLIER - 1f, AttributeModifier.Operation.MULTIPLY_TOTAL);
+        return (SappedMobEffect) new SappedMobEffect()
+                .addAttributeModifier(Attributes.MOVEMENT_SPEED, "0412E7B6-7A9B-4206-8291-F8911C9D4F67",
+                        BASE_SPEED_MULTIPLIER - 1f, AttributeModifier.Operation.MULTIPLY_TOTAL);
     }
 
     public static final float BASE_SPEED_MULTIPLIER = 0.8f;
