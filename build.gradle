@@ -287,7 +287,7 @@ jar {
                 "Implementation-Vendor"   : mod_authors,
                 "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ"),
                 "MixinConfigs"            : "mixins.mindustry.json",
-                'FMLAT'                   : "mindustry_at.cfg"
+                'FMLAT'                   : "accesstransformer.cfg"
         ])
     }
 }
