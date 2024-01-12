@@ -1,0 +1,17 @@
+{
+    "required": true,
+    "compatibilityLevel": "JAVA_8",
+    "package": "com.hechu.mindustry.mixin",
+    "minVersion": "0.8",
+    "setSourceFile": true,
+    "priority": 0,
+    "refmap": "mixins.mindustry.refmap.json",
+    "plugin": "com.hechu.mindustry.mixin.MixinPlugin",
+    "mixins": [
+        "MixinLivingEntity"
+    ],
+    "client": [
+    ],
+    "server": [
+    ]
+}

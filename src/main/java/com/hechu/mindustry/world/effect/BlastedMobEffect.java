@@ -1,24 +1,18 @@
 package com.hechu.mindustry.world.effect;
 
-import net.minecraft.world.effect.MobEffect;
+import com.hechu.mindustry.kiwi.MobEffectModule;
 import net.minecraft.world.effect.MobEffectCategory;
 
-public class BlastedMobEffect extends MobEffect {
+public class BlastedMobEffect extends MindustryInstantenousMobEffect {
     protected BlastedMobEffect() {
         super(MobEffectCategory.HARMFUL, 16742494);
     }
 
     public static BlastedMobEffect create() {
-        return new BlastedMobEffect();
+        return (BlastedMobEffect) new BlastedMobEffect()
+                .reactive(MobEffectModule.FREEZING.get(), params -> {
+                    float j = (float) (9.0F * Math.pow(2, params.amplifier));
+                    params.livingEntity.hurt(params.livingEntity.damageSources().magic(), j);
+                });
     }
-
-    /**
-     * Returns {@code true} if the potion has an instant effect instead of a continuous one (e.g. Harming)
-     */
-    @Override
-    public boolean isInstantenous() {
-        return true;
-    }
-
-    // TODO: 等待实现
 }

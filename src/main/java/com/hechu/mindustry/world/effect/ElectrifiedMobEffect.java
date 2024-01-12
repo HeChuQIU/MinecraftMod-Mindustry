@@ -11,10 +11,14 @@ public class ElectrifiedMobEffect extends MobEffect {
     }
 
     public static ElectrifiedMobEffect create() {
-        return (ElectrifiedMobEffect) new ElectrifiedMobEffect().addAttributeModifier(Attributes.MOVEMENT_SPEED,
-                "1138CD6F-BFE8-4DE9-A4E2-269C953961E6", BASE_SPEED_MULTIPLIER - 1f, AttributeModifier.Operation.MULTIPLY_TOTAL);
+        return (ElectrifiedMobEffect) new ElectrifiedMobEffect()
+                .addAttributeModifier(Attributes.MOVEMENT_SPEED,
+                        "1138CD6F-BFE8-4DE9-A4E2-269C953961E6", BASE_SPEED_MULTIPLIER - 1f,
+                        AttributeModifier.Operation.MULTIPLY_TOTAL)
+                .addAttributeModifier(Attributes.ATTACK_SPEED, "072A22B9-C5FD-4F7D-8957-D8621A5D17B1", BASE_RELOAD_MULTIPLIER - 1f,
+                        AttributeModifier.Operation.MULTIPLY_TOTAL);
     }
 
     public static final float BASE_SPEED_MULTIPLIER = 0.7f;
-    public static final float BASE_RELOAD_MULTIPLIER = 0.6f;// TODO: 等待使用Mixin实现
+    public static final float BASE_RELOAD_MULTIPLIER = 0.6f;
 }

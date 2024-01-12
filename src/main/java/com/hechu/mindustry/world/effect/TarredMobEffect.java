@@ -16,5 +16,4 @@ public class TarredMobEffect extends MobEffect {
     }
 
     public static final float BASE_SPEED_MULTIPLIER = 0.6f;
-    // TODO: 其余功能等待使用Mixin实现
 }

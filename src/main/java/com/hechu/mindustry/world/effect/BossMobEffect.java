@@ -11,9 +11,11 @@ public class BossMobEffect extends MobEffect {
     }
 
     public static BossMobEffect create() {
-        return new BossMobEffect();
+        return (BossMobEffect) new BossMobEffect()
+                .addAttributeModifier(Attributes.ATTACK_DAMAGE, "125CA66E-C7B3-4E3C-8A60-80D974AFAEE6",
+                        BASE_ATTACK_DAMAGE_MULTIPLIER - 1f, AttributeModifier.Operation.MULTIPLY_TOTAL);
     }
 
-    public static final float BASE_ATTACK_DAMAGE_MULTIPLIER = 1.3f;// TODO: 等待使用Mixin实现
-    public static final float BASE_HEALTH_MULTIPLIER = 1.5f;// TODO: 等待使用Mixin实现
+    public static final float BASE_ATTACK_DAMAGE_MULTIPLIER = 1.3f;
+    public static final float BASE_HEALTH_MULTIPLIER = 1.5f;
 }
