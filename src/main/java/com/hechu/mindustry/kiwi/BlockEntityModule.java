@@ -4,6 +4,7 @@ import com.hechu.mindustry.world.level.block.Equipment.PowerNodeBlockEntity;
 import com.hechu.mindustry.world.level.block.entity.HealthTestBlockEntity;
 import com.hechu.mindustry.world.level.block.entity.MechanicalDrillBlockEntity;
 import com.hechu.mindustry.world.level.block.entity.PneumaticDrillBlockEntity;
+import com.hechu.mindustry.world.level.block.entity.distribution.ConveyorBlockEntity;
 import com.hechu.mindustry.world.level.block.entity.multiblock.KilnBlockEntity;
 import com.hechu.mindustry.world.level.block.entity.multiblock.TestTurretMultiblockEntity;
 import com.hechu.mindustry.world.level.block.entity.turrets.SpectreTurretBlockEntity;
@@ -23,4 +24,5 @@ public class BlockEntityModule extends AbstractModule {
     public static final KiwiGO<BlockEntityType<PowerNodeBlockEntity>> POWER_NODE_BLOCK_ENTITY = blockEntity(PowerNodeBlockEntity::new, null, BlockModule.POWER_NODE);
     public static final KiwiGO<BlockEntityType<SwarmerTurretBlockEntity>> SWARMER_TURRET_BLOCK_ENTITY = blockEntity(SwarmerTurretBlockEntity::new, null, MutilBlockModule.SWARMER_TURRET);
     public static final KiwiGO<BlockEntityType<SpectreTurretBlockEntity>> SPECTRE_TURRET_BLOCK_ENTITY = blockEntity(SpectreTurretBlockEntity::new, null, MutilBlockModule.SPECTRE_TURRET);
+    public static final KiwiGO<BlockEntityType<ConveyorBlockEntity>> CONVEYOR_BLOCK_ENTITY = blockEntity(ConveyorBlockEntity::new, null, BlockModule.CONVEYOR);
 }

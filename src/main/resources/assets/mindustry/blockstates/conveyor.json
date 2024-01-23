@@ -1,0 +1,139 @@
+{
+  "variants": {
+    "shape=east_west": {
+      "model": "mindustry:block/conveyor_0"
+    },
+    "shape=north_south": {
+      "model": "mindustry:block/conveyor_0",
+      "y": 90
+    },
+    "shape=west_east": {
+      "model": "mindustry:block/conveyor_0",
+      "y": 180
+    },
+    "shape=south_north": {
+      "model": "mindustry:block/conveyor_0",
+      "y": 270
+    },
+    "shape=east_north": {
+      "model": "mindustry:block/conveyor_1"
+    },
+    "shape=north_west": {
+      "model": "mindustry:block/conveyor_1",
+        "y": 90
+    },
+    "shape=west_south": {
+      "model": "mindustry:block/conveyor_1",
+        "y": 180
+    },
+    "shape=south_east": {
+      "model": "mindustry:block/conveyor_1",
+        "y": 270
+    },
+    "shape=west_north": {
+      "model": "mindustry:block/conveyor_1_m"
+    },
+    "shape=south_west": {
+      "model": "mindustry:block/conveyor_1_m",
+      "y": 90
+    },
+    "shape=east_south": {
+      "model": "mindustry:block/conveyor_1_m",
+      "y": 180
+    },
+    "shape=north_east": {
+      "model": "mindustry:block/conveyor_1_m",
+      "y": 270
+    },
+    "shape=east_south_west": {
+      "model": "mindustry:block/conveyor_2"
+    },
+    "shape=north_east_south": {
+      "model": "mindustry:block/conveyor_2",
+      "y": 90
+    },
+    "shape=west_north_east": {
+      "model": "mindustry:block/conveyor_2",
+      "y": 180
+    },
+    "shape=south_west_north": {
+      "model": "mindustry:block/conveyor_2",
+      "y": 270
+    },
+    "shape=west_south_east": {
+      "model": "mindustry:block/conveyor_2_m"
+    },
+    "shape=south_east_north": {
+      "model": "mindustry:block/conveyor_2_m",
+      "y": 90
+    },
+    "shape=east_north_west": {
+      "model": "mindustry:block/conveyor_2_m",
+      "y": 180
+    },
+    "shape=north_west_south": {
+      "model": "mindustry:block/conveyor_2_m",
+      "y": 270
+    },
+    "shape=east_all": {
+      "model": "mindustry:block/conveyor_3"
+    },
+    "shape=north_all": {
+      "model": "mindustry:block/conveyor_3",
+      "y": 90
+    },
+    "shape=west_all": {
+      "model": "mindustry:block/conveyor_3",
+      "y": 180
+    },
+    "shape=south_all": {
+      "model": "mindustry:block/conveyor_3",
+      "y": 270
+    },
+    "shape=east_north_south": {
+      "model": "mindustry:block/conveyor_4"
+    },
+    "shape=north_west_east": {
+      "model": "mindustry:block/conveyor_4",
+      "y": 90
+    },
+    "shape=west_north_south": {
+      "model": "mindustry:block/conveyor_4",
+      "y": 180
+    },
+    "shape=south_west_east": {
+      "model": "mindustry:block/conveyor_4",
+      "y": 270
+    },
+    "shape=ascending_east": {
+      "model": "mindustry:block/conveyor_5"
+    },
+    "shape=ascending_north": {
+      "model": "mindustry:block/conveyor_5",
+      "y": 90
+    },
+    "shape=ascending_west": {
+      "model": "mindustry:block/conveyor_5",
+      "y": 180
+    },
+    "shape=ascending_south": {
+      "model": "mindustry:block/conveyor_5",
+      "y": 270
+    },
+    "shape=descending_west": {
+      "model": "mindustry:block/conveyor_5_m"
+    },
+    "shape=descending_south": {
+      "model": "mindustry:block/conveyor_5_m",
+      "y": 90
+    },
+    "shape=descending_east": {
+      "model": "mindustry:block/conveyor_5_m",
+      "y": 180
+    },
+    "shape=descending_north": {
+      "model": "mindustry:block/conveyor_5_m",
+      "y": 270
+    }
+  }
+}
