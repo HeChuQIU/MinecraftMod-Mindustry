@@ -1,7 +1,6 @@
 package com.hechu.mindustry.world.level.block.distribution;
 
 import com.hechu.mindustry.world.level.block.entity.distribution.ConveyorBlockEntity;
-import com.hechu.mindustry.world.level.block.entity.turrets.TurretBlockEntityBase;
 import com.hechu.mindustry.world.level.block.state.properties.ConveyorShape;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -18,13 +17,16 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
-import net.minecraft.world.level.block.state.properties.RailShape;
-import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.Arrays;
+import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class ConveyorBlock extends BaseEntityBlock {
     public static final EnumProperty<ConveyorShape> SHAPE = EnumProperty.create("shape", ConveyorShape.class);
@@ -45,8 +47,8 @@ public class ConveyorBlock extends BaseEntityBlock {
 
     public VoxelShape getShape(BlockState pState, BlockGetter pLevel, BlockPos pPos, CollisionContext pContext) {
         return switch (pState.getValue(SHAPE)) {
-            case DESCENDING_EAST, DESCENDING_NORTH, DESCENDING_SOUTH, DESCENDING_WEST, ASCENDING_EAST, ASCENDING_NORTH, ASCENDING_SOUTH, ASCENDING_WEST ->
-                    HALF_BLOCK_AABB;
+            case DESCENDING_EAST, DESCENDING_NORTH, DESCENDING_SOUTH, DESCENDING_WEST, ASCENDING_EAST, ASCENDING_NORTH,
+                 ASCENDING_SOUTH, ASCENDING_WEST -> HALF_BLOCK_AABB;
             default -> FLAT_AABB;
         };
     }
@@ -65,20 +67,25 @@ public class ConveyorBlock extends BaseEntityBlock {
         };
     }
 
-    protected void updateState(BlockState pState, Level pLevel, BlockPos pPos, Block pBlock) {
-//        if (pBlock.defaultBlockState().isSignalSource() && (new RailState(pLevel, pPos, pState)).getConnections() == 3) {
-//            this.updateDir(pLevel, pPos, pState, false);
-//        }
+    protected void updateState(BlockState state, Level level, BlockPos pos, Block block) {
+        ConveyorShape shape = state.getValue(SHAPE);
+        BlockState blockState = this.updateDir(level, pos, state, false);
+        if (blockState.getValue(SHAPE) != shape) {
+            level.setBlock(pos, blockState, 3);
+            level.neighborChanged(pos, block, pos);
+        }
     }
 
-//    protected BlockState updateDir(Level pLevel, BlockPos pPos, BlockState pState, boolean pAlwaysPlace) {
-//        if (pLevel.isClientSide) {
-//            return pState;
-//        } else {
-//            RailShape railshape = pState.getValue(SHAPE);
-//            return (new RailState(pLevel, pPos, pState)).place(pLevel.hasNeighborSignal(pPos), pAlwaysPlace, railshape).getState();
-//        }
-//    }
+    protected BlockState updateDir(Level level, BlockPos pos, BlockState state, boolean alwaysplace) {
+        if (level.isClientSide) {
+            return state;
+        } else {
+            BlockState blockstate = super.defaultBlockState();
+            ConveyorShape shape = getConveyorShape(level, state.getValue(SHAPE).getOutputDirection(), pos);
+            blockstate = blockstate.setValue(SHAPE, shape);
+            return blockstate;
+        }
+    }
 
     public void neighborChanged(BlockState pState, Level pLevel, BlockPos pPos, Block pBlock, BlockPos pFromPos, boolean pIsMoving) {
         if (!pLevel.isClientSide && pLevel.getBlockState(pPos).is(this)) {
@@ -125,13 +132,136 @@ public class ConveyorBlock extends BaseEntityBlock {
         }
     }
 
-    public BlockState getStateForPlacement(BlockPlaceContext pContext) {
-        FluidState fluidstate = pContext.getLevel().getFluidState(pContext.getClickedPos());
-        boolean flag = fluidstate.getType() == Fluids.WATER;
+    public BlockState getStateForPlacement(BlockPlaceContext context) {
         BlockState blockstate = super.defaultBlockState();
-        Direction direction = pContext.getHorizontalDirection();
-        boolean flag1 = direction == Direction.EAST || direction == Direction.WEST;
-        return blockstate.setValue(SHAPE, flag1 ? ConveyorShape.EAST_WEST : ConveyorShape.NORTH_SOUTH).setValue(WATERLOGGED, Boolean.valueOf(flag));
+        ConveyorShape shape = getConveyorShape(context.getLevel(), context.getHorizontalDirection(), context.getClickedPos());
+        blockstate = blockstate.setValue(SHAPE, shape);
+        return blockstate;
+    }
+
+    private static @NotNull ConveyorShape getConveyorShape(Level level, Direction outputDirection, BlockPos pos) {
+        BlockPos outputPos = pos.relative(Direction.UP);
+        ConveyorShape shape;
+        boolean output = Stream.of(level.getBlockState(outputPos))
+                .filter(s -> s.getValues().containsKey(SHAPE))
+                .flatMap(s -> Arrays.stream(s.getValue(SHAPE).getInputBlockPos(outputPos)))
+                .anyMatch(pos::equals);
+        boolean outputUp = Stream.of(level.getBlockState(outputPos.above()))
+                .filter(s -> s.getValues().containsKey(SHAPE))
+                .map(s -> Arrays.stream(s.getValue(SHAPE).getInputBlockPos(outputPos.above())))
+                .anyMatch(pos.above()::equals);
+        if (!output && outputUp) {
+            shape = switch (outputDirection) {
+                case NORTH -> ConveyorShape.ASCENDING_NORTH;
+                case SOUTH -> ConveyorShape.ASCENDING_SOUTH;
+                case WEST -> ConveyorShape.ASCENDING_WEST;
+                case EAST -> ConveyorShape.ASCENDING_EAST;
+                default -> ConveyorShape.NORTH_SOUTH;
+            };
+        } else {
+            Direction inputDirection = outputDirection.getOpposite();
+            boolean input = Stream.of(level.getBlockState(pos.relative(inputDirection)))
+                    .filter(s -> s.getValues().containsKey(SHAPE))
+                    .map(s -> s.getValue(SHAPE).getOutputBlockPos(pos.relative(inputDirection)))
+                    .anyMatch(pos::equals);
+            boolean inputUp = Stream.of(level.getBlockState(pos.relative(inputDirection).above()))
+                    .filter(s -> s.getValues().containsKey(SHAPE))
+                    .map(s -> s.getValue(SHAPE).getOutputBlockPos(pos.relative(inputDirection).above()))
+                    .anyMatch(pos.above()::equals);
+            if (!input && inputUp) {
+                shape = switch (outputDirection) {
+                    case NORTH -> ConveyorShape.DESCENDING_NORTH;
+                    case SOUTH -> ConveyorShape.DESCENDING_SOUTH;
+                    case WEST -> ConveyorShape.DESCENDING_WEST;
+                    case EAST -> ConveyorShape.DESCENDING_EAST;
+                    default -> ConveyorShape.NORTH_SOUTH;
+                };
+            } else {
+                Set<Direction> inputDirections = Arrays.stream(Direction.values())
+                        .filter(d -> d != outputDirection && d != Direction.UP && d != Direction.DOWN)
+                        .filter(d -> Stream.of(pos.relative(d))
+                                .filter(p -> level.getBlockState(p).getValues().containsKey(SHAPE))
+                                .anyMatch(p -> level.getBlockState(p).getValue(SHAPE).getOutputBlockPos(p).equals(pos))
+                        )
+                        .collect(Collectors.toSet());
+                switch (outputDirection) {
+                    case NORTH -> {
+                        if (inputDirections.containsAll(Set.of(Direction.SOUTH, Direction.WEST, Direction.EAST)))
+                            shape = ConveyorShape.NORTH_ALL;
+                        else if (inputDirections.containsAll(Set.of(Direction.SOUTH, Direction.WEST)))
+                            shape = ConveyorShape.NORTH_WEST_SOUTH;
+                        else if (inputDirections.containsAll(Set.of(Direction.SOUTH, Direction.EAST)))
+                            shape = ConveyorShape.NORTH_EAST_SOUTH;
+                        else if (inputDirections.containsAll(Set.of(Direction.WEST, Direction.EAST)))
+                            shape = ConveyorShape.NORTH_WEST_EAST;
+                        else if (inputDirections.contains(Direction.SOUTH))
+                            shape = ConveyorShape.NORTH_SOUTH;
+                        else if (inputDirections.contains(Direction.WEST))
+                            shape = ConveyorShape.NORTH_WEST;
+                        else if (inputDirections.contains(Direction.EAST))
+                            shape = ConveyorShape.NORTH_EAST;
+                        else
+                            shape = ConveyorShape.NORTH_SOUTH;
+                    }
+                    case SOUTH -> {
+                        if (inputDirections.containsAll(Set.of(Direction.NORTH, Direction.WEST, Direction.EAST)))
+                            shape = ConveyorShape.SOUTH_ALL;
+                        else if (inputDirections.containsAll(Set.of(Direction.NORTH, Direction.WEST)))
+                            shape = ConveyorShape.SOUTH_WEST_NORTH;
+                        else if (inputDirections.containsAll(Set.of(Direction.NORTH, Direction.EAST)))
+                            shape = ConveyorShape.SOUTH_EAST_NORTH;
+                        else if (inputDirections.containsAll(Set.of(Direction.WEST, Direction.EAST)))
+                            shape = ConveyorShape.SOUTH_WEST_EAST;
+                        else if (inputDirections.contains(Direction.NORTH))
+                            shape = ConveyorShape.SOUTH_NORTH;
+                        else if (inputDirections.contains(Direction.WEST))
+                            shape = ConveyorShape.SOUTH_WEST;
+                        else if (inputDirections.contains(Direction.EAST))
+                            shape = ConveyorShape.SOUTH_EAST;
+                        else
+                            shape = ConveyorShape.SOUTH_NORTH;
+                    }
+                    case WEST -> {
+                        if (inputDirections.containsAll(Set.of(Direction.NORTH, Direction.SOUTH, Direction.EAST)))
+                            shape = ConveyorShape.WEST_ALL;
+                        else if (inputDirections.containsAll(Set.of(Direction.NORTH, Direction.SOUTH)))
+                            shape = ConveyorShape.WEST_NORTH_SOUTH;
+                        else if (inputDirections.containsAll(Set.of(Direction.NORTH, Direction.EAST)))
+                            shape = ConveyorShape.WEST_NORTH_EAST;
+                        else if (inputDirections.containsAll(Set.of(Direction.SOUTH, Direction.EAST)))
+                            shape = ConveyorShape.WEST_SOUTH_EAST;
+                        else if (inputDirections.contains(Direction.NORTH))
+                            shape = ConveyorShape.WEST_NORTH;
+                        else if (inputDirections.contains(Direction.SOUTH))
+                            shape = ConveyorShape.WEST_SOUTH;
+                        else if (inputDirections.contains(Direction.EAST))
+                            shape = ConveyorShape.WEST_EAST;
+                        else
+                            shape = ConveyorShape.WEST_EAST;
+                    }
+                    case EAST -> {
+                        if (inputDirections.containsAll(Set.of(Direction.NORTH, Direction.SOUTH, Direction.WEST)))
+                            shape = ConveyorShape.EAST_ALL;
+                        else if (inputDirections.containsAll(Set.of(Direction.NORTH, Direction.SOUTH)))
+                            shape = ConveyorShape.EAST_NORTH_SOUTH;
+                        else if (inputDirections.containsAll(Set.of(Direction.NORTH, Direction.WEST)))
+                            shape = ConveyorShape.EAST_NORTH_WEST;
+                        else if (inputDirections.containsAll(Set.of(Direction.SOUTH, Direction.WEST)))
+                            shape = ConveyorShape.EAST_SOUTH_WEST;
+                        else if (inputDirections.contains(Direction.NORTH))
+                            shape = ConveyorShape.EAST_NORTH;
+                        else if (inputDirections.contains(Direction.SOUTH))
+                            shape = ConveyorShape.EAST_SOUTH;
+                        else if (inputDirections.contains(Direction.WEST))
+                            shape = ConveyorShape.EAST_WEST;
+                        else
+                            shape = ConveyorShape.EAST_WEST;
+                    }
+                    default -> shape = ConveyorShape.NORTH_SOUTH;
+                }
+            }
+        }
+        return shape;
     }
 
     /**

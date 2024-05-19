@@ -1,5 +1,7 @@
 package com.hechu.mindustry.world.level.block.state.properties;
 
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.util.StringRepresentable;
 import org.jetbrains.annotations.NotNull;
 
@@ -57,6 +59,149 @@ public enum ConveyorShape implements StringRepresentable {
 
     public String toString() {
         return this.name;
+    }
+
+    public Direction getOutputDirection() {
+        switch (this) {
+            case NORTH_SOUTH, NORTH_WEST, NORTH_ALL, NORTH_WEST_EAST, NORTH_EAST_SOUTH, NORTH_WEST_SOUTH, NORTH_EAST,
+                 ASCENDING_NORTH, DESCENDING_NORTH -> {
+                return Direction.NORTH;
+            }
+            case SOUTH_NORTH, SOUTH_ALL, SOUTH_WEST_EAST, SOUTH_EAST_NORTH, SOUTH_WEST_NORTH, SOUTH_EAST, SOUTH_WEST,
+                 ASCENDING_SOUTH, DESCENDING_SOUTH -> {
+                return Direction.SOUTH;
+            }
+            case WEST_EAST, WEST_ALL, WEST_NORTH_SOUTH, WEST_SOUTH_EAST, WEST_NORTH_EAST, WEST_SOUTH, WEST_NORTH,
+                 ASCENDING_WEST, DESCENDING_WEST -> {
+                return Direction.WEST;
+            }
+            case EAST_WEST, EAST_ALL, EAST_NORTH_SOUTH, EAST_SOUTH_WEST, EAST_NORTH_WEST, EAST_SOUTH, EAST_NORTH,
+                 DESCENDING_EAST, ASCENDING_EAST -> {
+                return Direction.EAST;
+            }
+        }
+        return Direction.NORTH;
+    }
+
+    public BlockPos getOutputBlockPos(BlockPos origin){
+         switch (this) {
+            case NORTH_SOUTH, NORTH_WEST, NORTH_ALL, NORTH_WEST_EAST, NORTH_EAST_SOUTH, NORTH_WEST_SOUTH, NORTH_EAST,
+                 DESCENDING_NORTH -> {
+                return origin.north();
+            }
+            case SOUTH_NORTH, SOUTH_ALL, SOUTH_WEST_EAST, SOUTH_EAST_NORTH, SOUTH_WEST_NORTH, SOUTH_EAST, SOUTH_WEST,
+                 DESCENDING_SOUTH -> {
+                return origin.south();
+            }
+            case WEST_EAST, WEST_ALL, WEST_NORTH_SOUTH, WEST_SOUTH_EAST, WEST_NORTH_EAST, WEST_SOUTH, WEST_NORTH,
+                 DESCENDING_WEST -> {
+                return origin.west();
+            }
+            case EAST_WEST, EAST_ALL, EAST_NORTH_SOUTH, EAST_SOUTH_WEST, EAST_NORTH_WEST, EAST_SOUTH, EAST_NORTH,
+                 DESCENDING_EAST -> {
+                return origin.east();
+            }
+             case ASCENDING_NORTH -> {
+                return origin.north().above();
+            }
+            case ASCENDING_SOUTH -> {
+                return origin.south().above();
+            }
+            case ASCENDING_WEST -> {
+                return origin.west().above();
+            }
+            case ASCENDING_EAST -> {
+                return origin.east().above();
+            }
+         }
+        return origin;
+    }
+
+    public BlockPos[] getInputBlockPos(BlockPos origin){
+        switch (this) {
+            case NORTH_SOUTH, EAST_SOUTH, WEST_SOUTH -> {
+                return new BlockPos[]{origin.south()};
+            }
+            case SOUTH_NORTH, EAST_NORTH, WEST_NORTH -> {
+                return new BlockPos[]{origin.north()};
+            }
+            case WEST_EAST, SOUTH_EAST, NORTH_EAST -> {
+                return new BlockPos[]{origin.east()};
+            }
+            case EAST_WEST, SOUTH_WEST, NORTH_WEST -> {
+                return new BlockPos[]{origin.west()};
+            }
+            case NORTH_WEST_SOUTH -> {
+                return new BlockPos[]{origin.west(), origin.south()};
+            }
+            case NORTH_EAST_SOUTH -> {
+                return new BlockPos[]{origin.east(), origin.south()};
+            }
+            case NORTH_WEST_EAST, SOUTH_WEST_EAST -> {
+                return new BlockPos[]{origin.west(), origin.east()};
+            }
+            case SOUTH_WEST_NORTH -> {
+                return new BlockPos[]{origin.west(), origin.north()};
+            }
+            case SOUTH_EAST_NORTH -> {
+                return new BlockPos[]{origin.east(), origin.north()};
+            }
+            case WEST_NORTH_EAST -> {
+                return new BlockPos[]{origin.north(), origin.east()};
+            }
+            case WEST_SOUTH_EAST -> {
+                return new BlockPos[]{origin.south(), origin.east()};
+            }
+            case WEST_NORTH_SOUTH -> {
+                return new BlockPos[]{origin.north(), origin.south()};
+            }
+            case EAST_NORTH_WEST -> {
+                return new BlockPos[]{origin.north(), origin.west()};
+            }
+            case EAST_SOUTH_WEST -> {
+                return new BlockPos[]{origin.south(), origin.west()};
+            }
+            case EAST_NORTH_SOUTH -> {
+                return new BlockPos[]{origin.north(), origin.south()};
+            }
+            case NORTH_ALL -> {
+                return new BlockPos[]{origin.south(), origin.west(), origin.east()};
+            }
+            case SOUTH_ALL -> {
+                return new BlockPos[]{origin.north(), origin.west(), origin.east()};
+            }
+            case WEST_ALL -> {
+                return new BlockPos[]{origin.north(), origin.south(), origin.east()};
+            }
+            case EAST_ALL -> {
+                return new BlockPos[]{origin.north(), origin.south(), origin.west()};
+            }
+            case ASCENDING_NORTH -> {
+                return new BlockPos[]{origin.south(),origin.south().below()};
+            }
+            case ASCENDING_SOUTH -> {
+                return new BlockPos[]{origin.north(),origin.north().below()};
+            }
+            case ASCENDING_WEST -> {
+                return new BlockPos[]{origin.east(),origin.east().below()};
+            }
+            case ASCENDING_EAST -> {
+                return new BlockPos[]{origin.west(),origin.west().below()};
+            }
+            case DESCENDING_NORTH -> {
+                return new BlockPos[]{origin.south(),origin.south().above()};
+            }
+            case DESCENDING_SOUTH -> {
+                return new BlockPos[]{origin.north(),origin.north().above()};
+            }
+            case DESCENDING_WEST -> {
+                return new BlockPos[]{origin.east(),origin.east().above()};
+            }
+            case DESCENDING_EAST -> {
+                return new BlockPos[]{origin.west(),origin.west().above()};
+            }
+        }
+        return new BlockPos[]{};
     }
 
     @Override
