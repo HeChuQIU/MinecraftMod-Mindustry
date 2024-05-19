@@ -14,6 +14,7 @@ import com.hechu.mindustry.kiwi.EntityModule;
 import com.hechu.mindustry.utils.Utils;
 import com.hechu.mindustry.world.entity.turrets.Duo;
 import com.hechu.mindustry.world.entity.turrets.DuoRenderer;
+import com.hechu.mindustry.world.entity.turrets.HoneycombRenderer;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.common.MinecraftForge;
@@ -67,6 +68,7 @@ public class Mindustry {
             event.registerEntityRenderer(EntityModule.DUO.get(), DuoRenderer::new);
             event.registerEntityRenderer(EntityModule.MISSILE_BULLET.get(), MissileBulletRender::new);
             event.registerEntityRenderer(EntityModule.BASIC_BULLET.get(), BasicBulletRender::new);
+            event.registerEntityRenderer(EntityModule.HONEYCOMB.get(), HoneycombRenderer::new);
         }
 
         @SubscribeEvent

@@ -4,6 +4,7 @@ import com.hechu.mindustry.world.entity.Turret;
 import com.hechu.mindustry.world.entity.projectile.BasicBullet;
 import com.hechu.mindustry.world.entity.projectile.MissileBullet;
 import com.hechu.mindustry.world.entity.turrets.Duo;
+import com.hechu.mindustry.world.entity.turrets.Honeycomb;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
 import snownee.kiwi.AbstractModule;
@@ -30,4 +31,9 @@ public class EntityModule extends AbstractModule {
             EntityType.Builder.<BasicBullet>of(BasicBullet::new, MobCategory.MISC)
                     .sized(0.5F, 0.5F)
                     .build("basic_bullet"));
+
+    public static final KiwiGO<EntityType<Honeycomb>> HONEYCOMB = go(() ->
+            EntityType.Builder.of(Honeycomb::new, MobCategory.MISC)
+                    .sized(1.0F, 1.0F)
+                    .build("honeycomb"));
 }
