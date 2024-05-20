@@ -45,7 +45,7 @@ public class ConveyorBlock extends BaseEntityBlock {
         super.createBlockStateDefinition(builder);
     }
 
-    public VoxelShape getShape(BlockState pState, BlockGetter pLevel, BlockPos pPos, CollisionContext pContext) {
+    public @NotNull VoxelShape getShape(BlockState pState, @NotNull BlockGetter pLevel, @NotNull BlockPos pPos, @NotNull CollisionContext pContext) {
         return switch (pState.getValue(SHAPE)) {
             case DESCENDING_EAST, DESCENDING_NORTH, DESCENDING_SOUTH, DESCENDING_WEST, ASCENDING_EAST, ASCENDING_NORTH,
                  ASCENDING_SOUTH, ASCENDING_WEST -> HALF_BLOCK_AABB;
@@ -87,7 +87,7 @@ public class ConveyorBlock extends BaseEntityBlock {
         }
     }
 
-    public void neighborChanged(BlockState pState, Level pLevel, BlockPos pPos, Block pBlock, BlockPos pFromPos, boolean pIsMoving) {
+    public void neighborChanged(@NotNull BlockState pState, Level pLevel, @NotNull BlockPos pPos, @NotNull Block pBlock, @NotNull BlockPos pFromPos, boolean pIsMoving) {
         if (!pLevel.isClientSide && pLevel.getBlockState(pPos).is(this)) {
             var shape = pState.getValue(SHAPE);
             if (shouldBeRemoved(pPos, pLevel, shape)) {
@@ -119,7 +119,7 @@ public class ConveyorBlock extends BaseEntityBlock {
 //        }
     }
 
-    public void onRemove(BlockState pState, Level pLevel, BlockPos pPos, BlockState pNewState, boolean pIsMoving) {
+    public void onRemove(@NotNull BlockState pState, @NotNull Level pLevel, @NotNull BlockPos pPos, @NotNull BlockState pNewState, boolean pIsMoving) {
         if (!pIsMoving) {
             super.onRemove(pState, pLevel, pPos, pNewState, pIsMoving);
 //            if (pState.getValue(SHAPE).isAscending()) {
@@ -140,7 +140,7 @@ public class ConveyorBlock extends BaseEntityBlock {
     }
 
     private static @NotNull ConveyorShape getConveyorShape(Level level, Direction outputDirection, BlockPos pos) {
-        BlockPos outputPos = pos.relative(Direction.UP);
+        BlockPos outputPos = pos.relative(outputDirection);
         ConveyorShape shape;
         boolean output = Stream.of(level.getBlockState(outputPos))
                 .filter(s -> s.getValues().containsKey(SHAPE))
@@ -148,8 +148,8 @@ public class ConveyorBlock extends BaseEntityBlock {
                 .anyMatch(pos::equals);
         boolean outputUp = Stream.of(level.getBlockState(outputPos.above()))
                 .filter(s -> s.getValues().containsKey(SHAPE))
-                .map(s -> Arrays.stream(s.getValue(SHAPE).getInputBlockPos(outputPos.above())))
-                .anyMatch(pos.above()::equals);
+                .map(s -> s.getValue(SHAPE).getOutputBlockPos(outputPos.above()))
+                .anyMatch(p -> !pos.above().equals(p));
         if (!output && outputUp) {
             shape = switch (outputDirection) {
                 case NORTH -> ConveyorShape.ASCENDING_NORTH;
@@ -283,7 +283,7 @@ public class ConveyorBlock extends BaseEntityBlock {
 
     @Nullable
     @Override
-    public BlockEntity newBlockEntity(BlockPos pPos, BlockState pState) {
+    public BlockEntity newBlockEntity(@NotNull BlockPos pPos, @NotNull BlockState pState) {
         return new ConveyorBlockEntity(pPos, pState);
     }
 
@@ -296,7 +296,7 @@ public class ConveyorBlock extends BaseEntityBlock {
      * whenever possible. Implementing/overriding is fine.
      */
     @Override
-    public RenderShape getRenderShape(@NotNull BlockState state) {
+    public @NotNull RenderShape getRenderShape(@NotNull BlockState state) {
         return RenderShape.MODEL;
     }
 }

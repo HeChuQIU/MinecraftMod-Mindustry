@@ -110,7 +110,7 @@
     },
     "shape=ascending_north": {
       "model": "mindustry:block/conveyor_5",
-      "y": 90
+      "y": 270
     },
     "shape=ascending_west": {
       "model": "mindustry:block/conveyor_5",
@@ -118,7 +118,7 @@
     },
     "shape=ascending_south": {
       "model": "mindustry:block/conveyor_5",
-      "y": 270
+      "y": 90
     },
     "shape=descending_west": {
       "model": "mindustry:block/conveyor_5_m"
