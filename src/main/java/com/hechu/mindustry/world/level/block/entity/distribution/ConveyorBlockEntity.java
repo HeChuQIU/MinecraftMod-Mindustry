@@ -1,5 +1,6 @@
 package com.hechu.mindustry.world.level.block.entity.distribution;
 
+import com.hechu.mindustry.distribution.Conveyor;
 import com.hechu.mindustry.kiwi.BlockEntityModule;
 import com.hechu.mindustry.world.level.block.distribution.ConveyorBlock;
 import net.minecraft.core.BlockPos;
@@ -23,7 +24,12 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import snownee.kiwi.block.entity.ModBlockEntity;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 import java.util.Set;
+import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 public class ConveyorBlockEntity extends ModBlockEntity {
     public static final int MAX_ITEMS = 3;
@@ -38,34 +44,40 @@ public class ConveyorBlockEntity extends ModBlockEntity {
     }
 
     public void serverTick() {
-        if (level != null && level.getGameTime() % 20 == 0) {
-            for (Direction direction : getInputDirections()) {
-                BlockPos pos = worldPosition.relative(direction);
-                BlockEntity blockEntity = level.getBlockEntity(pos);
-                if (blockEntity != null && blockEntity.getCapability(ForgeCapabilities.ITEM_HANDLER, direction.getOpposite()).isPresent()) {
-                    IItemHandler itemHandler = blockEntity.getCapability(ForgeCapabilities.ITEM_HANDLER, direction.getOpposite()).orElseThrow(NullPointerException::new);
-                    for (int i = 0; i < itemHandler.getSlots(); i++) {
-                        ItemStack stack = itemHandler.getStackInSlot(i);
-                        if (!stack.isEmpty()) {
-                            ItemStack insertItem = getItemHandler().insertItem(0, stack, false);
-                            itemHandler.extractItem(i, stack.getCount() - insertItem.getCount(), false);
-                            break;
-                        }
-                    }
-                }
-            }
-            for (int i = 0; i < MAX_ITEMS; i++) {
-                ItemStack stack = getItemHandler().getStackInSlot(i);
-                if (stack.isEmpty()) {
-                    for (int j = i + 1; j < MAX_ITEMS; j++) {
-                        ItemStack stack1 = getItemHandler().getStackInSlot(j);
-                        getItemHandler().setStackInSlot(j - 1, stack1);
-                        getItemHandler().setStackInSlot(j, ItemStack.EMPTY);
-                        break;
-                    }
-                }
-            }
-        }
+//        if (level != null && level.getGameTime() % 20 == 0) {
+//            for (Direction direction : getInputDirections()) {
+//                BlockPos pos = worldPosition.relative(direction);
+//                BlockEntity blockEntity = level.getBlockEntity(pos);
+//                if (blockEntity != null && blockEntity.getCapability(ForgeCapabilities.ITEM_HANDLER, direction.getOpposite()).isPresent()) {
+//                    IItemHandler itemHandler = blockEntity.getCapability(ForgeCapabilities.ITEM_HANDLER, direction.getOpposite()).orElseThrow(NullPointerException::new);
+//                    for (int i = 0; i < itemHandler.getSlots(); i++) {
+//                        ItemStack stack = itemHandler.getStackInSlot(i);
+//                        if (!stack.isEmpty()) {
+//                            ItemStack insertItem = getItemHandler().insertItem(0, stack, false);
+//                            itemHandler.extractItem(i, stack.getCount() - insertItem.getCount(), false);
+//                            break;
+//                        }
+//                    }
+//                }
+//            }
+//            for (int i = 0; i < MAX_ITEMS; i++) {
+//                ItemStack stack = getItemHandler().getStackInSlot(i);
+//                if (stack.isEmpty()) {
+//                    for (int j = i + 1; j < MAX_ITEMS; j++) {
+//                        ItemStack stack1 = getItemHandler().getStackInSlot(j);
+//                        getItemHandler().setStackInSlot(j - 1, stack1);
+//                        getItemHandler().setStackInSlot(j, ItemStack.EMPTY);
+//                        break;
+//                    }
+//                }
+//            }
+//        }
+        if (Conveyor.getTailConveyors().contains(this)) {
+            if (!this.isTail())
+                Conveyor.getTailConveyors().remove(this);
+        } else if (this.isTail())
+            Conveyor.getTailConveyors().add(this);
+
         tick();
     }
 
@@ -75,36 +87,74 @@ public class ConveyorBlockEntity extends ModBlockEntity {
 
     LazyOptional<Capability<IItemHandlerModifiable>> itemHandler = LazyOptional.of(ItemHandler::new).cast();
 
+    public void moveItems() {
+        Conveyor.getComputingConveyors().add(this);
+        ItemHandler items = getItemHandler();
+        Optional<ItemHandler> outputItemHandler = getOutputConveyor().filter(c -> !Conveyor.getComputingConveyors().contains(c)).map(ConveyorBlockEntity::getItemHandler);
+        if (outputItemHandler.isPresent()) {
+            for (int i = 0; i < MAX_ITEMS; i++) {
+                ItemStack stack = items.getStackInSlot(i);
+                if (stack.isEmpty())
+                    continue;
+
+                ItemStack insertItem = outputItemHandler.get().insertItem(0, stack, false);
+                items.extractItem(i, stack.getCount() - insertItem.getCount(), false);
+            }
+        }
+        Conveyor.getComputingConveyors().remove(this);
+        if (IntStream.range(0, MAX_ITEMS).mapToObj(items::getStackInSlot).anyMatch(i -> i.getCount() < MAX_ITEMS_STACK_LIMIT)) {
+            getMainInputConveyor().ifPresent(ConveyorBlockEntity::moveItems);
+        }
+    }
+
     public Direction getOutputDirection() {
-        return switch (getBlockState().getValue(ConveyorBlock.SHAPE)) {
-            case NORTH_ALL, NORTH_EAST, NORTH_WEST, NORTH_SOUTH, ASCENDING_NORTH, DESCENDING_NORTH,
-                    NORTH_WEST_EAST, NORTH_EAST_SOUTH, NORTH_WEST_SOUTH -> Direction.NORTH;
-            case SOUTH_ALL, SOUTH_EAST, SOUTH_WEST, SOUTH_NORTH, SOUTH_WEST_EAST, SOUTH_EAST_NORTH,
-                    SOUTH_WEST_NORTH, ASCENDING_SOUTH, DESCENDING_SOUTH -> Direction.SOUTH;
-            case WEST_ALL, WEST_NORTH, WEST_SOUTH, WEST_EAST, WEST_NORTH_EAST, WEST_SOUTH_EAST,
-                    WEST_NORTH_SOUTH, ASCENDING_WEST, DESCENDING_WEST -> Direction.WEST;
-            case EAST_ALL, EAST_NORTH, EAST_SOUTH, EAST_WEST, EAST_NORTH_WEST, EAST_SOUTH_WEST,
-                    EAST_NORTH_SOUTH, ASCENDING_EAST, DESCENDING_EAST -> Direction.EAST;
-        };
+        return getBlockState().getValue(ConveyorBlock.SHAPE).getOutputDirection();
     }
 
     public Set<Direction> getInputDirections() {
-        return switch (getBlockState().getValue(ConveyorBlock.SHAPE)) {
-            case DESCENDING_SOUTH, ASCENDING_SOUTH, SOUTH_NORTH, WEST_NORTH, EAST_NORTH -> Set.of(Direction.NORTH);
-            case DESCENDING_NORTH, ASCENDING_NORTH, NORTH_SOUTH, WEST_SOUTH, EAST_SOUTH -> Set.of(Direction.SOUTH);
-            case DESCENDING_WEST, ASCENDING_WEST, NORTH_WEST, SOUTH_WEST, EAST_WEST -> Set.of(Direction.WEST);
-            case DESCENDING_EAST, ASCENDING_EAST, NORTH_EAST, SOUTH_EAST, WEST_EAST -> Set.of(Direction.EAST);
-            case NORTH_WEST_SOUTH, EAST_SOUTH_WEST -> Set.of(Direction.WEST, Direction.SOUTH);
-            case NORTH_EAST_SOUTH, WEST_SOUTH_EAST -> Set.of(Direction.SOUTH, Direction.EAST);
-            case WEST_NORTH_EAST, SOUTH_EAST_NORTH -> Set.of(Direction.EAST, Direction.NORTH);
-            case WEST_NORTH_SOUTH, EAST_NORTH_SOUTH -> Set.of(Direction.NORTH, Direction.SOUTH);
-            case NORTH_WEST_EAST, SOUTH_WEST_EAST -> Set.of(Direction.WEST, Direction.EAST);
-            case SOUTH_WEST_NORTH, EAST_NORTH_WEST -> Set.of(Direction.NORTH, Direction.WEST);
-            case NORTH_ALL -> Set.of(Direction.SOUTH, Direction.WEST, Direction.EAST);
-            case SOUTH_ALL -> Set.of(Direction.NORTH, Direction.WEST, Direction.EAST);
-            case WEST_ALL -> Set.of(Direction.NORTH, Direction.SOUTH, Direction.EAST);
-            case EAST_ALL -> Set.of(Direction.NORTH, Direction.SOUTH, Direction.WEST);
-        };
+        return getBlockState().getValue(ConveyorBlock.SHAPE).getInputDirections();
+    }
+
+    public Optional<Direction> getMainInputDirection() {
+        return getBlockState().getValue(ConveyorBlock.SHAPE).getMainInputDirection();
+    }
+
+    public Optional<ConveyorBlockEntity> getOutputConveyor() {
+        return Optional.ofNullable(level)
+                .map(l -> l.getBlockEntity(worldPosition.relative(getOutputDirection())))
+                .filter(b -> b instanceof ConveyorBlockEntity)
+                .map(b -> (ConveyorBlockEntity) b)
+//                .filter(c -> c.getMainInputDirection().filter(d -> d == getOutputDirection().getOpposite()).isPresent())
+                ;
+    }
+
+    public Stream<ConveyorBlockEntity> getInputConveyors() {
+        return Optional.ofNullable(level)
+                .map(l -> getInputDirections().stream()
+                        .map(d -> l.getBlockEntity(worldPosition.relative(d)))
+                        .filter(b -> b instanceof ConveyorBlockEntity)
+                        .map(b -> (ConveyorBlockEntity) b))
+                .orElseGet(Stream::empty);
+    }
+
+    public Optional<ConveyorBlockEntity> getMainInputConveyor() {
+        return getInputConveyors().filter(c -> c.getOutputDirection()
+                == getBlockState().getValue(ConveyorBlock.SHAPE).getMainInputDirection().map(Direction::getOpposite).orElseGet(null)).findFirst();
+    }
+
+    /**
+     * @return 这个传送带是否是尾部（终点）
+     */
+    public boolean isTail() {
+        return getOutputConveyor().isEmpty();
+    }
+
+    public ConveyorBlockEntity getTail() {
+        ConveyorBlockEntity tail = this;
+        while (!tail.isTail()) {
+            tail = tail.getOutputConveyor().orElseThrow(NullPointerException::new);
+        }
+        return tail;
     }
 
     public ItemHandler getItemHandler() {
