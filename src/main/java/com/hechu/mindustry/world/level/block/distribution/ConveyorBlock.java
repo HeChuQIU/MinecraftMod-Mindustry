@@ -287,14 +287,7 @@ public class ConveyorBlock extends BaseEntityBlock {
         return new ConveyorBlockEntity(pPos, pState);
     }
 
-    /**
-     * The type of render function called. MODEL for mixed tesr and static model, MODELBLOCK_ANIMATED for TESR-only,
-     * LIQUID for vanilla liquids, INVISIBLE to skip all rendering
-     *
-     * @param state
-     * @deprecated call via {@link BlockStateBase#getRenderShape}
-     * whenever possible. Implementing/overriding is fine.
-     */
+
     @Override
     public @NotNull RenderShape getRenderShape(@NotNull BlockState state) {
         return RenderShape.MODEL;

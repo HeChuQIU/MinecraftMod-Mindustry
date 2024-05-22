@@ -8,6 +8,7 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -37,6 +38,15 @@ public class ConveyorBlockEntityRenderer implements BlockEntityRenderer<Conveyor
             poseStack.translate(0f, 0f, offset);
 //            poseStack.scale(0.5f, 0.5f, 0.5f);
             itemRenderer.renderStatic(items.get(i), ItemDisplayContext.GROUND, packedLight, packedOverlay, poseStack, buffer, Minecraft.getInstance().level, 0);
+            poseStack.popPose();
+        }
+
+        if (blockEntity.isTail()) {
+            poseStack.pushPose();
+            var diff = blockEntity.getBlockPos().getCenter().subtract(Vec3.atLowerCornerOf(blockEntity.getBlockPos()));
+            poseStack.translate(diff.x, diff.y, diff.z);
+            poseStack.translate(0f, 0f, 0.5f);
+            itemRenderer.renderStatic(new ItemStack(Items.REDSTONE_BLOCK), ItemDisplayContext.GROUND, packedLight, packedOverlay, poseStack, buffer, Minecraft.getInstance().level, 0);
             poseStack.popPose();
         }
     }

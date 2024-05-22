@@ -7,6 +7,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Stream;
 
 //TODO: 传送带纹理与实际方向不匹配
 
@@ -84,38 +85,44 @@ public enum ConveyorShape implements StringRepresentable {
         };
     }
 
+    public Stream<BlockPos> getInputsBlockPos(BlockPos origin) {
+        return this.getInputDirections().stream().map(origin::relative).map(pos -> {
+            if (this.isDescending()) {
+                return pos.above();
+            }
+            return pos;
+        });
+    }
+
+    public Optional<BlockPos> getMainInputBlockPos(BlockPos origin) {
+        return this.getMainInputDirection().map(origin::relative).map(pos -> {
+            if (this.isDescending()) {
+                return pos.above();
+            }
+            return pos;
+        });
+    }
+
     public BlockPos getOutputBlockPos(BlockPos origin) {
-        switch (this) {
-            case NORTH_SOUTH, NORTH_WEST, NORTH_ALL, NORTH_WEST_EAST, NORTH_EAST_SOUTH, NORTH_WEST_SOUTH, NORTH_EAST,
-                 DESCENDING_NORTH -> {
-                return origin.north();
-            }
-            case SOUTH_NORTH, SOUTH_ALL, SOUTH_WEST_EAST, SOUTH_EAST_NORTH, SOUTH_WEST_NORTH, SOUTH_EAST, SOUTH_WEST,
-                 DESCENDING_SOUTH -> {
-                return origin.south();
-            }
-            case WEST_EAST, WEST_ALL, WEST_NORTH_SOUTH, WEST_SOUTH_EAST, WEST_NORTH_EAST, WEST_SOUTH, WEST_NORTH,
-                 DESCENDING_WEST -> {
-                return origin.west();
-            }
-            case EAST_WEST, EAST_ALL, EAST_NORTH_SOUTH, EAST_SOUTH_WEST, EAST_NORTH_WEST, EAST_SOUTH, EAST_NORTH,
-                 DESCENDING_EAST -> {
-                return origin.east();
-            }
-            case ASCENDING_NORTH -> {
-                return origin.north().above();
-            }
-            case ASCENDING_SOUTH -> {
-                return origin.south().above();
-            }
-            case ASCENDING_WEST -> {
-                return origin.west().above();
-            }
-            case ASCENDING_EAST -> {
-                return origin.east().above();
-            }
+        BlockPos pos = origin.relative(this.getOutputDirection());
+        if (this.isAscending()) {
+            pos = pos.above();
         }
-        return origin;
+        return pos;
+    }
+
+    public boolean isAscending() {
+        return switch (this) {
+            case ASCENDING_NORTH, ASCENDING_SOUTH, ASCENDING_WEST, ASCENDING_EAST -> true;
+            default -> false;
+        };
+    }
+
+    public boolean isDescending() {
+        return switch (this) {
+            case DESCENDING_NORTH, DESCENDING_SOUTH, DESCENDING_WEST, DESCENDING_EAST -> true;
+            default -> false;
+        };
     }
 
     public BlockPos[] getInputBlockPos(BlockPos origin) {

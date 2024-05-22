@@ -3,6 +3,7 @@ package com.hechu.mindustry.world.level.block.entity.distribution;
 import com.hechu.mindustry.distribution.Conveyor;
 import com.hechu.mindustry.kiwi.BlockEntityModule;
 import com.hechu.mindustry.world.level.block.distribution.ConveyorBlock;
+import com.hechu.mindustry.world.level.block.state.properties.ConveyorShape;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -12,23 +13,17 @@ import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.IItemHandlerModifiable;
 import net.minecraftforge.items.ItemStackHandler;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import snownee.kiwi.block.entity.ModBlockEntity;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
-import java.util.stream.IntStream;
+import java.util.*;
 import java.util.stream.Stream;
 
 public class ConveyorBlockEntity extends ModBlockEntity {
@@ -44,34 +39,6 @@ public class ConveyorBlockEntity extends ModBlockEntity {
     }
 
     public void serverTick() {
-//        if (level != null && level.getGameTime() % 20 == 0) {
-//            for (Direction direction : getInputDirections()) {
-//                BlockPos pos = worldPosition.relative(direction);
-//                BlockEntity blockEntity = level.getBlockEntity(pos);
-//                if (blockEntity != null && blockEntity.getCapability(ForgeCapabilities.ITEM_HANDLER, direction.getOpposite()).isPresent()) {
-//                    IItemHandler itemHandler = blockEntity.getCapability(ForgeCapabilities.ITEM_HANDLER, direction.getOpposite()).orElseThrow(NullPointerException::new);
-//                    for (int i = 0; i < itemHandler.getSlots(); i++) {
-//                        ItemStack stack = itemHandler.getStackInSlot(i);
-//                        if (!stack.isEmpty()) {
-//                            ItemStack insertItem = getItemHandler().insertItem(0, stack, false);
-//                            itemHandler.extractItem(i, stack.getCount() - insertItem.getCount(), false);
-//                            break;
-//                        }
-//                    }
-//                }
-//            }
-//            for (int i = 0; i < MAX_ITEMS; i++) {
-//                ItemStack stack = getItemHandler().getStackInSlot(i);
-//                if (stack.isEmpty()) {
-//                    for (int j = i + 1; j < MAX_ITEMS; j++) {
-//                        ItemStack stack1 = getItemHandler().getStackInSlot(j);
-//                        getItemHandler().setStackInSlot(j - 1, stack1);
-//                        getItemHandler().setStackInSlot(j, ItemStack.EMPTY);
-//                        break;
-//                    }
-//                }
-//            }
-//        }
         if (Conveyor.getTailConveyors().contains(this)) {
             if (!this.isTail())
                 Conveyor.getTailConveyors().remove(this);
@@ -85,26 +52,31 @@ public class ConveyorBlockEntity extends ModBlockEntity {
         tick();
     }
 
-    LazyOptional<Capability<IItemHandlerModifiable>> itemHandler = LazyOptional.of(ItemHandler::new).cast();
+    LazyOptional<Capability<IItemHandlerModifiable>> itemHandler = LazyOptional.of(ConveryorItemHandler::new).cast();
 
     public void moveItems() {
         Conveyor.getComputingConveyors().add(this);
-        ItemHandler items = getItemHandler();
-        Optional<ItemHandler> outputItemHandler = getOutputConveyor().filter(c -> !Conveyor.getComputingConveyors().contains(c)).map(ConveyorBlockEntity::getItemHandler);
-        if (outputItemHandler.isPresent()) {
-            for (int i = 0; i < MAX_ITEMS; i++) {
-                ItemStack stack = items.getStackInSlot(i);
-                if (stack.isEmpty())
-                    continue;
-
-                ItemStack insertItem = outputItemHandler.get().insertItem(0, stack, false);
-                items.extractItem(i, stack.getCount() - insertItem.getCount(), false);
+        ConveryorItemHandler items = getItemHandler();
+        ItemStack stackToOutput = items.getStackInSlot(MAX_ITEMS - 1);
+        if (!stackToOutput.isEmpty()) {
+            Optional<ConveryorItemHandler> outputItemHandler = getOutputConveyor().filter(c -> !Conveyor.getComputingConveyors().contains(c)).map(ConveyorBlockEntity::getItemHandler);
+            if (outputItemHandler.isPresent()) {
+                if (outputItemHandler.get().getStackInSlot(0).isEmpty()) {
+                    outputItemHandler.get().setStackInSlot(0, stackToOutput);
+                    items.setStackInSlot(MAX_ITEMS - 1, ItemStack.EMPTY);
+                }
             }
         }
+
         Conveyor.getComputingConveyors().remove(this);
-        if (IntStream.range(0, MAX_ITEMS).mapToObj(items::getStackInSlot).anyMatch(i -> i.getCount() < MAX_ITEMS_STACK_LIMIT)) {
-            getMainInputConveyor().ifPresent(ConveyorBlockEntity::moveItems);
-        }
+
+        items.moveItems();
+
+        getMainInputConveyor().ifPresent(ConveyorBlockEntity::moveItems);
+    }
+
+    public ConveyorShape getShape() {
+        return getBlockState().getValue(ConveyorBlock.SHAPE);
     }
 
     public Direction getOutputDirection() {
@@ -121,7 +93,7 @@ public class ConveyorBlockEntity extends ModBlockEntity {
 
     public Optional<ConveyorBlockEntity> getOutputConveyor() {
         return Optional.ofNullable(level)
-                .map(l -> l.getBlockEntity(worldPosition.relative(getOutputDirection())))
+                .map(l -> l.getBlockEntity(getShape().getOutputBlockPos(worldPosition)))
                 .filter(b -> b instanceof ConveyorBlockEntity)
                 .map(b -> (ConveyorBlockEntity) b)
 //                .filter(c -> c.getMainInputDirection().filter(d -> d == getOutputDirection().getOpposite()).isPresent())
@@ -130,8 +102,8 @@ public class ConveyorBlockEntity extends ModBlockEntity {
 
     public Stream<ConveyorBlockEntity> getInputConveyors() {
         return Optional.ofNullable(level)
-                .map(l -> getInputDirections().stream()
-                        .map(d -> l.getBlockEntity(worldPosition.relative(d)))
+                .map(l -> getShape().getInputsBlockPos(worldPosition)
+                        .map(l::getBlockEntity)
                         .filter(b -> b instanceof ConveyorBlockEntity)
                         .map(b -> (ConveyorBlockEntity) b))
                 .orElseGet(Stream::empty);
@@ -139,14 +111,14 @@ public class ConveyorBlockEntity extends ModBlockEntity {
 
     public Optional<ConveyorBlockEntity> getMainInputConveyor() {
         return getInputConveyors().filter(c -> c.getOutputDirection()
-                == getBlockState().getValue(ConveyorBlock.SHAPE).getMainInputDirection().map(Direction::getOpposite).orElseGet(null)).findFirst();
+                == getShape().getMainInputDirection().map(Direction::getOpposite).orElse(null)).findFirst();
     }
 
     /**
      * @return 这个传送带是否是尾部（终点）
      */
     public boolean isTail() {
-        return getOutputConveyor().isEmpty();
+        return getOutputConveyor().filter(o -> o.getMainInputConveyor().filter(this::equals).isPresent()).isEmpty();
     }
 
     public ConveyorBlockEntity getTail() {
@@ -157,8 +129,8 @@ public class ConveyorBlockEntity extends ModBlockEntity {
         return tail;
     }
 
-    public ItemHandler getItemHandler() {
-        return (ItemHandler) itemHandler.cast().orElseThrow(NullPointerException::new);
+    public ConveryorItemHandler getItemHandler() {
+        return (ConveryorItemHandler) itemHandler.cast().orElseThrow(NullPointerException::new);
     }
 
     @Override
@@ -225,10 +197,23 @@ public class ConveyorBlockEntity extends ModBlockEntity {
         getItemHandler().deserializeNBT(tag.getCompound("items"));
     }
 
-    public class ItemHandler extends ItemStackHandler {
+    public class ConveryorItemHandler extends ItemStackHandler {
 
-        public ItemHandler() {
+        public ConveryorItemHandler() {
             super(MAX_ITEMS);
+        }
+
+        public void moveItems() {
+            for (int i = MAX_ITEMS - 1; i >= 1; i--) {
+                ItemStack stack = getStackInSlot(i);
+                if (stack.isEmpty()) {
+                    setStackInSlot(i, getStackInSlot(i - 1));
+                    setStackInSlot(i - 1, ItemStack.EMPTY);
+                }
+            }
+            if (level != null && !level.isClientSide()) {
+                level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), Block.UPDATE_CLIENTS);
+            }
         }
 
         @Override
