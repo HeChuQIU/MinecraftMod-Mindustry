@@ -1,6 +1,6 @@
 package net.hechuqiu.mindustry
 
-import net.hechuqiu.mindustry.block.ModBlocks
+import net.hechuqiu.mindustry.common.block.ModBlocks
 import net.minecraft.client.Minecraft
 import net.neoforged.bus.api.SubscribeEvent
 import net.neoforged.fml.common.EventBusSubscriber

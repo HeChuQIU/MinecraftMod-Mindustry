@@ -1,4 +1,4 @@
-package net.hechuqiu.mindustry.block
+package net.hechuqiu.mindustry.common.block
 
 import net.hechuqiu.mindustry.Mindustry
 import net.minecraft.core.registries.Registries
@@ -17,7 +17,6 @@ object ModBlocks {
     val EXAMPLE_BLOCK by REGISTRY.register("example_block") { registryName ->
         Block(
             BlockBehaviour.Properties.of()
-            .setId(ResourceKey.create(Registries.BLOCK, registryName))
             .lightLevel { 15 }
             .strength(3.0f))
     }
