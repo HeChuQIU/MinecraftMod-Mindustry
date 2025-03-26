@@ -1,10 +1,7 @@
 package com.hechu.mindustry;
 
 import com.hechu.mindustry.client.model.MissileBulletModel;
-import com.hechu.mindustry.client.renderer.blockentity.MechanicalDrillBlockEntityRenderer;
-import com.hechu.mindustry.client.renderer.blockentity.PneumaticDrillBlockEntityRenderer;
-import com.hechu.mindustry.client.renderer.blockentity.PowerNodeRenderer;
-import com.hechu.mindustry.client.renderer.blockentity.TurretRenderer;
+import com.hechu.mindustry.client.renderer.blockentity.*;
 import com.hechu.mindustry.client.renderer.entity.BasicBulletRender;
 import com.hechu.mindustry.client.renderer.entity.MissileBulletRender;
 import com.hechu.mindustry.config.CommonConfig;
@@ -15,11 +12,13 @@ import com.hechu.mindustry.utils.Utils;
 import com.hechu.mindustry.world.entity.turrets.Duo;
 import com.hechu.mindustry.world.entity.turrets.DuoRenderer;
 import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.client.RenderTypeHelper;
 import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.loading.FMLPaths;
 import software.bernie.geckolib.GeckoLib;
 
@@ -57,12 +56,12 @@ public class Mindustry {
 
         @SubscribeEvent
         public static void onRegisterRenderers(EntityRenderersEvent.RegisterRenderers event) {
-
             event.registerBlockEntityRenderer(BlockEntityModule.MECHANICAL_DRILL_BLOCK_ENTITY.get(), context -> new MechanicalDrillBlockEntityRenderer());
             event.registerBlockEntityRenderer(BlockEntityModule.PNEUMATIC_DRILL_BLOCK_ENTITY.get(), context -> new PneumaticDrillBlockEntityRenderer());
             event.registerBlockEntityRenderer(BlockEntityModule.SWARMER_TURRET_BLOCK_ENTITY.get(), TurretRenderer::new);
             event.registerBlockEntityRenderer(BlockEntityModule.SPECTRE_TURRET_BLOCK_ENTITY.get(), TurretRenderer::new);
             event.registerBlockEntityRenderer(BlockEntityModule.POWER_NODE_BLOCK_ENTITY.get(), pContext -> new PowerNodeRenderer());
+            event.registerBlockEntityRenderer(BlockEntityModule.CONVEYOR_BLOCK_ENTITY.get(), pContext -> new ConveyorBlockEntityRenderer());
 
             event.registerEntityRenderer(EntityModule.DUO.get(), DuoRenderer::new);
             event.registerEntityRenderer(EntityModule.MISSILE_BULLET.get(), MissileBulletRender::new);

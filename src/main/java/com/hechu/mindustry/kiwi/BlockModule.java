@@ -2,6 +2,7 @@ package com.hechu.mindustry.kiwi;
 
 import com.hechu.mindustry.MindustryConstants;
 import com.hechu.mindustry.world.level.block.Equipment.PowerNodeBlock;
+import com.hechu.mindustry.world.level.block.distribution.ConveyorBlock;
 import com.hechu.mindustry.world.level.block.ore.*;
 import net.minecraft.world.level.block.Block;
 import snownee.kiwi.AbstractModule;
@@ -18,6 +19,9 @@ import static com.hechu.mindustry.MindustryConstants.logger;
 @KiwiModule(value = "block")
 @KiwiModule.Category(value = MindustryConstants.MOD_ID + ":tab_materials")
 public class BlockModule extends AbstractModule {
+    @KiwiModule.Category(value = MindustryConstants.MOD_ID + ":tab_main")
+    public static final KiwiGO<Block> CONVEYOR = go(ConveyorBlock::new);
+
     @KiwiModule.Category(value = MindustryConstants.MOD_ID + ":tab_main")
     public static final KiwiGO<Block> POWER_NODE = go(PowerNodeBlock::new);
 
