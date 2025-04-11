@@ -127,7 +127,7 @@ dependencies {
     compileOnly("curse.maven:jade-api-324717:${jade_api_id}")
     runtimeOnly("curse.maven:jade-324717:${jade_id}")
 
-    implementation("curse.maven:mekanism-268560:${mekanism_id}")
+    runtimeOnly("curse.maven:mekanism-268560:${mekanism_id}")
 
     implementation "curse.maven:roughly-enough-items-310111:6199140"
     implementation "curse.maven:architectury-api-419699:5786327"

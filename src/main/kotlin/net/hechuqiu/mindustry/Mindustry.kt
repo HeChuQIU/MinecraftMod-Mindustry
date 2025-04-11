@@ -1,6 +1,8 @@
 package net.hechuqiu.mindustry
 
-import net.hechuqiu.mindustry.common.block.ModBlocks
+import net.hechuqiu.mindustry.common.registries.MindustryBlocks
+import net.hechuqiu.mindustry.common.registries.MindustryItems
+import net.hechuqiu.mindustry.common.registries.MindustryTileEntity
 import net.minecraft.client.Minecraft
 import net.neoforged.bus.api.SubscribeEvent
 import net.neoforged.fml.common.EventBusSubscriber
@@ -31,7 +33,9 @@ object Mindustry {
         LOGGER.log(Level.INFO, "Hello world!")
 
         // Register the KDeferredRegister to the mod-specific event bus
-        ModBlocks.REGISTRY.register(MOD_BUS)
+        MindustryBlocks.REGISTRY.register(MOD_BUS)
+        MindustryItems.REGISTRY.register(MOD_BUS)
+        MindustryTileEntity.REGISTRY.register(MOD_BUS)
 
         val obj = runForDist(
             clientTarget = {
