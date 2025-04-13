@@ -8,8 +8,8 @@ import net.minecraft.world.level.block.state.BlockState
 open class MindustryBlockEntity : BlockEntity {
     constructor(type: BlockEntityType<*>, pos: BlockPos, blockState: BlockState) : super(type, pos, blockState)
 
-    fun isRemote(): Boolean {
-        return getLevel()?.isClientSide() ?: false
+    fun isClientSide(): Boolean {
+        return getLevel()!!.isClientSide()
     }
 
 //    fun sendUpdatePacket() {
