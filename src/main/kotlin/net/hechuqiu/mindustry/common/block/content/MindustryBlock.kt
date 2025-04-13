@@ -23,11 +23,9 @@ open class MindustryBlock : Block {
                 handler.handle(level, pos, state, Direction.NORTH, pos, { level, blockPos, mainPos ->
                     val boundingBlock = MindustryBlocks.BOUNDING_BLOCK
                     val boundingState = boundingBlock.defaultBlockState()
-                    level.setBlock(blockPos, boundingState, Block.UPDATE_ALL)
-                    if (!level.isClientSide) {
-                        val tile = level.getBlockEntity(blockPos)
-                        (tile as TileEntityBoundingBlock).setMainLocation(mainPos)
-                    }
+                    level.setBlock(blockPos, boundingState, UPDATE_ALL)
+                    val tile = level.getBlockEntity(blockPos)
+                    (tile as TileEntityBoundingBlock).setMainLocation(mainPos)
                     true
                 })
             }
