@@ -22,6 +22,13 @@ repositories {
         url = 'https://maven.neoforged.net/releases'
     }
     maven { url = "https://maven.ithundxr.dev/snapshots" } // Registrate
+    maven {
+        name = 'GeckoLib'
+        url 'https://dl.cloudsmith.io/public/geckolib3/geckolib/maven/'
+        content {
+            includeGroup("software.bernie.geckolib")
+        }
+    }
     exclusiveContent {
         forRepository {
             maven {
@@ -132,6 +139,8 @@ dependencies {
     implementation "curse.maven:roughly-enough-items-310111:6199140"
     implementation "curse.maven:architectury-api-419699:5786327"
     implementation "curse.maven:cloth-config-348521:5729127"
+
+    implementation "software.bernie.geckolib:geckolib-neoforge-${minecraft_version}:${geckolib_version}"
 
     // Example mod dependency with JEI
     // The JEI API is declared for compile time use, while the full JEI artifact is used at runtime
