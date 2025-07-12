@@ -1,7 +1,7 @@
 package net.hechuqiu.mindustry.common.block.interfaces
 
-import net.hechuqiu.mindustry.common.boundingblock.BoundingBlockHandler
+import net.hechuqiu.mindustry.common.multiblock.BoundingBlockHandler
 
-interface IBoundingBlock {
+interface IMultiblock {
     fun getBoundingHandler(): BoundingBlockHandler
 }

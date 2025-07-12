@@ -1,7 +1,7 @@
 package net.hechuqiu.mindustry.common.block.content
 
-import net.hechuqiu.mindustry.common.block.interfaces.IBoundingBlock
-import net.hechuqiu.mindustry.common.boundingblock.BoundingBlockHandler
+import net.hechuqiu.mindustry.common.block.interfaces.IMultiblock
+import net.hechuqiu.mindustry.common.multiblock.BoundingBlockHandler
 import net.minecraft.core.BlockPos
 import net.minecraft.core.BlockPos.MutableBlockPos
 import net.minecraft.core.Direction
@@ -12,7 +12,7 @@ import net.minecraft.world.phys.shapes.CollisionContext
 import net.minecraft.world.phys.shapes.Shapes
 import net.minecraft.world.phys.shapes.VoxelShape
 
-class ThreeBlockHighBlock : MindustryBlock, IBoundingBlock {
+class ThreeBlockHighBlock : MindustryBlock, IMultiblock {
     constructor(properties: Properties) : super(properties)
 
     override fun getBoundingHandler(): BoundingBlockHandler {
@@ -21,7 +21,7 @@ class ThreeBlockHighBlock : MindustryBlock, IBoundingBlock {
                 level: Level,
                 pos: BlockPos,
                 state: BlockState,
-                direction: Direction,
+                direction: Direction?,
                 data: DATA,
                 predicate: (Level, BlockPos, DATA) -> Boolean
             ): Boolean {

@@ -1,20 +1,25 @@
 package net.hechuqiu.mindustry
 
+import net.hechuqiu.mindustry.client.render.tileentity.BoundingBlockTileEntityRender
 import net.hechuqiu.mindustry.common.registries.MindustryBlocks
 import net.hechuqiu.mindustry.common.registries.MindustryItems
 import net.hechuqiu.mindustry.common.registries.MindustryTileEntity
+import net.hechuqiu.mindustry.common.tile.TileEntityBoundingBlock
 import net.minecraft.client.Minecraft
+import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider
 import net.neoforged.bus.api.SubscribeEvent
 import net.neoforged.fml.common.EventBusSubscriber
 import net.neoforged.fml.common.Mod
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent
 import net.neoforged.fml.event.lifecycle.FMLDedicatedServerSetupEvent
+import net.neoforged.neoforge.client.event.EntityRenderersEvent.RegisterRenderers
 import org.apache.logging.log4j.Level
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 import thedarkcolour.kotlinforforge.neoforge.forge.MOD_BUS
 import thedarkcolour.kotlinforforge.neoforge.forge.runForDist
+
 
 /**
  * Main mod class.
@@ -48,6 +53,14 @@ object Mindustry {
             })
 
         println(obj)
+    }
+
+    @SubscribeEvent
+    fun registerEntityRenderers(event: RegisterRenderers) {
+        event.registerBlockEntityRenderer(
+            MindustryTileEntity.BOUNDING_BLOCK.get()
+        )
+        { BoundingBlockTileEntityRender() }
     }
 
     /**

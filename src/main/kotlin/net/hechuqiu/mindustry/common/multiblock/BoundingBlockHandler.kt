@@ -1,4 +1,4 @@
-package net.hechuqiu.mindustry.common.boundingblock
+package net.hechuqiu.mindustry.common.multiblock
 
 import net.minecraft.core.BlockPos
 import net.minecraft.core.Direction
@@ -13,7 +13,7 @@ abstract class BoundingBlockHandler {
      * @param level 当前的世界
      * @param pos 主方块的位置
      * @param state 主方块的状态
-     * @param direction 主方块的朝向
+     * @param direction 主方块的朝向。默认面朝北方（-z轴），且主方块应该位于整个结构的西北角
      * @param data 传入的数据
      * @param predicate 处理的条件
      */
@@ -21,7 +21,7 @@ abstract class BoundingBlockHandler {
         level: Level,
         pos: BlockPos,
         state: BlockState,
-        direction: Direction = Direction.NORTH,
+        direction: Direction?,
         data: DATA,
         predicate: (Level, BlockPos, DATA) -> Boolean
     ): Boolean
