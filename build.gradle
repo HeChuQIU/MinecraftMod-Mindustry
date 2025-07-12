@@ -9,6 +9,8 @@ plugins {
 version = mod_version
 group = mod_group_id
 
+jarJar.enabled = true
+
 repositories {
     mavenLocal()
     maven {
@@ -17,7 +19,9 @@ repositories {
         content { includeGroup "thedarkcolour" }
     }
     maven {
-        url = 'https://maven.neoforged.net/releases' }
+        url = 'https://maven.neoforged.net/releases'
+    }
+    maven { url = "https://maven.ithundxr.dev/snapshots" } // Registrate
     exclusiveContent {
         forRepository {
             maven {
@@ -117,10 +121,17 @@ sourceSets.main.resources { srcDir 'src/generated/resources' }
 dependencies {
     implementation 'thedarkcolour:kotlinforforge-neoforge:5.3.0'
 
+    implementation("com.tterrag.registrate:Registrate:${registrate_version}")
+    jarJar(group: 'com.tterrag.registrate', name: 'Registrate', version: "[MC1.20.1,MC1.20.1)")
+
     compileOnly("curse.maven:jade-api-324717:${jade_api_id}")
     runtimeOnly("curse.maven:jade-324717:${jade_id}")
 
     implementation("curse.maven:mekanism-268560:${mekanism_id}")
+
+    implementation "curse.maven:roughly-enough-items-310111:6199140"
+    implementation "curse.maven:architectury-api-419699:5786327"
+    implementation "curse.maven:cloth-config-348521:5729127"
 
     // Example mod dependency with JEI
     // The JEI API is declared for compile time use, while the full JEI artifact is used at runtime
