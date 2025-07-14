@@ -34,10 +34,10 @@ object MindustryBlocks {
         )
     }
 
-    val TEST_BOUNDING_BLOCK0 by REGISTRY.register("test_bounding_block0") { registryName ->
+    val TEST_MULTIBLOCK0 by REGISTRY.register("test_multiblock0") { registryName ->
         TestMultiblock0(
             BlockBehaviour.Properties.of()
-                .lightLevel { 15 }
+//                .lightLevel { 15 }
                 .strength(3.0f)
         )
     }

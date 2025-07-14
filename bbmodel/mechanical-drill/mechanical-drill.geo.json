@@ -1,0 +1,108 @@
+{
+	"format_version": "1.12.0",
+	"minecraft:geometry": [
+		{
+			"description": {
+				"identifier": "geometry.mechanical-drill",
+				"texture_width": 128,
+				"texture_height": 128,
+				"visible_bounds_width": 5,
+				"visible_bounds_height": 4,
+				"visible_bounds_offset": [0, 1, 0]
+			},
+			"bones": [
+				{
+					"name": "边框",
+					"pivot": [0, 0, 0],
+					"cubes": [
+						{
+							"origin": [-22, 0, -8],
+							"size": [28, 16, 2],
+							"uv": {
+								"north": {"uv": [0, 82], "uv_size": [28, 16]},
+								"east": {"uv": [56, 92], "uv_size": [2, 16]},
+								"south": {"uv": [28, 90], "uv_size": [28, 16]},
+								"west": {"uv": [58, 92], "uv_size": [2, 16]},
+								"up": {"uv": [80, 56], "uv_size": [28, 2]},
+								"down": {"uv": [56, 92], "uv_size": [28, -2]}
+							}
+						},
+						{
+							"origin": [-22, 0, -8],
+							"size": [28, 16, 2],
+							"pivot": [-8, 0, 8],
+							"rotation": [0, 90, 0],
+							"uv": {
+								"north": {"uv": [48, 58], "uv_size": [28, 16]},
+								"east": {"uv": [28, 66], "uv_size": [2, 16]},
+								"south": {"uv": [0, 66], "uv_size": [28, 16]},
+								"west": {"uv": [30, 66], "uv_size": [2, 16]},
+								"up": {"uv": [80, 44], "uv_size": [28, 2]},
+								"down": {"uv": [80, 48], "uv_size": [28, -2]}
+							}
+						},
+						{
+							"origin": [-22, 0, -8],
+							"size": [28, 16, 2],
+							"pivot": [-8, 0, 8],
+							"rotation": [0, 180, 0],
+							"uv": {
+								"north": {"uv": [48, 74], "uv_size": [28, 16]},
+								"east": {"uv": [84, 90], "uv_size": [2, 16]},
+								"south": {"uv": [76, 58], "uv_size": [28, 16]},
+								"west": {"uv": [86, 90], "uv_size": [2, 16]},
+								"up": {"uv": [80, 48], "uv_size": [28, 2]},
+								"down": {"uv": [80, 52], "uv_size": [28, -2]}
+							}
+						},
+						{
+							"origin": [-22, 0, -8],
+							"size": [28, 16, 2],
+							"pivot": [-8, 0, 8],
+							"rotation": [0, -90, 0],
+							"uv": {
+								"north": {"uv": [76, 74], "uv_size": [28, 16]},
+								"east": {"uv": [88, 90], "uv_size": [2, 16]},
+								"south": {"uv": [80, 28], "uv_size": [28, 16]},
+								"west": {"uv": [90, 90], "uv_size": [2, 16]},
+								"up": {"uv": [80, 52], "uv_size": [28, 2]},
+								"down": {"uv": [80, 56], "uv_size": [28, -2]}
+							}
+						}
+					]
+				},
+				{
+					"name": "风扇",
+					"pivot": [-8, 13, 8],
+					"cubes": [
+						{"origin": [-19, 12, 11], "size": [8, 2, 8], "pivot": [-8, 0, 8], "rotation": [0, -135, 0], "uv": [48, 28]},
+						{"origin": [-19, 12, 11], "size": [8, 2, 8], "pivot": [-8, 0, 8], "rotation": [0, -45, 0], "uv": [48, 38]},
+						{"origin": [-19, 12, 11], "size": [8, 2, 8], "pivot": [-8, 0, 8], "rotation": [0, 45, 0], "uv": [48, 48]},
+						{"origin": [-19, 12, 11], "size": [8, 2, 8], "pivot": [-8, 0, 8], "rotation": [0, 135, 0], "uv": [0, 56]}
+					]
+				},
+				{
+					"name": "盖子",
+					"pivot": [0, 0, 0],
+					"cubes": [
+						{"origin": [-14, 0.01, 2], "size": [12, 16, 12], "uv": [0, 28]}
+					]
+				},
+				{
+					"name": "钻头",
+					"pivot": [0, 0, 0],
+					"cubes": [
+						{"origin": [-10, 0.01, 6], "size": [4, 20, 4], "uv": [32, 56]}
+					]
+				},
+				{
+					"name": "底",
+					"pivot": [0, 0, 0],
+					"cubes": [
+						{"origin": [-22, 0.00001, -6], "size": [28, 0, 28], "uv": [0, 0]}
+					]
+				}
+			]
+		}
+	]
+}

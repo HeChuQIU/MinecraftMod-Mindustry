@@ -4,12 +4,16 @@ import com.mojang.logging.LogUtils
 import net.hechuqiu.mindustry.common.block.interfaces.IMultiblock
 import net.hechuqiu.mindustry.common.multiblock.BoundingBlockHandler
 import net.hechuqiu.mindustry.common.multiblock.CuboidMultiblock
+import net.hechuqiu.mindustry.common.tile.TileEntityTestMultiblock0
 import net.minecraft.core.BlockPos
 import net.minecraft.core.Direction
 import net.minecraft.world.item.context.BlockPlaceContext
 import net.minecraft.world.level.BlockGetter
 import net.minecraft.world.level.Level
 import net.minecraft.world.level.block.Block
+import net.minecraft.world.level.block.EntityBlock
+import net.minecraft.world.level.block.RenderShape
+import net.minecraft.world.level.block.entity.BlockEntity
 import net.minecraft.world.level.block.state.BlockState
 import net.minecraft.world.level.block.state.StateDefinition
 import net.minecraft.world.level.block.state.properties.BlockStateProperties
@@ -20,7 +24,7 @@ import net.minecraft.world.phys.shapes.VoxelShape
 import org.slf4j.Logger
 
 
-class TestMultiblock0(properties: Properties) : MindustryBlock(properties), IMultiblock {
+class TestMultiblock0(properties: Properties) : MindustryBlock(properties), IMultiblock, EntityBlock {
     init {
         registerDefaultState(
             stateDefinition.any()
@@ -50,6 +54,10 @@ class TestMultiblock0(properties: Properties) : MindustryBlock(properties), IMul
             Direction.WEST -> Shapes.box(0.0, 0.0, -1.0, 2.0, 2.0, 1.0)
             Direction.EAST -> Shapes.box(-1.0, 0.0, 0.0, 1.0, 2.0, 2.0)
         }
+    }
+
+    override fun getRenderShape(state: BlockState): RenderShape {
+        return RenderShape.ENTITYBLOCK_ANIMATED
     }
 
     override fun getBoundingHandler(): BoundingBlockHandler {
@@ -92,4 +100,14 @@ class TestMultiblock0(properties: Properties) : MindustryBlock(properties), IMul
         }
     }
 
+//    override fun getLightBlock(state: BlockState, level: BlockGetter, pos: BlockPos): Int {
+//        return level.maxLightLevel
+//    }
+
+    override fun newBlockEntity(
+        p0: BlockPos,
+        p1: BlockState
+    ): BlockEntity? {
+        return TileEntityTestMultiblock0(p0, p1)
+    }
 }

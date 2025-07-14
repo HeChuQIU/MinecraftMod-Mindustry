@@ -23,6 +23,6 @@ object MindustryItems {
     }
 
     val TEST_BOUNDING_BLOCK0 = REGISTRY.register("test_bounding_block0") { registryName ->
-        TestBoundingBlock0Item(MindustryBlocks.TEST_BOUNDING_BLOCK0, Item.Properties())
+        TestBoundingBlock0Item(MindustryBlocks.TEST_MULTIBLOCK0, Item.Properties())
     }
 }

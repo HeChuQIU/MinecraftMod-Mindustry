@@ -3,6 +3,7 @@ package net.hechuqiu.mindustry.common.registries
 import com.mojang.datafixers.DSL
 import net.hechuqiu.mindustry.Mindustry
 import net.hechuqiu.mindustry.common.tile.TileEntityBoundingBlock
+import net.hechuqiu.mindustry.common.tile.TileEntityTestMultiblock0
 import net.minecraft.core.registries.Registries
 import net.minecraft.world.level.block.entity.BlockEntityType
 import net.neoforged.neoforge.registries.DeferredRegister
@@ -19,6 +20,16 @@ object MindustryTileEntity {
             BlockEntityType.Builder.of(
                 ::TileEntityBoundingBlock,
                 MindustryBlocks.BOUNDING_BLOCK
+            ).build(DSL.remainderType())
+        }
+    )
+
+    val TEST_MULTIBLOCK0 = REGISTRY.register(
+        "test_multiblock0",
+        Supplier {
+            BlockEntityType.Builder.of(
+                ::TileEntityTestMultiblock0,
+                MindustryBlocks.TEST_MULTIBLOCK0
             ).build(DSL.remainderType())
         }
     )

@@ -1,6 +1,7 @@
 package net.hechuqiu.mindustry
 
 import net.hechuqiu.mindustry.client.render.tileentity.BoundingBlockTileEntityRender
+import net.hechuqiu.mindustry.client.render.tileentity.TileEntityTestMultiblock0Renderer
 import net.hechuqiu.mindustry.common.registries.MindustryBlocks
 import net.hechuqiu.mindustry.common.registries.MindustryItems
 import net.hechuqiu.mindustry.common.registries.MindustryTileEntity
@@ -61,6 +62,12 @@ object Mindustry {
             MindustryTileEntity.BOUNDING_BLOCK.get()
         )
         { BoundingBlockTileEntityRender() }
+
+        event.registerBlockEntityRenderer(
+            MindustryTileEntity.TEST_MULTIBLOCK0.get()
+        )
+        { TileEntityTestMultiblock0Renderer() }
+
     }
 
     /**

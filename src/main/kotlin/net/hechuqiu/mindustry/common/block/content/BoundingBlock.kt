@@ -36,7 +36,7 @@ class BoundingBlock : MindustryBlock(
         .strength(3.5f, 4.8f)
         .requiresCorrectToolForDrops()
         .dynamicShape()
-        .noOcclusion()
+//        .noOcclusion()
         .isViewBlocking({ _, _, _ -> false })
         .pushReaction(PushReaction.BLOCK)
 ), EntityBlock {
@@ -46,7 +46,7 @@ class BoundingBlock : MindustryBlock(
         if (thisPos != bbte.getMainPos()) {
             return bbte.getMainPos()
         }
-        return null;
+        return null
     }
 
     override fun getRenderShape(state: BlockState) = RenderShape.INVISIBLE
@@ -68,6 +68,10 @@ class BoundingBlock : MindustryBlock(
 
     override fun getInteractionShape(state: BlockState, world: BlockGetter, pos: BlockPos) =
         proxyShape(world, pos, null) { s, _, p, _ -> s.getInteractionShape(world, p) }
+
+//    override fun getLightBlock(state: BlockState, level: BlockGetter, pos: BlockPos): Int {
+//        return level.maxLightLevel;
+//    }
 
     private fun proxyShape(
         world: BlockGetter,
@@ -256,7 +260,7 @@ class BoundingBlock : MindustryBlock(
     }
 
     override fun newBlockEntity(p0: BlockPos, p1: BlockState): BlockEntity? {
-        return TileEntityBoundingBlock(p0,p1)
+        return TileEntityBoundingBlock(p0, p1)
     }
 
     override fun canBeReplaced(state: BlockState, useContext: BlockPlaceContext): Boolean {
