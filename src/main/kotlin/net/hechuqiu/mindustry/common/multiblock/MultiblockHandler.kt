@@ -2,10 +2,11 @@ package net.hechuqiu.mindustry.common.multiblock
 
 import net.minecraft.core.BlockPos
 import net.minecraft.core.Direction
+import net.minecraft.core.Vec3i
 import net.minecraft.world.level.Level
 import net.minecraft.world.level.block.state.BlockState
 
-abstract class BoundingBlockHandler {
+abstract class MultiblockHandler {
     /**
      * 处理边界方块的逻辑
      *
@@ -25,4 +26,12 @@ abstract class BoundingBlockHandler {
         data: DATA,
         predicate: (Level, BlockPos, DATA) -> Boolean
     ): Boolean
+
+    abstract val multiblockSize: Vec3i
+
+    /**
+     * 获取主方块的相对整个方块西北下角（xyz最小）的偏移位置
+     * @return 主方块的偏移位置
+     */
+    abstract val mainBlockOffset: BlockPos
 }

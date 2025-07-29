@@ -1,13 +1,13 @@
 package net.hechuqiu.mindustry
 
 import net.hechuqiu.mindustry.client.render.tileentity.BoundingBlockTileEntityRender
-import net.hechuqiu.mindustry.client.render.tileentity.TileEntityTestMultiblock0Renderer
+import net.hechuqiu.mindustry.client.render.tileentity.MechanicalBlockRenderer
 import net.hechuqiu.mindustry.common.registries.MindustryBlocks
 import net.hechuqiu.mindustry.common.registries.MindustryItems
 import net.hechuqiu.mindustry.common.registries.MindustryTileEntity
-import net.hechuqiu.mindustry.common.tile.TileEntityBoundingBlock
+import net.hechuqiu.mindustry.common.tile.TileEntityDrillBlock
+import net.hechuqiu.mindustry.datagen.ModDataGeneratorHandler
 import net.minecraft.client.Minecraft
-import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider
 import net.neoforged.bus.api.SubscribeEvent
 import net.neoforged.fml.common.EventBusSubscriber
 import net.neoforged.fml.common.Mod
@@ -15,9 +15,11 @@ import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent
 import net.neoforged.fml.event.lifecycle.FMLDedicatedServerSetupEvent
 import net.neoforged.neoforge.client.event.EntityRenderersEvent.RegisterRenderers
+import net.neoforged.neoforge.data.event.GatherDataEvent
 import org.apache.logging.log4j.Level
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
+import software.bernie.geckolib.loading.math.MolangQueries
 import thedarkcolour.kotlinforforge.neoforge.forge.MOD_BUS
 import thedarkcolour.kotlinforforge.neoforge.forge.runForDist
 
@@ -54,6 +56,12 @@ object Mindustry {
             })
 
         println(obj)
+
+        MolangQueries
+            .setActorVariable<TileEntityDrillBlock>(
+                "query.mindustry_drill_angle",
+                { actor -> actor.animatable.drillAngle }
+            )
     }
 
     @SubscribeEvent
@@ -64,10 +72,9 @@ object Mindustry {
         { BoundingBlockTileEntityRender() }
 
         event.registerBlockEntityRenderer(
-            MindustryTileEntity.TEST_MULTIBLOCK0.get()
+            MindustryTileEntity.DRILL_BLOCK.get()
         )
-        { TileEntityTestMultiblock0Renderer() }
-
+        { MechanicalBlockRenderer() }
     }
 
     /**
@@ -89,5 +96,10 @@ object Mindustry {
     @SubscribeEvent
     fun onCommonSetup(event: FMLCommonSetupEvent) {
         LOGGER.log(Level.INFO, "Hello! This is working!")
+    }
+
+    @SubscribeEvent
+    fun gatherData(event: GatherDataEvent) {
+        ModDataGeneratorHandler.gatherData(event)
     }
 }

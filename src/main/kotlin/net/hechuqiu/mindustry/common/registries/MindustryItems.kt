@@ -1,7 +1,7 @@
 package net.hechuqiu.mindustry.common.registries
 
 import net.hechuqiu.mindustry.Mindustry
-import net.hechuqiu.mindustry.common.item.BoundingBlockItem
+import net.hechuqiu.mindustry.common.item.MultiblockItem
 import net.hechuqiu.mindustry.common.item.TestBoundingBlock0Item
 import net.minecraft.world.item.BlockItem
 import net.minecraft.world.item.Item
@@ -18,11 +18,7 @@ object MindustryItems {
         BlockItem(MindustryBlocks.BOUNDING_BLOCK, Item.Properties())
     }
 
-    val THREE_BLOCK_HIGH_BLOCK = REGISTRY.register("three_block_high") { registryName ->
-        BoundingBlockItem(MindustryBlocks.THREE_BLOCK_HIGH_BLOCK, Item.Properties())
-    }
-
-    val TEST_BOUNDING_BLOCK0 = REGISTRY.register("test_bounding_block0") { registryName ->
-        TestBoundingBlock0Item(MindustryBlocks.TEST_MULTIBLOCK0, Item.Properties())
+    val MECHANICAL_DRILL = REGISTRY.register("mechanical_drill") { registryName ->
+        BlockItem(MindustryBlocks.MECHANICAL_BLOCK, Item.Properties())
     }
 }

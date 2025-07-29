@@ -3,8 +3,9 @@ package net.hechuqiu.mindustry.common.registries
 import net.hechuqiu.mindustry.Mindustry
 import net.hechuqiu.mindustry.common.block.content.BoundingBlock
 import net.hechuqiu.mindustry.common.block.content.MindustryBlock
-import net.hechuqiu.mindustry.common.block.content.TestMultiblock0
-import net.hechuqiu.mindustry.common.block.content.ThreeBlockHighBlock
+import net.hechuqiu.mindustry.common.block.content.drill.DrillBlock
+import net.hechuqiu.mindustry.common.multiblock.MultiblockHelper
+import net.minecraft.core.Vec3i
 import net.minecraft.world.level.block.state.BlockBehaviour
 import net.neoforged.neoforge.registries.DeferredRegister
 
@@ -18,27 +19,19 @@ object MindustryBlocks {
     val EXAMPLE_BLOCK by REGISTRY.register("example_block") { registryName ->
         MindustryBlock(
             BlockBehaviour.Properties.of()
-            .lightLevel { 15 }
-            .strength(3.0f))
+                .lightLevel { 15 }
+                .strength(3.0f))
     }
 
     val BOUNDING_BLOCK by REGISTRY.register("bounding_block") { registryName ->
         BoundingBlock()
     }
 
-    val THREE_BLOCK_HIGH_BLOCK by REGISTRY.register("three_block_high") { registryName->
-        ThreeBlockHighBlock(
+    val MECHANICAL_BLOCK by REGISTRY.register("mechanical_drill") { registryName ->
+        DrillBlock(
             BlockBehaviour.Properties.of()
-                .lightLevel { 15 }
-                .strength(3.0f)
-        )
-    }
-
-    val TEST_MULTIBLOCK0 by REGISTRY.register("test_multiblock0") { registryName ->
-        TestMultiblock0(
-            BlockBehaviour.Properties.of()
-//                .lightLevel { 15 }
-                .strength(3.0f)
+                .strength(3.0f),
+            MultiblockHelper.handler(Vec3i(2, 1, 2))
         )
     }
 }

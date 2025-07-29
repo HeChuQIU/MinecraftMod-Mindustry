@@ -10,6 +10,7 @@ import net.minecraft.world.level.Level
 import net.minecraft.world.level.block.Block
 import net.minecraft.world.level.block.state.BlockState
 import net.minecraft.world.level.block.state.properties.BlockStateProperties
+import net.minecraft.world.level.block.state.properties.DirectionProperty
 
 open class MindustryBlock : Block {
     constructor(properties: Properties) : super(properties)
@@ -39,10 +40,22 @@ open class MindustryBlock : Block {
         movedByPiston: Boolean
     ) {
         super.onRemove(state, level, pos, newState, movedByPiston)
-        if (!level.isClientSide) {
+//        if (!level.isClientSide) {
+        if (true) {
             (this as? IMultiblock)?.let { mainBlock ->
                 val handler = mainBlock.getBoundingHandler()
-                handler.handle(level, pos, state, state.getValue(BlockStateProperties.FACING), null) { level, blockPos, _ ->
+                val facing = if (state.hasProperty(BlockStateProperties.FACING)) {
+                    state.getValue(BlockStateProperties.FACING)
+                } else {
+                    null
+                }
+                handler.handle(
+                    level,
+                    pos,
+                    state,
+                    facing,
+                    null
+                ) { level, blockPos, _ ->
                     level.removeBlock(blockPos, false)
                     true
                 }

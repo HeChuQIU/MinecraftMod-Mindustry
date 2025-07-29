@@ -3,7 +3,7 @@
 	"minecraft:geometry": [
 		{
 			"description": {
-				"identifier": "geometry.mechanical-drill",
+				"identifier": "geometry.mechanical_drill",
 				"texture_width": 128,
 				"texture_height": 128,
 				"visible_bounds_width": 5,
@@ -99,7 +99,7 @@
 					"name": "底",
 					"pivot": [0, 0, 0],
 					"cubes": [
-						{"origin": [-22, 0.00001, -6], "size": [28, 0, 28], "uv": [0, 0]}
+						{"origin": [-22, 0.0625, -6], "size": [28, 0, 28], "uv": [0, 0]}
 					]
 				}
 			]

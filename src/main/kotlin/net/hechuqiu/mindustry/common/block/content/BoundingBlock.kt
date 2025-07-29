@@ -1,5 +1,6 @@
 package net.hechuqiu.mindustry.common.block.content
 
+import net.hechuqiu.mindustry.common.block.interfaces.IMultiblock
 import net.hechuqiu.mindustry.common.tile.TileEntityBoundingBlock
 import net.minecraft.core.BlockPos
 import net.minecraft.server.level.ServerLevel
@@ -26,6 +27,7 @@ import net.minecraft.world.phys.HitResult
 import net.minecraft.world.phys.shapes.CollisionContext
 import net.minecraft.world.phys.shapes.Shapes
 import net.minecraft.world.phys.shapes.VoxelShape
+import org.slf4j.Logger
 import java.util.function.BiConsumer
 
 private typealias ShapeProxy = (BlockState, BlockGetter?, BlockPos?, CollisionContext?) -> VoxelShape?
@@ -40,11 +42,15 @@ class BoundingBlock : MindustryBlock(
         .isViewBlocking({ _, _, _ -> false })
         .pushReaction(PushReaction.BLOCK)
 ), EntityBlock {
+    companion object {
+        val LOGGER: Logger = org.slf4j.LoggerFactory.getLogger(BoundingBlock::class.java)
+    }
 
     fun getMainBlockPos(world: BlockGetter?, thisPos: BlockPos): BlockPos? {
         val bbte = world?.getBlockEntity(thisPos) as? TileEntityBoundingBlock ?: return null
-        if (thisPos != bbte.getMainPos()) {
-            return bbte.getMainPos()
+        var mainPos = bbte.getMainPos()
+        if (thisPos != mainPos && world.getBlockEntity(mainPos) != null) {
+            return mainPos
         }
         return null
     }
@@ -79,11 +85,17 @@ class BoundingBlock : MindustryBlock(
         context: CollisionContext?,
         proxy: ShapeProxy
     ): VoxelShape {
-        val mainPos = getMainBlockPos(world, pos) ?: return Shapes.empty()
-        val mainState = world.getBlockState(mainPos)
-        val shape = proxy(mainState, world, mainPos, context)
-        val offset = pos.subtract(mainPos)
-        return shape?.move(-offset.x.toDouble(), -offset.y.toDouble(), -offset.z.toDouble()) ?: Shapes.empty()
+        try {
+            val mainPos = getMainBlockPos(world, pos) ?: return Shapes.empty()
+            val mainState = world.getBlockState(mainPos)
+            val shape = proxy(mainState, world, mainPos, context)
+            val offset = pos.subtract(mainPos)
+            return shape?.move(-offset.x.toDouble(), -offset.y.toDouble(), -offset.z.toDouble()) ?: Shapes.empty()
+        } catch (e: Exception) {
+            LOGGER.debug("BoundingBlock: pos = {}", pos)
+            LOGGER.error("Error getting shape for BoundingBlock at pos $pos", e)
+            return Shapes.empty()
+        }
     }
 
     override fun canBeReplaced(state: BlockState, fluid: Fluid) = false
@@ -222,11 +234,9 @@ class BoundingBlock : MindustryBlock(
         neighborPos: BlockPos,
         isMoving: Boolean
     ) {
-        if (!world.isClientSide) {
-            (world.getBlockEntity(pos) as? TileEntityBoundingBlock)
-                ?.onNeighborChange(neighborBlock, neighborPos)
-//            WorldUtils.getTileEntity(TileEntityBoundingBlock::class.java, world, pos)
-//                ?.onNeighborChange(neighborBlock, neighborPos)
+        val mainPos = getMainBlockPos(world, pos)
+        if (mainPos == null || world.getBlockState(mainPos).block !is IMultiblock) {
+            world.removeBlock(pos, false)
         }
         getMainBlockPos(world, pos)?.let { mainPos ->
             world.getBlockState(mainPos).handleNeighborChanged(world, mainPos, neighborBlock, neighborPos, isMoving)

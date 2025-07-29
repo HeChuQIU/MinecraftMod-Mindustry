@@ -1,0 +1,16 @@
+{
+	"format_version": "1.8.0",
+	"animations": {
+		"animation.mechanical_drill.run": {
+			"loop": true,
+			"bones": {
+				"风扇": {
+					"rotation": {
+						"vector": [0, "query.mindustry_drill_angle", 0]
+					}
+				}
+			}
+		}
+	},
+	"geckolib_format_version": 2
+}
